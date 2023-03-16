@@ -12,9 +12,7 @@
   "author": "luka",
   "license": "ISC",
   "dependencies": {
+    "@vitejs/plugin-vue2": "^2.2.0",
     "vue": "^2.7.14"
-  },
-  "devDependencies": {
-    "vite-plugin-vue2": "^2.0.3"
   }
 }
