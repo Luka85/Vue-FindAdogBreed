@@ -1,9 +1,7 @@
-"use strict";
+import Vue from "vue";
+import App from "./App.vue";
 
-const app = new Vue({
+new Vue({
   el: "#app",
-  data: {
-    message: "Here comes the sun",
-  },
+  render: (h) => h(App),
 });
-// app.mount("#app");
