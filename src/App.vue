@@ -13,7 +13,7 @@ export default {
   data() {
     return {
       title: "Find A Dog",
-      text: "krneki",
+      text: "test data",
     };
   },
 };
