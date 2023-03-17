@@ -1,13 +1,19 @@
 <template>
-  <div>
-    <h1>{{ message }}</h1>
-  </div>
+  <main>
+    <base-header :title="title"></base-header>
+    <breeds-list :name="text"></breeds-list>
+  </main>
 </template>
 <script>
+import BreedsList from "./components/BreedsList.vue";
 export default {
+  components: {
+    BreedsList,
+  },
   data() {
     return {
-      message: "Hello",
+      title: "Find A Dog",
+      text: "krneki",
     };
   },
 };
