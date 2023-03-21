@@ -1,7 +1,7 @@
 <template>
   <main>
     <base-header :title="title"></base-header>
-    <breeds-list :name="text"></breeds-list>
+    <breeds-list></breeds-list>
   </main>
 </template>
 <script>
@@ -13,7 +13,6 @@ export default {
   data() {
     return {
       title: "Find A Dog",
-      text: "test data",
     };
   },
 };
