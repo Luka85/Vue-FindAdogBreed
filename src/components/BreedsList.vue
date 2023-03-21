@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { fetchAllData } from "../data.js";
+import { fetchBreeds } from "../data.js";
 export default {
   data() {
     return {
@@ -33,30 +33,10 @@ export default {
     };
   },
   methods: {
-    // fetchAllData() {
-    //   this.isLoading = true;
-    //   this.error = null;
-    //   fetch(`https://api.thedogapi.com/v1/breeds/`)
-    //     .then((response) => {
-    //       if (response.ok) {
-    //         return response.json();
-    //       }
-    //     })
-    //     .then((results) => {
-    //       this.isLoading = false;
-    //       if (results.length > 0) {
-    //         this.breedsList = results;
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       this.isLoading = false;
-    //       this.error = "Failed to fetch data. Please try again later!";
-    //     });
-    // },
     fetchData() {
       this.isLoading = true;
 
-      fetchAllData("https://api.thedogapi.com/v1/breeds/")
+      fetchBreeds()
         .then((results) => {
           this.isLoading = false;
           if (results.length > 0) {
@@ -65,7 +45,7 @@ export default {
         })
         .catch((error) => {
           this.isLoading = false;
-          this.error = "Failed to fetch data. Please try again later!";
+          this.error = error;
         });
     },
   },
