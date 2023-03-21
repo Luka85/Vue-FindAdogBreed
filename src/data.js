@@ -1,10 +1,12 @@
-export function fetchAllData(url) {
-  return fetch(url)
+export function fetchBreeds() {
+  return fetch("https://api.thedogapi.com/v1/breeds/")
     .then((response) => {
       if (response.ok) {
         return response.json();
       }
     })
 
-    .catch((error) => {});
+    .catch((error) => {
+      throw new Error(error.message);
+    });
 }
