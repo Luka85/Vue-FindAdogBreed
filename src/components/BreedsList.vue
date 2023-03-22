@@ -39,13 +39,15 @@ export default {
       fetchBreeds()
         .then((results) => {
           this.isLoading = false;
-          if (results.length > 0) {
+          if (results.message) {
+            this.error = "Error: " + results.message;
+          } else if (results.length > 0) {
             this.breedsList = results;
           }
         })
         .catch((error) => {
           this.isLoading = false;
-          this.error = error;
+          this.error = error.message;
         });
     },
   },
