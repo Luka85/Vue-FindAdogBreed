@@ -39,9 +39,8 @@ export default {
       fetchBreeds()
         .then((results) => {
           this.isLoading = false;
-          if (results.message) {
-            this.error = "Error: " + results.message;
-          } else if (results.length > 0) {
+
+          if (results.length > 0) {
             this.breedsList = results;
           }
         })

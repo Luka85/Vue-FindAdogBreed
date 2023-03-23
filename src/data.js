@@ -1,16 +1,15 @@
 export function fetchBreeds() {
-  return fetch("https://api.thedogapi.com1/v1/breeds/")
-    .then((response) => {
-      console.log(response);
-      if (response.ok) {
-        return response.json();
-      }
-    })
-    .then((results) => {
-      return results;
-    })
+  return new Promise((resolve, reject) => {
+    fetch("https://api.thedogapi.com/v1/breeds/")
+      .then((response) => {
+        if (response.ok) {
+          resolve(response.json());
+        }
+      })
 
-    .catch((error) => {
-      return error;
-    });
+      .catch((error) => {
+        console.log(error);
+        reject(error);
+      });
+  });
 }
