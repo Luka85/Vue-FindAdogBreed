@@ -2,9 +2,7 @@
   <section>
     <p v-if="isLoading">The Data is Loading ...</p>
     <p v-else-if="!isLoading && error">{{ error }}</p>
-    <p v-else-if="!isLoading && breedsList.length === 0">
-      No Data Found. Please try again later.
-    </p>
+
     <div v-else>
       <div v-for="breed in breedsList">
         <h3>{{ breed.name }}</h3>
@@ -39,14 +37,15 @@ export default {
       fetchBreeds()
         .then((results) => {
           this.isLoading = false;
-
           if (results.length > 0) {
             this.breedsList = results;
+          } else {
+            this.error = "No data found. Please try again";
           }
         })
         .catch((error) => {
           this.isLoading = false;
-          this.error = error.message;
+          this.error = error.name + ": " + error.message;
         });
     },
   },
