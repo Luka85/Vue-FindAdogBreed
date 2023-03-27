@@ -2,7 +2,12 @@
   <section>
     <p v-if="isLoading">The Data is Loading ...</p>
     <p v-else-if="!isLoading && error">{{ error }}</p>
-
+    <p v-else-if="isTimeOut && breedsList.length === 0">
+      The request takes longer than expected...
+    </p>
+    <p v-else-if="!isLoading && breedsList.length === 0">
+      No Data Found. Please try again later.
+    </p>
     <div v-else>
       <div v-for="breed in breedsList">
         <h3>{{ breed.name }}</h3>
@@ -28,19 +33,26 @@ export default {
       breedsList: [],
       isLoading: false,
       error: null,
+      isTimeOut: false,
     };
   },
   methods: {
     fetchData() {
       this.isLoading = true;
-
+      setTimeout(() => {
+        if (this.isLoading) {
+          this.isTimeOut = true;
+          this.isLoading = false;
+        }
+      }, 3000);
       fetchBreeds()
         .then((results) => {
           this.isLoading = false;
           if (results.length > 0) {
             this.breedsList = results;
+            console.log(this.breedsList);
           } else {
-            this.error = "No data found. Please try again";
+            this.breedsList = [];
           }
         })
         .catch((error) => {
