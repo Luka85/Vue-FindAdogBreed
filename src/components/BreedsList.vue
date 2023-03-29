@@ -8,20 +8,20 @@
     <p v-else-if="!isLoading && breedsList.length === 0">
       No Data Found. Please try again later.
     </p>
-    <div v-else>
-      <div v-for="breed in breedsList">
+    <ul v-else>
+      <li v-for="breed in breedsList" :key="breed.id">
         <h3>{{ breed.name }}</h3>
         <span>{{ breed.breed_group }}</span>
         <span>{{ breed.life_span }}</span>
         <span>{{ breed.height.metric }}cm</span>
         <span>{{ breed.weight.metric }}kg</span>
         <img
-          class="breedsList_image"
+          class="breed_image"
           :src="breed.image.url"
           :alt="`Picture of the ${breed.name} dog`"
         />
-      </div>
-    </div>
+      </li>
+    </ul>
   </section>
 </template>
 
@@ -49,8 +49,8 @@ export default {
         .then((results) => {
           this.isLoading = false;
           if (results.length > 0) {
+            console.log(results);
             this.breedsList = results;
-            console.log(this.breedsList);
           } else {
             this.breedsList = [];
           }
@@ -67,9 +67,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.breedsList_image {
-  width: 20rem;
-  height: auto;
-}
-</style>
+<style scoped></style>
