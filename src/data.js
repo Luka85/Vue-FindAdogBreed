@@ -25,9 +25,7 @@ export function searchBreed(searchInput) {
           console.log(response);
           resolve(response.json());
         } else {
-          reject(
-            new Error("Failed to fetch breeds: " + response.status + " ERROR")
-          );
+          reject(new Error(response.status + " - Failed to fetch breeds "));
         }
       })
 

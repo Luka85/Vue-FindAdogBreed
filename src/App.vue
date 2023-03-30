@@ -1,19 +1,14 @@
 <template>
   <main>
     <base-header :title="title"></base-header>
-
-    <the-search></the-search>
-
     <breeds-list></breeds-list>
   </main>
 </template>
 <script>
 import BreedsList from "./components/BreedsList.vue";
-import TheSearch from "./components/TheSearch.vue";
 export default {
   components: {
     BreedsList,
-    TheSearch,
   },
   data() {
     return {

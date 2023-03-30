@@ -8,20 +8,33 @@
       ref="breedInput"
     />
     <button type="submit" @keydown.enter="getInputValue">Search</button>
-    <button><font-awesome-icon icon="fa-solid fa-x" size="xs" /></button>
+    <button @click="reloadData">
+      <font-awesome-icon icon="fa-solid fa-arrows-rotate" /> Reload
+    </button>
+    <p v-if="searchValidity === 'invalid'">Please enter a valid breed!</p>
   </form>
 </template>
 
 <script>
 export default {
   data() {
-    return {};
+    return {
+      searchValidity: "pending",
+    };
   },
   methods: {
     getInputValue() {
       const enteredBreed = this.$refs.breedInput.value;
-
-      this.$emit("search", enteredBreed);
+      if (enteredBreed.trim() === "") {
+        this.searchValidity = "invalid";
+        this.$refs.breedInput.value = "";
+      } else {
+        this.searchValidity = "valid";
+        this.$emit("search", enteredBreed);
+      }
+    },
+    reloadData() {
+      this.$emit("reload");
     },
   },
 };
