@@ -1,17 +1,30 @@
 <template>
   <section>
-    <search-form @search="getSearchResults" @reload="fetchData"></search-form>
+    <search-form @search="getSearchResults"></search-form>
+
     <div>
       <p v-if="isLoading">The Data is Loading ...</p>
       <p v-else-if="!isLoading && error">{{ error }}</p>
-      <p v-else-if="isTimeOut && breedsList.length === 0">
+      <p v-else-if="isTimeOut && !displayedBreeds.length">
         The request takes longer than expected...
       </p>
-      <p v-else-if="!isLoading && breedsList.length === 0">
+      <p v-else-if="!isLoading && !displayedBreeds.length">
         No Data Found. Please try again later.
       </p>
-      <ul>
-        <li v-for="(breed, index) in breedsList" :key="breed.id">
+
+      <ul v-else>
+        <p v-if="isTimeOut && !searchList.length && searchQuery !== ''">
+          The request takes longer than expected...
+        </p>
+        <li
+          v-else-if="
+            !isLoading && searchList.length === 0 && searchQuery !== ''
+          "
+        >
+          No Search Data Found. Try different keywords.
+        </li>
+
+        <li v-for="(breed, index) in displayedBreeds" :key="breed.id">
           <h3>{{ index + 1 }} {{ breed.name }}</h3>
 
           <span>Temperament: {{ breed.temperament }}</span>
@@ -40,9 +53,11 @@ export default {
   data() {
     return {
       breedsList: [],
+      searchList: [],
       isLoading: false,
       error: null,
       isTimeOut: false,
+      searchQuery: "",
     };
   },
   methods: {
@@ -58,9 +73,7 @@ export default {
         .then((results) => {
           this.isLoading = false;
           if (results.length > 0) {
-            console.log(results);
             this.breedsList = results;
-            this.$emit("reload", this.breedsList);
           } else {
             this.breedsList = [];
           }
@@ -78,15 +91,17 @@ export default {
           this.isLoading = false;
         }
       }, 3000);
-      searchBreed(input)
+
+      this.searchQuery = input;
+      searchBreed(this.searchQuery)
         .then((results) => {
           this.isLoading = false;
+
+          this.searchList = results;
           if (results.length > 0) {
-            console.log(results);
-            this.breedsList = results;
+            this.searchList = results;
           } else {
-            this.breedsList = [];
-            console.log(this.breedsList);
+            this.searchList = [];
           }
         })
         .catch((error) => {
@@ -95,6 +110,12 @@ export default {
         });
     },
   },
+  computed: {
+    displayedBreeds() {
+      return this.searchList.length > 0 ? this.searchList : this.breedsList;
+    },
+  },
+
   created() {
     this.fetchData();
   },

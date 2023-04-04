@@ -5,12 +5,12 @@
       name="breed"
       id="breed"
       placeholder="Type a dog breed..."
-      ref="breedInput"
+      v-model.trim="searchInput"
+      @keypress="validateInput"
+      ref="searchInput"
     />
-    <button type="submit" @keydown.enter="getInputValue">Search</button>
-    <button @click="reloadData">
-      <font-awesome-icon icon="fa-solid fa-arrows-rotate" /> Reload
-    </button>
+
+    <button type="submit" @keydown.enter.prevent="getInputValue">Search</button>
     <p v-if="searchValidity === 'invalid'">Please enter a valid breed!</p>
   </form>
 </template>
@@ -20,22 +20,28 @@ export default {
   data() {
     return {
       searchValidity: "pending",
+      searchInput: "",
     };
   },
   methods: {
     getInputValue() {
-      const enteredBreed = this.$refs.breedInput.value;
-      if (enteredBreed.trim() === "") {
-        this.searchValidity = "invalid";
-        this.$refs.breedInput.value = "";
+      if (this.searchValidity === "invalid") {
+        return;
       } else {
-        this.searchValidity = "valid";
-        this.$emit("search", enteredBreed);
+        this.$emit("search", this.searchInput);
+        this.searchInput = "";
       }
     },
-    reloadData() {
-      this.$emit("reload");
+    validateInput() {
+      if (this.searchInput === "") {
+        this.searchValidity = "invalid";
+      } else {
+        this.searchValidity = "valid";
+      }
     },
+  },
+  mounted() {
+    this.$refs.searchInput.focus();
   },
 };
 </script>
