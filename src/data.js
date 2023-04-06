@@ -6,7 +6,7 @@ export function fetchBreeds() {
           resolve(response.json());
         } else {
           reject(
-            new Error("Failed to fetch breeds: " + response.status + " ERROR")
+            new Error(response.status + " error" + " Failed to fetch breeds: ")
           );
         }
       })

@@ -21,7 +21,8 @@
             !isLoading && searchList.length === 0 && searchQuery !== ''
           "
         >
-          No Search Data Found. Try different keywords.
+          Your searches for "{{ this.searchQuery }}" did not have any matches.
+          Try different keywords.
         </li>
 
         <li v-for="(breed, index) in displayedBreeds" :key="breed.id">
@@ -50,6 +51,7 @@ export default {
   components: {
     SearchForm,
   },
+
   data() {
     return {
       breedsList: [],
