@@ -25,7 +25,7 @@ export default {
       this.debounce = setTimeout(() => {
         this.searchInput = event.target.value;
         this.$emit("search", this.searchInput);
-      }, 1000);
+      }, 250);
     },
   },
 
