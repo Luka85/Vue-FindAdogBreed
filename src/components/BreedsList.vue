@@ -1,39 +1,65 @@
 <template>
   <section>
-    <p v-if="isLoading">The Data is Loading ...</p>
-    <p v-else-if="!isLoading && error">{{ error }}</p>
-    <p v-else-if="isTimeOut && breedsList.length === 0">
-      The request takes longer than expected...
-    </p>
-    <p v-else-if="!isLoading && breedsList.length === 0">
-      No Data Found. Please try again later.
-    </p>
-    <div v-else>
-      <div v-for="breed in breedsList">
-        <h3>{{ breed.name }}</h3>
-        <span>{{ breed.breed_group }}</span>
-        <span>{{ breed.life_span }}</span>
-        <span>{{ breed.height.metric }}cm</span>
-        <span>{{ breed.weight.metric }}kg</span>
-        <img
-          class="breedsList_image"
-          :src="breed.image.url"
-          :alt="`Picture of the ${breed.name} dog`"
-        />
-      </div>
+    <search-form @search="getSearchResults"></search-form>
+
+    <div>
+      <p v-if="isLoading">The Data is Loading ...</p>
+      <p v-else-if="!isLoading && error">{{ error }}</p>
+      <p v-else-if="isTimeOut && !displayedBreeds.length">
+        The request takes longer than expected...
+      </p>
+      <p v-else-if="!isLoading && !displayedBreeds.length">
+        No Data Found. Please try again later.
+      </p>
+
+      <ul v-else>
+        <p v-if="isTimeOut && !searchList.length && searchQuery !== ''">
+          The request takes longer than expected...
+        </p>
+        <li
+          v-else-if="
+            !isLoading && searchList.length === 0 && searchQuery !== ''
+          "
+        >
+          Your searches for "{{ this.searchQuery }}" did not have any matches.
+          Try different keywords.
+        </li>
+
+        <li v-for="(breed, index) in displayedBreeds" :key="breed.id">
+          <h3>{{ index + 1 }} {{ breed.name }}</h3>
+
+          <span>Temperament: {{ breed.temperament }}</span>
+          <span>Life span: {{ breed.life_span }}</span>
+          <span>Height: {{ breed.height.metric }}cm</span>
+          <span>Weight: {{ breed.weight.metric }}kg</span>
+          <img
+            class="breed_image"
+            :src="`https://cdn2.thedogapi.com/images/${breed.reference_image_id}.jpg`"
+            :alt="`Picture of the ${breed.name} dog`"
+          />
+        </li>
+      </ul>
     </div>
   </section>
 </template>
 
 <script>
 import { fetchBreeds } from "../data.js";
+import SearchForm from "./SearchForm.vue";
+import { searchBreed } from "../data";
 export default {
+  components: {
+    SearchForm,
+  },
+
   data() {
     return {
       breedsList: [],
+      searchList: [],
       isLoading: false,
       error: null,
       isTimeOut: false,
+      searchQuery: "",
     };
   },
   methods: {
@@ -50,7 +76,6 @@ export default {
           this.isLoading = false;
           if (results.length > 0) {
             this.breedsList = results;
-            console.log(this.breedsList);
           } else {
             this.breedsList = [];
           }
@@ -60,16 +85,43 @@ export default {
           this.error = error.name + ": " + error.message;
         });
     },
+    getSearchResults(input) {
+      this.isLoading = true;
+      setTimeout(() => {
+        if (this.isLoading) {
+          this.isTimeOut = true;
+          this.isLoading = false;
+        }
+      }, 3000);
+
+      this.searchQuery = input;
+      searchBreed(this.searchQuery)
+        .then((results) => {
+          this.isLoading = false;
+
+          this.searchList = results;
+          if (results.length > 0) {
+            this.searchList = results;
+          } else {
+            this.searchList = [];
+          }
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          this.error = error.name + ": " + error.message;
+        });
+    },
   },
+  computed: {
+    displayedBreeds() {
+      return this.searchList.length > 0 ? this.searchList : this.breedsList;
+    },
+  },
+
   created() {
     this.fetchData();
   },
 };
 </script>
 
-<style scoped>
-.breedsList_image {
-  width: 20rem;
-  height: auto;
-}
-</style>
+<style scoped></style>
