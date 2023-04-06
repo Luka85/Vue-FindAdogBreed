@@ -1,17 +1,13 @@
 <template>
-  <form @submit.prevent="getInputValue">
+  <form @submit.prevent>
     <input
       type="text"
       name="breed"
       id="breed"
       placeholder="Type a dog breed..."
-      v-model.trim="searchInput"
-      @keypress="validateInput"
       ref="searchInput"
+      @input="debounceSearch"
     />
-
-    <button type="submit" @keydown.enter.prevent="getInputValue">Search</button>
-    <p v-if="searchValidity === 'invalid'">Please enter a valid breed!</p>
   </form>
 </template>
 
@@ -19,27 +15,20 @@
 export default {
   data() {
     return {
-      searchValidity: "pending",
       searchInput: "",
+      debounce: null,
     };
   },
   methods: {
-    getInputValue() {
-      if (this.searchValidity === "invalid") {
-        return;
-      } else {
+    debounceSearch(event) {
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(() => {
+        this.searchInput = event.target.value;
         this.$emit("search", this.searchInput);
-        this.searchInput = "";
-      }
-    },
-    validateInput() {
-      if (this.searchInput === "") {
-        this.searchValidity = "invalid";
-      } else {
-        this.searchValidity = "valid";
-      }
+      }, 1000);
     },
   },
+
   mounted() {
     this.$refs.searchInput.focus();
   },
