@@ -22,7 +22,6 @@ export function searchBreed(searchInput) {
     fetch(`https://api.thedogapi.com/v1/breeds/search?q=${searchInput}`)
       .then((response) => {
         if (response.ok) {
-          // console.log(response);
           resolve(response.json());
         } else {
           reject(new Error(response.status + " - Failed to fetch breeds "));
