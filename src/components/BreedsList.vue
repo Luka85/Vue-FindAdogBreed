@@ -13,14 +13,10 @@
       </p>
 
       <ul v-else>
-        <p v-if="isTimeOut && !searchList.length && searchQuery !== ''">
+        <li v-if="isTimeOut && searchQuery !== ''">
           The request takes longer than expected...
-        </p>
-        <li
-          v-else-if="
-            !isLoading && searchList.length === 0 && searchQuery !== ''
-          "
-        >
+        </li>
+        <li v-else-if="!isLoading && searchQuery !== ''">
           Your searches for "{{ this.searchQuery }}" did not have any matches.
           Try different keywords.
         </li>
@@ -73,6 +69,7 @@ export default {
       }, 3000);
       fetchBreeds()
         .then((results) => {
+          this.isTimeOut = false;
           this.isLoading = false;
           if (results.length > 0) {
             this.breedsList = results;
@@ -92,13 +89,13 @@ export default {
           this.isTimeOut = true;
           this.isLoading = false;
         }
-      }, 3000);
-
+      }, 1000);
       this.searchQuery = input;
+
       searchBreed(this.searchQuery)
         .then((results) => {
+          this.isTimeOut = false;
           this.isLoading = false;
-
           this.searchList = results;
           if (results.length > 0) {
             this.searchList = results;
