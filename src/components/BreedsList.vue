@@ -11,15 +11,12 @@
       <p v-else-if="isTimeOut && !displayedBreeds.length">
         The request takes longer than expected...
       </p>
-      <p v-else-if="!isLoading && !displayedBreeds.length">
+      <p v-else-if="!isLoading && !breedsList.length">
         No Data Found. Please try again later.
       </p>
 
       <ul v-else>
-        <li v-if="isTimeOut && searchQuery !== ''">
-          The request takes longer than expected...
-        </li>
-        <li v-else-if="!isLoading && searchQuery !== ''">
+        <li v-if="!isLoading && searchQuery !== '' && !searchList.length">
           Your searches for "{{ this.searchQuery }}" did not have any matches.
           Try different keywords.
         </li>
@@ -117,7 +114,14 @@ export default {
   },
   computed: {
     displayedBreeds() {
-      return this.searchList.length > 0 ? this.searchList : this.breedsList;
+      if (this.searchList.length > 0) {
+        return this.searchList;
+      } else if (this.searchList.length === 0 && this.searchQuery !== "") {
+        this.searchList = [];
+        return this.searchList;
+      } else {
+        return this.breedsList;
+      }
     },
   },
 
