@@ -7,12 +7,14 @@
       placeholder="Type a dog breed..."
       ref="searchInput"
       @input="debounceSearch"
+      :disabled="isDisabled"
     />
   </form>
 </template>
 
 <script>
 export default {
+  props: ["isDisabled"],
   data() {
     return {
       searchInput: "",

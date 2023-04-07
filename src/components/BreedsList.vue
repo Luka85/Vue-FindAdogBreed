@@ -1,6 +1,9 @@
 <template>
   <section>
-    <search-form @search="getSearchResults"></search-form>
+    <search-form
+      :isDisabled="isInputDisabled"
+      @search="getSearchResults"
+    ></search-form>
 
     <div>
       <p v-if="isLoading">The Data is Loading ...</p>
@@ -56,6 +59,7 @@ export default {
       error: null,
       isTimeOut: false,
       searchQuery: "",
+      isInputDisabled: false,
     };
   },
   methods: {
@@ -75,11 +79,13 @@ export default {
             this.breedsList = results;
           } else {
             this.breedsList = [];
+            this.isInputDisabled = true;
           }
         })
         .catch((error) => {
           this.isLoading = false;
           this.error = error.name + ": " + error.message;
+          this.isInputDisabled = true;
         });
     },
     getSearchResults(input) {
