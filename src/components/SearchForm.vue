@@ -14,7 +14,12 @@
 
 <script>
 export default {
-  props: ["isDisabled"],
+  props: {
+    isDisabled: {
+      type: Boolean,
+      required: true,
+    },
+  },
   data() {
     return {
       searchInput: "",
