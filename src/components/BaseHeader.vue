@@ -1,6 +1,6 @@
 <template>
   <header>
-    <h1>{{ title }}</h1>
+    <h1 class="heading-primary">{{ title }}</h1>
   </header>
 </template>
 
@@ -13,4 +13,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.heading-primary {
+  font-size: 5rem;
+  font-weight: 200;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+</style>
