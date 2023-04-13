@@ -46,25 +46,26 @@ export default {
 <style scoped>
 .search__form {
   color: var(--color-primary);
-  margin-bottom: 3rem;
+  margin-bottom: 5rem;
   padding: 0 8rem;
 }
 .search__input {
   font-family: inherit;
   font-size: 1.4rem;
   font-weight: 400;
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
   border: none;
-  border-bottom: 3px solid #41644ad3;
+  border-bottom: 3px solid transparent;
   width: 100%;
   padding: 1rem 1.3rem 0.8rem 1rem;
-  background-color: var(--background-color1);
+  /* background-color: var(--background-color1); */
+  background-color: #f2e3dbad;
   color: inherit;
 }
 
 .search__input:focus {
   outline: none;
-  border-bottom: 0.3rem solid #011018d0;
+  border-bottom: 0.3rem solid var(--color-primary);
 }
 
 ::placeholder {

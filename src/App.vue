@@ -24,7 +24,9 @@ export default {
   --color-primary: #011018;
   --color-secondary: #f2f4f3;
   --background-color1: #f2e3db;
-  --background-color2: #41644ad3;
+  --background-color2: #626472e8;
+  --background-color3: #b09b90;
+  --background-color4: #c0aa9e;
   --color-notification: #e86a33;
 }
 
@@ -51,11 +53,10 @@ body {
 
 .container {
   width: 70%;
-
   background-color: var(--background-color2);
   border-radius: 1rem;
-  /* padding: 3rem 5rem; */
   box-shadow: 0px 0px 30px 0px rgba(37, 89, 124, 0.671);
   margin: 5rem 0;
+  padding-bottom: 7rem;
 }
 </style>
