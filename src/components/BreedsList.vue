@@ -21,9 +21,10 @@
           Try different keywords.
         </li>
 
+        <!-- :class="isHidden ? 'hidden-result__details' : 'result__list'" -->
         <li
           v-for="(breed, index) in displayedBreeds"
-          :class="isHidden ? 'hidden-result__details' : 'result__list'"
+          :class="!isActive ? 'hidden-result__details' : 'result__list'"
           :key="breed.id"
           @click="toggleDetails(index)"
         >
@@ -31,7 +32,8 @@
             <span class="result__id">{{ index + 1 }}.</span>
             <h3 class="heading-tertiary">{{ breed.name }}</h3>
           </div>
-
+          <!-- <div class="result__details"> -->
+          <!-- :class="hiddenClass" -->
           <div class="result__details" :class="hiddenClass">
             <div class="result__description">
               <span class="result__temperament result__item--margin"
@@ -83,6 +85,7 @@ export default {
       isInputDisabled: false,
       isHidden: true,
       currentlyActive: null,
+      isActive: false,
     };
   },
   methods: {
@@ -100,6 +103,9 @@ export default {
           this.isLoading = false;
           if (results.length > 0) {
             this.breedsList = results;
+            for (let breed of this.breedsList) {
+              breed.isActive = this.isActive;
+            }
           } else {
             this.breedsList = [];
             this.isInputDisabled = true;
@@ -128,6 +134,11 @@ export default {
           this.searchList = results;
           if (results.length > 0) {
             this.searchList = results;
+            for (let breed of this.searchList) {
+              breed.isActive = this.isActive;
+              console.log(breed);
+              console.log(this.isActive);
+            }
           } else {
             this.searchList = [];
           }
@@ -137,10 +148,15 @@ export default {
           this.error = error.name + ": " + error.message;
         });
     },
-    toggleDetails(index) {
-      this.isHidden = !this.isHidden;
+    toggleDetails(breedId) {
+      this.currentlyActive = breedId;
 
-      this.currentlyActive = index;
+      // this.isHidden = !this.isHidden;
+      // console.log(breedId);
+      this.isActive = !this.isActive;
+      this.displayedBreeds[this.currentlyActive].isActive = !this.isActive;
+      console.log(this.isActive);
+      console.log(this.displayedBreeds[this.currentlyActive].isActive);
     },
   },
   computed: {
@@ -156,7 +172,7 @@ export default {
     },
 
     hiddenClass() {
-      return { hidden: this.isHidden };
+      return { hidden: !this.isActive };
     },
   },
 
@@ -188,6 +204,20 @@ ul {
   transform: scale(1.01);
   box-shadow: 5px 5px 4px 0px #6264728f;
 }
+.hidden-result__details {
+  transition: all 0.3s;
+  padding: 1rem 1rem;
+}
+.hidden-result__details:nth-child(odd) {
+  background-color: var(--background-color3);
+}
+.hidden-result__details:nth-child(even) {
+  background-color: var(--background-color4);
+}
+.hidden-result__details:hover {
+  transform: scale(1.01);
+  box-shadow: 5px 5px 4px 0px #6264728f;
+}
 .result__heading-container {
   display: flex;
   align-items: center;
@@ -209,7 +239,6 @@ ul {
 
 .result__details {
   margin-top: 1.4rem;
-
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -244,21 +273,6 @@ ul {
 
 .hidden {
   display: none;
-}
-
-.hidden-result__details {
-  transition: all 0.3s;
-  padding: 1rem 1rem;
-}
-.hidden-result__details:nth-child(odd) {
-  background-color: var(--background-color3);
-}
-.hidden-result__details:nth-child(even) {
-  background-color: var(--background-color4);
-}
-.hidden-result__details:hover {
-  transform: scale(1.01);
-  box-shadow: 5px 5px 4px 0px #6264728f;
 }
 
 p {
