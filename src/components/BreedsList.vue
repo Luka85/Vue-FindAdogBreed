@@ -7,7 +7,7 @@
 
     <div class="result__container">
       <p v-if="isLoading">The Data is Loading ...</p>
-      <p v-else-if="!isLoading && error">{{ error }}</p>
+      <p v-else-if="!isLoading && error" class="result__error">{{ error }}</p>
       <p v-else-if="isTimeOut && !displayedBreeds.length">
         The request takes longer than expected...
       </p>
@@ -23,15 +23,16 @@
 
         <li
           v-for="(breed, index) in displayedBreeds"
-          class="result__list"
+          :class="isHidden ? 'hidden-result__details' : 'result__list'"
           :key="breed.id"
+          @click="toggleDetails(index)"
         >
           <div class="result__heading-container">
             <span class="result__id">{{ index + 1 }}.</span>
             <h3 class="heading-tertiary">{{ breed.name }}</h3>
           </div>
 
-          <div class="result__details">
+          <div class="result__details" :class="hiddenClass">
             <div class="result__description">
               <span class="result__temperament result__item--margin"
                 ><span class="result__description--title">Temperament: </span>
@@ -80,6 +81,8 @@ export default {
       isTimeOut: false,
       searchQuery: "",
       isInputDisabled: false,
+      isHidden: true,
+      currentlyActive: null,
     };
   },
   methods: {
@@ -134,6 +137,11 @@ export default {
           this.error = error.name + ": " + error.message;
         });
     },
+    toggleDetails(index) {
+      this.isHidden = !this.isHidden;
+
+      this.currentlyActive = index;
+    },
   },
   computed: {
     displayedBreeds() {
@@ -145,6 +153,10 @@ export default {
       } else {
         return this.breedsList;
       }
+    },
+
+    hiddenClass() {
+      return { hidden: this.isHidden };
     },
   },
 
@@ -164,37 +176,40 @@ ul {
   padding: 3rem 8rem;
   display: flex;
   flex-direction: column;
+  transition: all 0.3s;
+}
+.result__list:nth-child(odd) {
+  background-color: var(--background-color3);
+}
+.result__list:nth-child(even) {
+  background-color: var(--background-color4);
 }
 .result__list:hover {
-  /* transform: scale(1.05);
-  transition: 0.3s all; */
+  transform: scale(1.01);
+  box-shadow: 5px 5px 4px 0px #6264728f;
 }
 .result__heading-container {
   display: flex;
   align-items: center;
-  margin-bottom: 1.5rem;
-  border-left: 4px solid transparent;
-
-  border-bottom: 1px solid transparent;
+  background-color: #f2e3db60;
+  border-radius: 1rem 0.2rem 0.2rem 0;
 }
 
 .result__heading-container:hover {
   cursor: pointer;
-  border-left: 4px solid #f2f4f3;
-  border-bottom: 1px solid #f2f4f3;
 }
 .result__id {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 500;
-  background-color: #011018;
+  background-color: var(--color-primary);
   padding: 1rem 2rem;
   color: var(--color-secondary);
+  border-radius: 1rem 0 1rem 0;
 }
 
-.result__list:nth-child(odd) {
-  background-color: #f2e3db41;
-}
 .result__details {
+  margin-top: 1.4rem;
+
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -207,12 +222,11 @@ ul {
   margin-right: 2rem;
 }
 .heading-tertiary {
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   font-weight: 500;
   padding: 1rem 2rem;
   margin: 0;
   width: 100%;
-  background-color: #f2e3db3b;
 }
 
 .result__description--title {
@@ -225,10 +239,29 @@ ul {
 .result__breed-image {
   height: 20rem;
   border-radius: 0.5rem;
-  border: 0.3rem solid #0110188a;
+  border: 0.3rem solid var(--color-primary);
 }
 
 .hidden {
   display: none;
+}
+
+.hidden-result__details {
+  transition: all 0.3s;
+  padding: 1rem 1rem;
+}
+.hidden-result__details:nth-child(odd) {
+  background-color: var(--background-color3);
+}
+.hidden-result__details:nth-child(even) {
+  background-color: var(--background-color4);
+}
+.hidden-result__details:hover {
+  transform: scale(1.01);
+  box-shadow: 5px 5px 4px 0px #6264728f;
+}
+
+p {
+  font-size: 1.4rem;
 }
 </style>
