@@ -44,8 +44,8 @@ body {
   margin: 0;
   background: url(./assets/images/dog_pattern.svg), var(--background-color1);
   color: var(--color-primary);
-  background-size: contain;
-
+  /* background-size: 100%; */
+  background-attachment: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -57,6 +57,6 @@ body {
   border-radius: 1rem;
   box-shadow: 0px 0px 30px 0px rgba(37, 89, 124, 0.671);
   margin: 5rem 0;
-  padding-bottom: 7rem;
+  padding-bottom: 4rem;
 }
 </style>
