@@ -5,7 +5,7 @@
     :class="!isActive ? 'hidden-result__details' : 'result__list'"
   >
     <div class="result__heading-container">
-      <span class="result__id">{{ breed.id }}.</span>
+      <span class="result__id">{{ id + 1 }}.</span>
       <h3 class="heading-tertiary">{{ breed.name }}</h3>
     </div>
 
@@ -39,7 +39,7 @@
 
 <script>
 export default {
-  props: ["breed"],
+  props: ["breed", "id"],
   data() {
     return {
       isActive: false,
