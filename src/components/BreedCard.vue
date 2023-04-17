@@ -5,33 +5,33 @@
     :class="!isActive ? 'hidden-result__details' : 'result__list'"
   >
     <div class="result__heading-container">
-      <span class="result__id">{{ index + 1 }}.</span>
-      <h3 class="heading-tertiary">{{ name }}</h3>
+      <span class="result__id">{{ breed.id }}.</span>
+      <h3 class="heading-tertiary">{{ breed.name }}</h3>
     </div>
 
     <div class="result__details" :class="hiddenClass">
       <div class="result__description">
         <span class="result__temperament result__item--margin"
           ><span class="result__description--title">Temperament: </span>
-          {{ temperament }}</span
+          {{ breed.temperament }}</span
         >
         <span class="result__life result__item--margin"
           ><span class="result__description--title">Life span: </span>
-          {{ lifeSpan }}</span
+          {{ breed.lifeSpan }}</span
         >
         <span class="result__height result__item--margin"
           ><span class="result__description--title">Height: </span>
-          {{ height }}cm</span
+          {{ breed.height.metric }}cm</span
         >
         <span class="result__weight result__item--margin"
           ><span class="result__description--title">Weight: </span>
-          {{ weight }}kg</span
+          {{ breed.weight.metric }}kg</span
         >
       </div>
       <img
         class="result__breed-image"
-        :src="`https://cdn2.thedogapi.com/images/${imageId}.jpg`"
-        :alt="`Picture of the ${name} dog`"
+        :src="`https://cdn2.thedogapi.com/images/${breed.reference_image_id}.jpg`"
+        :alt="`Picture of the ${breed.name} dog`"
       />
     </div>
   </li>
@@ -39,15 +39,7 @@
 
 <script>
 export default {
-  props: [
-    "index",
-    "name",
-    "temperament",
-    "lifeSpan",
-    "height",
-    "weight",
-    "imageId",
-  ],
+  props: ["breed"],
   data() {
     return {
       isActive: false,

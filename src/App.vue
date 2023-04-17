@@ -1,5 +1,5 @@
 <template>
-  <main class="container">
+  <main class="container" ref="containerMain">
     <base-header :title="title"></base-header>
     <breeds-list></breeds-list>
   </main>
@@ -44,7 +44,6 @@ body {
   margin: 0;
   background: url(./assets/images/dog_pattern.svg), var(--background-color1);
   color: var(--color-primary);
-  /* background-size: 100%; */
   background-attachment: fixed;
   display: flex;
   justify-content: center;

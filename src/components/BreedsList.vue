@@ -15,7 +15,12 @@
         No Data Found. Please try again later.
       </p>
 
-      <ul v-else>
+      <ul
+        v-else
+        class="result__list-container"
+        ref="resultListContainer"
+        @scroll="showNavigationBtn"
+      >
         <li v-if="!isLoading && searchQuery !== '' && !searchList.length">
           Your searches for "{{ this.searchQuery }}" did not have any matches.
           Try different keywords.
@@ -23,8 +28,9 @@
 
         <breed-card
           v-for="(breed, index) in displayedBreeds"
+          :breed="breed"
           :key="breed.id"
-          :index="index"
+          :id="index"
           :name="breed.name"
           :temperament="breed.temperament"
           :lifeSpan="breed.life_span"
@@ -34,18 +40,23 @@
         ></breed-card>
       </ul>
     </div>
+    <navigation-button
+      @clickToScroll="scrollToTop"
+      :class="{ hidden: isHidden ? 'hidden' : '' }"
+    ></navigation-button>
   </section>
 </template>
-
 <script>
 import { fetchBreeds } from "../data.js";
 import SearchForm from "./SearchForm.vue";
 import { searchBreed } from "../data";
 import BreedCard from "./BreedCard.vue";
+import NavigationButton from "./NavigationButton.vue";
 export default {
   components: {
     SearchForm,
     BreedCard,
+    NavigationButton,
   },
 
   data() {
@@ -57,6 +68,7 @@ export default {
       isTimeOut: false,
       searchQuery: "",
       isInputDisabled: false,
+      isHidden: true,
     };
   },
   methods: {
@@ -111,6 +123,18 @@ export default {
           this.error = error.name + ": " + error.message;
         });
     },
+    showNavigationBtn() {
+      const resultListContainer = this.$refs.resultListContainer;
+
+      if (resultListContainer.scrollTop > 450) {
+        this.isHidden = false;
+      } else {
+        this.isHidden = true;
+      }
+    },
+    scrollToTop() {
+      this.$refs.resultListContainer.scrollTo({ top: 0, behavior: "smooth" });
+    },
   },
   computed: {
     displayedBreeds() {
@@ -132,12 +156,21 @@ export default {
 </script>
 
 <style scoped>
-ul {
+.result__list-container {
   list-style-type: none;
   padding: 0;
+  max-height: 120vh;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 p {
   font-size: 1.4rem;
+}
+.hidden {
+  display: none;
+}
+ul::-webkit-scrollbar {
+  display: none;
 }
 </style>
