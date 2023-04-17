@@ -31,12 +31,6 @@
           :breed="breed"
           :key="breed.id"
           :id="index"
-          :name="breed.name"
-          :temperament="breed.temperament"
-          :lifeSpan="breed.life_span"
-          :weight="breed.weight.metric"
-          :height="breed.height.metric"
-          :imageId="breed.reference_image_id"
         ></breed-card>
       </ul>
     </div>
