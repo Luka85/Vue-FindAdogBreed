@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent>
+  <form @submit.prevent class="search__form">
     <input
       type="text"
       name="breed"
@@ -7,12 +7,20 @@
       placeholder="Type a dog breed..."
       ref="searchInput"
       @input="debounceSearch"
+      :disabled="isDisabled"
+      class="search__input"
     />
   </form>
 </template>
 
 <script>
 export default {
+  props: {
+    isDisabled: {
+      type: Boolean,
+      required: true,
+    },
+  },
   data() {
     return {
       searchInput: "",
@@ -35,4 +43,34 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.search__form {
+  color: var(--color-primary);
+  margin-bottom: 5rem;
+  padding: 0 8rem;
+}
+.search__input {
+  font-family: inherit;
+  font-size: 1.4rem;
+  font-weight: 400;
+  border-radius: 0.2rem;
+  border: none;
+  border-bottom: 3px solid transparent;
+  width: 100%;
+  padding: 1rem 1.3rem 0.8rem 1rem;
+  /* background-color: var(--background-color1); */
+  background-color: #f2e3dbad;
+  color: inherit;
+}
+
+.search__input:focus {
+  outline: none;
+  border-bottom: 0.3rem solid var(--color-primary);
+}
+
+::placeholder {
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: inherit;
+}
+</style>
