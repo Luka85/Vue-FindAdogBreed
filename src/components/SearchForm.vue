@@ -9,6 +9,7 @@
       @input="debounceSearch"
       :disabled="isDisabled"
       class="search__input"
+      :class="noMatches"
     />
   </form>
 </template>
@@ -19,6 +20,11 @@ export default {
     isDisabled: {
       type: Boolean,
       required: true,
+    },
+    noMatches: {
+      type: String,
+      default: "",
+      required: false,
     },
   },
   data() {
@@ -72,5 +78,14 @@ export default {
   font-size: 1.3rem;
   font-weight: 400;
   color: inherit;
+}
+input:disabled {
+  background: #626472;
+}
+.input__no-matches {
+  border: 2px solid var(--color-primary);
+}
+.input__no-matches:focus {
+  border: 2px solid var(--color-primary);
 }
 </style>
