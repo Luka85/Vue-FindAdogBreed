@@ -1,31 +1,21 @@
 <template>
   <section>
     <search-form
+      :noMatches="errorState.class"
       :isDisabled="isInputDisabled"
       @search="getSearchResults"
     ></search-form>
 
     <div class="result__container">
-      <p v-if="isLoading">The Data is Loading ...</p>
-      <p v-else-if="!isLoading && error" class="result__error">{{ error }}</p>
-      <p v-else-if="isTimeOut && !displayedBreeds.length">
-        The request takes longer than expected...
+      <p v-if="errorState" class="result__message">
+        {{ errorState.message }}
       </p>
-      <p v-else-if="!isLoading && !breedsList.length">
-        No Data Found. Please try again later.
-      </p>
-
       <ul
         v-else
         class="result__list-container"
         ref="resultListContainer"
         @scroll="showNavigationBtn"
       >
-        <li v-if="!isLoading && searchQuery !== '' && !searchList.length">
-          Your searches for "{{ this.searchQuery }}" did not have any matches.
-          Try different keywords.
-        </li>
-
         <breed-card
           v-for="(breed, index) in displayedBreeds"
           :breed="breed"
@@ -63,6 +53,7 @@ export default {
       searchQuery: "",
       isInputDisabled: false,
       isHidden: true,
+      inputIsInvalid: false,
     };
   },
   methods: {
@@ -74,6 +65,7 @@ export default {
           this.isLoading = false;
         }
       }, 3000);
+
       fetchBreeds()
         .then((results) => {
           this.isTimeOut = false;
@@ -93,6 +85,7 @@ export default {
     },
     getSearchResults(input) {
       this.isLoading = true;
+
       setTimeout(() => {
         if (this.isLoading) {
           this.isTimeOut = true;
@@ -133,12 +126,45 @@ export default {
   computed: {
     displayedBreeds() {
       if (this.searchList.length > 0) {
+        this.inputIsInvalid = false;
         return this.searchList;
       } else if (this.searchList.length === 0 && this.searchQuery !== "") {
         this.searchList = [];
+        this.inputIsInvalid = true;
         return this.searchList;
       } else {
         return this.breedsList;
+      }
+    },
+    errorState() {
+      if (this.isLoading) {
+        return {
+          message: "The Data is Loading ...",
+        };
+      } else if (!this.isLoading && this.error) {
+        return {
+          message: this.error,
+        };
+      } else if (this.isTimeOut && !this.displayedBreeds.length) {
+        return {
+          message: "The request takes longer than expected...",
+        };
+      } else if (!this.isLoading && !this.breedsList.length) {
+        return {
+          message: "No Data Found. Please try again later.",
+        };
+      } else if (
+        !this.isLoading &&
+        this.searchQuery !== "" &&
+        !this.searchList.length
+      ) {
+        return {
+          message: ` Your searches for "${this.searchQuery}" did not have any matches.
+          Try different keywords.`,
+          class: "input__no-matches",
+        };
+      } else {
+        return false;
       }
     },
   },
@@ -166,5 +192,14 @@ p {
 }
 ul::-webkit-scrollbar {
   display: none;
+}
+
+.result__message {
+  font-weight: 500;
+  margin: 0 8rem;
+  padding: 1rem 0rem;
+  text-align: center;
+  background-color: #f2e3dbad;
+  color: var(--color-primary);
 }
 </style>

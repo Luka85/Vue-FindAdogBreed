@@ -39,7 +39,16 @@
 
 <script>
 export default {
-  props: ["breed", "id"],
+  props: {
+    breed: {
+      type: Object,
+      required: true,
+    },
+    id: {
+      type: Number,
+      required: true,
+    },
+  },
   data() {
     return {
       isActive: false,
