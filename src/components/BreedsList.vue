@@ -1,14 +1,15 @@
 <template>
   <section>
+    <!-- :noMatches="errorState.class" -->
     <search-form
-      :noMatches="errorState.class"
       :isDisabled="isInputDisabled"
       @search="getSearchResults"
     ></search-form>
 
     <div class="result__container">
-      <p v-if="errorState" class="result__message">
-        {{ errorState.message }}
+      <p class="result__message" v-if="loadingState">{{ loadingState }}</p>
+      <p class="result__message" v-else-if="receivedDataState">
+        {{ receivedDataState }}
       </p>
       <ul
         v-else
@@ -49,30 +50,25 @@ export default {
       searchList: [],
       isLoading: false,
       error: null,
-      isTimeOut: false,
       searchQuery: "",
       isInputDisabled: false,
       isHidden: true,
-      inputIsInvalid: false,
+      message: "",
     };
   },
   methods: {
     fetchData() {
       this.isLoading = true;
-      setTimeout(() => {
-        if (this.isLoading) {
-          this.isTimeOut = true;
-          this.isLoading = false;
-        }
-      }, 3000);
+      this.message = "Data is loading...";
 
       fetchBreeds()
         .then((results) => {
-          this.isTimeOut = false;
           this.isLoading = false;
           if (results.length > 0) {
             this.breedsList = results;
+            this.message = "";
           } else {
+            this.message = "No Data Found. Please try again later.";
             this.breedsList = [];
             this.isInputDisabled = true;
           }
@@ -84,25 +80,26 @@ export default {
         });
     },
     getSearchResults(input) {
-      this.isLoading = true;
-
-      setTimeout(() => {
-        if (this.isLoading) {
-          this.isTimeOut = true;
-          this.isLoading = false;
-        }
-      }, 1000);
       this.searchQuery = input;
+      this.isLoading = true;
+      if (this.searchQuery.length === 0) {
+        this.isLoading = false;
+      }
 
       searchBreed(this.searchQuery)
         .then((results) => {
-          this.isTimeOut = false;
           this.isLoading = false;
           this.searchList = results;
           if (results.length > 0) {
+            this.message = "";
             this.searchList = results;
           } else {
             this.searchList = [];
+            if (this.searchQuery) {
+              this.message = `Your searches for "${this.searchQuery}" did not have any matches. Try different keywords.`;
+            } else {
+              this.message = "No Data Found. Please try again later.";
+            }
           }
         })
         .catch((error) => {
@@ -125,46 +122,24 @@ export default {
   },
   computed: {
     displayedBreeds() {
-      if (this.searchList.length > 0) {
-        this.inputIsInvalid = false;
-        return this.searchList;
-      } else if (this.searchList.length === 0 && this.searchQuery !== "") {
-        this.searchList = [];
-        this.inputIsInvalid = true;
+      if (this.searchQuery) {
         return this.searchList;
       } else {
         return this.breedsList;
       }
     },
-    errorState() {
+
+    loadingState() {
       if (this.isLoading) {
-        return {
-          message: "The Data is Loading ...",
-        };
+        return this.message;
       } else if (!this.isLoading && this.error) {
-        return {
-          message: this.error,
-        };
-      } else if (this.isTimeOut && !this.displayedBreeds.length) {
-        return {
-          message: "The request takes longer than expected...",
-        };
-      } else if (!this.isLoading && !this.breedsList.length) {
-        return {
-          message: "No Data Found. Please try again later.",
-        };
-      } else if (
-        !this.isLoading &&
-        this.searchQuery !== "" &&
-        !this.searchList.length
-      ) {
-        return {
-          message: ` Your searches for "${this.searchQuery}" did not have any matches.
-          Try different keywords.`,
-          class: "input__no-matches",
-        };
-      } else {
-        return false;
+        console.log(this.error);
+        return this.error;
+      }
+    },
+    receivedDataState() {
+      if (!this.displayedBreeds.length) {
+        return this.message;
       }
     },
   },
