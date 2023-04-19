@@ -9,7 +9,6 @@
       @input="debounceSearch"
       :disabled="isDisabled"
       class="search__input"
-      :class="noMatches"
     />
   </form>
 </template>
@@ -20,11 +19,6 @@ export default {
     isDisabled: {
       type: Boolean,
       required: true,
-    },
-    noMatches: {
-      type: String,
-      default: "",
-      required: false,
     },
   },
   data() {
@@ -38,7 +32,7 @@ export default {
       clearTimeout(this.debounce);
       this.debounce = setTimeout(() => {
         this.searchInput = event.target.value;
-        this.$emit("search", this.searchInput);
+        this.$emit("search", this.searchInput.trim());
       }, 250);
     },
   },
