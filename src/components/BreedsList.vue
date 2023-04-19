@@ -1,6 +1,5 @@
 <template>
   <section>
-    <!-- :noMatches="errorState.class" -->
     <search-form
       :isDisabled="isInputDisabled"
       @search="getSearchResults"
