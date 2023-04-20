@@ -80,8 +80,10 @@ export default {
         });
     },
     getSearchResults(input) {
-      this.searchQuery = input;
       this.isLoading = true;
+      this.message = "Data is loading...";
+      this.searchQuery = input;
+
       if (this.searchQuery.length === 0) {
         this.isLoading = false;
       }
@@ -91,10 +93,11 @@ export default {
           this.isLoading = false;
           this.searchList = results;
           if (results.length > 0) {
-            this.message = "";
             this.searchList = results;
+            this.message = "";
           } else {
             this.searchList = [];
+
             if (this.searchQuery) {
               this.message = `Your searches for "${this.searchQuery}" did not have any matches. Try different keywords.`;
             } else {
@@ -133,7 +136,6 @@ export default {
       if (this.isLoading) {
         return this.message;
       } else if (!this.isLoading && this.error) {
-        console.log(this.error);
         return this.error;
       }
     },
