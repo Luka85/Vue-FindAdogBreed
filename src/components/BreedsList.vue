@@ -17,6 +17,7 @@
         @scroll="showNavigationBtn"
       >
         <breed-card
+          @toggle="toggle"
           v-for="(breed, index) in displayedBreeds"
           :breed="breed"
           :key="breed.id"
@@ -65,6 +66,9 @@ export default {
           this.isLoading = false;
           if (results.length > 0) {
             this.breedsList = results;
+            for (let breed of this.breedsList) {
+              breed.isActive = false;
+            }
             this.message = "";
           } else {
             this.message = "No Data Found. Please try again later.";
@@ -79,8 +83,10 @@ export default {
         });
     },
     getSearchResults(input) {
-      this.searchQuery = input;
       this.isLoading = true;
+      this.message = "Data is loading...";
+      this.searchQuery = input;
+
       if (this.searchQuery.length === 0) {
         this.isLoading = false;
       }
@@ -90,6 +96,9 @@ export default {
           this.isLoading = false;
           this.searchList = results;
           if (results.length > 0) {
+            for (let breed of this.searchList) {
+              breed.isActive = false;
+            }
             this.message = "";
             this.searchList = results;
           } else {
@@ -106,6 +115,7 @@ export default {
           this.error = error.name + ": " + error.message;
         });
     },
+
     showNavigationBtn() {
       const resultListContainer = this.$refs.resultListContainer;
 
@@ -117,6 +127,27 @@ export default {
     },
     scrollToTop() {
       this.$refs.resultListContainer.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    toggle(id) {
+      for (let i = 0; i < this.displayedBreeds.length; i++) {
+        if (i === id) {
+          this.displayedBreeds[i].isActive = !this.displayedBreeds[i].isActive;
+          console.log(
+            i,
+            id,
+            this.displayedBreeds[i],
+            this.displayedBreeds[i].isActive
+          );
+        } else {
+          // console.log(
+          //   i,
+          //   id,
+          //   this.displayedBreeds[i],
+          //   this.displayedBreeds[i].isActive
+          // );
+          this.displayedBreeds[i].isActive = false;
+        }
+      }
     },
   },
   computed: {
