@@ -50,7 +50,7 @@ export default {
 
   methods: {
     toggleDetails() {
-      this.$emit("toggle", this.id);
+      this.$emit("toggle", this.breed);
     },
   },
 
