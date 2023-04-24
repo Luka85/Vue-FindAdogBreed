@@ -17,12 +17,14 @@
         @scroll="showNavigationBtn"
       >
         <breed-card
-          @toggle="toggle"
+          @toggle="toggleCard"
           v-for="(breed, index) in displayedBreeds"
           :breed="breed"
           :key="breed.id"
           :id="index"
         ></breed-card>
+        <!-- :active="isActive" -->
+        <!-- :active="displayedBreeds[index].isActive" -->
       </ul>
     </div>
     <navigation-button
@@ -65,10 +67,11 @@ export default {
         .then((results) => {
           this.isLoading = false;
           if (results.length > 0) {
-            this.breedsList = results;
-            for (let breed of this.breedsList) {
+            results.map((breed) => {
               breed.isActive = false;
-            }
+            });
+            this.breedsList = results;
+
             this.message = "";
           } else {
             this.message = "No Data Found. Please try again later.";
@@ -94,11 +97,12 @@ export default {
       searchBreed(this.searchQuery)
         .then((results) => {
           this.isLoading = false;
-          this.searchList = results;
           if (results.length > 0) {
-            for (let breed of this.searchList) {
+            results.map((breed) => {
               breed.isActive = false;
-            }
+            });
+            this.searchList = results;
+
             this.message = "";
             this.searchList = results;
           } else {
@@ -128,23 +132,11 @@ export default {
     scrollToTop() {
       this.$refs.resultListContainer.scrollTo({ top: 0, behavior: "smooth" });
     },
-    toggle(id) {
+    toggleCard(id) {
       for (let i = 0; i < this.displayedBreeds.length; i++) {
         if (i === id) {
           this.displayedBreeds[i].isActive = !this.displayedBreeds[i].isActive;
-          console.log(
-            i,
-            id,
-            this.displayedBreeds[i],
-            this.displayedBreeds[i].isActive
-          );
         } else {
-          // console.log(
-          //   i,
-          //   id,
-          //   this.displayedBreeds[i],
-          //   this.displayedBreeds[i].isActive
-          // );
           this.displayedBreeds[i].isActive = false;
         }
       }
