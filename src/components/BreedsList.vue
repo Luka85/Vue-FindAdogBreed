@@ -23,8 +23,6 @@
           :key="breed.id"
           :id="index"
         ></breed-card>
-        <!-- :active="isActive" -->
-        <!-- :active="displayedBreeds[index].isActive" -->
       </ul>
     </div>
     <navigation-button
@@ -36,6 +34,7 @@
 <script>
 import { fetchBreeds } from "../data.js";
 import SearchForm from "./SearchForm.vue";
+
 import { searchBreed } from "../data";
 import BreedCard from "./BreedCard.vue";
 import NavigationButton from "./NavigationButton.vue";
@@ -67,10 +66,10 @@ export default {
         .then((results) => {
           this.isLoading = false;
           if (results.length > 0) {
-            results.map((breed) => {
+            this.breedsList = results.map((breed) => {
               breed.isActive = false;
+              return breed;
             });
-            this.breedsList = results;
 
             this.message = "";
           } else {
@@ -98,10 +97,10 @@ export default {
         .then((results) => {
           this.isLoading = false;
           if (results.length > 0) {
-            results.map((breed) => {
+            this.searchList = results.map((breed) => {
               breed.isActive = false;
+              return breed;
             });
-            this.searchList = results;
 
             this.message = "";
             this.searchList = results;
@@ -132,14 +131,11 @@ export default {
     scrollToTop() {
       this.$refs.resultListContainer.scrollTo({ top: 0, behavior: "smooth" });
     },
-    toggleCard(id) {
-      for (let i = 0; i < this.displayedBreeds.length; i++) {
-        if (i === id) {
-          this.displayedBreeds[i].isActive = !this.displayedBreeds[i].isActive;
-        } else {
-          this.displayedBreeds[i].isActive = false;
-        }
-      }
+    toggleCard(breed) {
+      breed.isActive = !breed.isActive;
+      this.displayedBreeds.forEach((item) => {
+        if (item.id !== breed.id) item.isActive = false;
+      });
     },
   },
   computed: {
