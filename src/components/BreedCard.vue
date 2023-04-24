@@ -7,8 +7,7 @@
       <span class="result__id">{{ id + 1 }}.</span>
       <h3 class="heading-tertiary">{{ breed.name }}</h3>
     </div>
-
-    <div :class="!breed.isActive ? 'hidden ' : 'result__details'">
+    <div :class="hiddenClass">
       <div class="result__description">
         <span class="result__temperament result__item--margin"
           ><span class="result__description--title">Temperament: </span>
@@ -52,6 +51,12 @@ export default {
   methods: {
     toggleDetails() {
       this.$emit("toggle", this.id);
+    },
+  },
+
+  computed: {
+    hiddenClass() {
+      return !this.breed.isActive ? "hidden" : "result__details";
     },
   },
 };
