@@ -103,7 +103,6 @@ export default {
             });
 
             this.message = "";
-            this.searchList = results;
           } else {
             this.searchList = [];
             if (this.searchQuery) {
