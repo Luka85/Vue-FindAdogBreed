@@ -32,7 +32,7 @@ export default {
       clearTimeout(this.debounce);
       this.debounce = setTimeout(() => {
         this.searchInput = event.target.value;
-        this.$emit("search", this.searchInput);
+        this.$emit("search", this.searchInput.trim());
       }, 250);
     },
   },
@@ -72,5 +72,14 @@ export default {
   font-size: 1.3rem;
   font-weight: 400;
   color: inherit;
+}
+input:disabled {
+  background: #626472;
+}
+.input__no-matches {
+  border: 2px solid var(--color-primary);
+}
+.input__no-matches:focus {
+  border: 2px solid var(--color-primary);
 }
 </style>
