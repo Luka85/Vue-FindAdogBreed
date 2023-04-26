@@ -1,6 +1,5 @@
 <template>
   <section>
-    <!-- :noMatches="errorState.class" -->
     <search-form
       :isDisabled="isInputDisabled"
       @search="getSearchResults"
@@ -18,6 +17,7 @@
         @scroll="showNavigationBtn"
       >
         <breed-card
+          @toggle="toggleCard"
           v-for="(breed, index) in displayedBreeds"
           :breed="breed"
           :key="breed.id"
@@ -34,6 +34,7 @@
 <script>
 import { fetchBreeds } from "../data.js";
 import SearchForm from "./SearchForm.vue";
+
 import { searchBreed } from "../data";
 import BreedCard from "./BreedCard.vue";
 import NavigationButton from "./NavigationButton.vue";
@@ -65,7 +66,11 @@ export default {
         .then((results) => {
           this.isLoading = false;
           if (results.length > 0) {
-            this.breedsList = results;
+            this.breedsList = results.map((breed) => {
+              breed.isActive = false;
+              return breed;
+            });
+
             this.message = "";
           } else {
             this.message = "No Data Found. Please try again later.";
@@ -91,9 +96,13 @@ export default {
       searchBreed(this.searchQuery)
         .then((results) => {
           this.isLoading = false;
-          this.searchList = results;
           if (results.length > 0) {
-            this.searchList = results;
+
+            this.searchList = results.map((breed) => {
+              breed.isActive = false;
+              return breed;
+            });
+
             this.message = "";
           } else {
             this.searchList = [];
@@ -110,6 +119,7 @@ export default {
           this.error = error.name + ": " + error.message;
         });
     },
+
     showNavigationBtn() {
       const resultListContainer = this.$refs.resultListContainer;
 
@@ -121,6 +131,12 @@ export default {
     },
     scrollToTop() {
       this.$refs.resultListContainer.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    toggleCard(breed) {
+      breed.isActive = !breed.isActive;
+      this.displayedBreeds.forEach((item) => {
+        if (item.id !== breed.id) item.isActive = false;
+      });
     },
   },
   computed: {

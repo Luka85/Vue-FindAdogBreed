@@ -1,15 +1,13 @@
 <template>
   <li
-    class="result__list"
-    @click="toggleDetails()"
-    :class="!isActive ? 'hidden-result__details' : 'result__list'"
+    @click="toggleDetails"
+    :class="!breed.isActive ? 'hidden-result__details' : 'result__list'"
   >
     <div class="result__heading-container">
       <span class="result__id">{{ id + 1 }}.</span>
       <h3 class="heading-tertiary">{{ breed.name }}</h3>
     </div>
-
-    <div class="result__details" :class="hiddenClass">
+    <div :class="hiddenClass">
       <div class="result__description">
         <span class="result__temperament result__item--margin"
           ><span class="result__description--title">Temperament: </span>
@@ -49,19 +47,16 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      isActive: false,
-    };
-  },
+
   methods: {
     toggleDetails() {
-      this.isActive = !this.isActive;
+      this.$emit("toggle", this.breed);
     },
   },
+
   computed: {
     hiddenClass() {
-      return { hidden: !this.isActive };
+      return !this.breed.isActive ? "hidden" : "result__details";
     },
   },
 };

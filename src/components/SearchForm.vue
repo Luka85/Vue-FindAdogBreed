@@ -18,7 +18,7 @@ export default {
   props: {
     isDisabled: {
       type: Boolean,
-      required: true,
+      required: false,
     },
   },
   data() {
@@ -35,6 +35,19 @@ export default {
         this.$emit("search", this.searchInput.trim());
       }, 250);
     },
+  },
+  watch: {
+    // searchInput(newValue, oldValue) {
+    //   console.log("New value:", newValue, "Old value:", oldValue);
+    //   if (newValue !== oldValue) {
+    //     this.$router.push({
+    //       name: "search",
+    //       params: {
+    //         breedName: newValue,
+    //       },
+    //     });
+    //   }
+    // },
   },
 
   mounted() {
