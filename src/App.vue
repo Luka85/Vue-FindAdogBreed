@@ -1,15 +1,16 @@
 <template>
   <main class="container" ref="containerMain">
     <base-header :title="title"></base-header>
-    <breeds-list></breeds-list>
+    <!-- <breeds-list></breeds-list> -->
+    <router-view></router-view>
   </main>
 </template>
 <script>
-import BreedsList from "./components/BreedsList.vue";
+// import BreedsList from "./components/BreedsList.vue";
 export default {
-  components: {
-    BreedsList,
-  },
+  // components: {
+  //   BreedsList,
+  // },
   data() {
     return {
       title: "Find A Dog",
