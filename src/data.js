@@ -10,7 +10,6 @@ export function fetchBreeds() {
           );
         }
       })
-
       .catch((error) => {
         reject(error);
       });
@@ -27,9 +26,7 @@ export function searchBreed(searchInput) {
           reject(new Error(response.status + " - Failed to fetch breeds "));
         }
       })
-
       .catch((error) => {
-        console.log(error);
         reject(error);
       });
   });
