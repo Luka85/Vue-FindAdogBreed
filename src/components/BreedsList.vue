@@ -97,6 +97,7 @@ export default {
         .then((results) => {
           this.isLoading = false;
           if (results.length > 0) {
+
             this.searchList = results.map((breed) => {
               breed.isActive = false;
               return breed;
@@ -105,6 +106,7 @@ export default {
             this.message = "";
           } else {
             this.searchList = [];
+
             if (this.searchQuery) {
               this.message = `Your searches for "${this.searchQuery}" did not have any matches. Try different keywords.`;
             } else {
@@ -150,7 +152,6 @@ export default {
       if (this.isLoading) {
         return this.message;
       } else if (!this.isLoading && this.error) {
-        console.log(this.error);
         return this.error;
       }
     },
