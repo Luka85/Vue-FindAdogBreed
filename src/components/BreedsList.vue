@@ -55,13 +55,14 @@ export default {
       isInputDisabled: false,
       isHidden: true,
       message: "",
+      index: null,
+      breedName: "",
     };
   },
   methods: {
     fetchData() {
       this.isLoading = true;
       this.message = "Data is loading...";
-
       fetchBreeds()
         .then((results) => {
           this.isLoading = false;
@@ -88,7 +89,6 @@ export default {
       this.isLoading = true;
       this.message = "Data is loading...";
       this.searchQuery = input;
-
       if (this.searchQuery.length === 0) {
         this.isLoading = false;
       }
@@ -101,7 +101,7 @@ export default {
               breed.isActive = false;
               return breed;
             });
-
+            console.log(this.searchQuery);
             this.message = "";
           } else {
             this.searchList = [];
@@ -131,9 +131,21 @@ export default {
       this.$refs.resultListContainer.scrollTo({ top: 0, behavior: "smooth" });
     },
     toggleCard(breed) {
+      this.index = breed;
       breed.isActive = !breed.isActive;
       this.displayedBreeds.forEach((item) => {
         if (item.id !== breed.id) item.isActive = false;
+      });
+    },
+    showBreedDetailsOnRouteParam() {
+      this.breedName = this.$route.params.breedName;
+      this.displayedBreeds.filter((breed) => {
+        if (breed.name === this.breedName) {
+          breed.isActive = true;
+        } else {
+          // this.$route.params = "";
+          // console.log(this.$route);
+        }
       });
     },
   },
@@ -163,6 +175,11 @@ export default {
 
   created() {
     this.fetchData();
+  },
+
+  updated() {
+    console.log("updated");
+    this.showBreedDetailsOnRouteParam();
   },
 };
 </script>

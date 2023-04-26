@@ -37,17 +37,17 @@ export default {
     },
   },
   watch: {
-    // searchInput(newValue, oldValue) {
-    //   console.log("New value:", newValue, "Old value:", oldValue);
-    //   if (newValue !== oldValue) {
-    //     this.$router.push({
-    //       name: "search",
-    //       params: {
-    //         breedName: newValue,
-    //       },
-    //     });
-    //   }
-    // },
+    searchInput(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.$router.push({
+          name: "search",
+          params: {
+            search: newValue,
+          },
+          query: { q: newValue },
+        });
+      }
+    },
   },
 
   mounted() {

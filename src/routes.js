@@ -7,11 +7,24 @@ const router = new VueRouter({
   mode: "history",
   base: "/",
   routes: [
-    { path: "/", component: BreedsList, redirect: "/breeds" },
-    { path: "/breeds", component: BreedsList },
-    // { name: "search", path: "/search/:breedName", component: SearchForm },
-    // { path: "/breed/:breedId", component: BreedCard },
-    { path: "/:notFound(.*)", component: BreedsList, redirect: "/breeds" },
+    { path: "/", component: BreedsList, redirect: "/breeds/" },
+    {
+      name: "breeds",
+      path: "/breeds/",
+      component: BreedsList,
+
+      children: [
+        {
+          name: "breedName",
+          path: ":breedName",
+          component: BreedsList,
+          props: true,
+        },
+      ],
+    },
+    { name: "search", path: "/search", component: BreedsList },
+
+    { path: "/:notFound(.*)", component: BreedsList, redirect: "/breeds/" },
   ],
 });
 export default router;

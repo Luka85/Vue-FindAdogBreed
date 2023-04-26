@@ -3,35 +3,38 @@
     @click="toggleDetails"
     :class="!breed.isActive ? 'hidden-result__details' : 'result__list'"
   >
-    <div class="result__heading-container">
-      <span class="result__id">{{ id + 1 }}.</span>
-      <h3 class="heading-tertiary">{{ breed.name }}</h3>
-    </div>
-    <div :class="hiddenClass">
-      <div class="result__description">
-        <span class="result__temperament result__item--margin"
-          ><span class="result__description--title">Temperament: </span>
-          {{ breed.temperament }}</span
-        >
-        <span class="result__life result__item--margin"
-          ><span class="result__description--title">Life span: </span>
-          {{ breed.lifeSpan }}</span
-        >
-        <span class="result__height result__item--margin"
-          ><span class="result__description--title">Height: </span>
-          {{ breed.height.metric }}cm</span
-        >
-        <span class="result__weight result__item--margin"
-          ><span class="result__description--title">Weight: </span>
-          {{ breed.weight.metric }}kg</span
-        >
+    <router-link :to="/breeds/ + breed.name">
+      <div class="result__heading-container">
+        <span class="result__id">{{ id + 1 }}.</span>
+        <h3 class="heading-tertiary">{{ breed.name }}</h3>
       </div>
-      <img
-        class="result__breed-image"
-        :src="`https://cdn2.thedogapi.com/images/${breed.reference_image_id}.jpg`"
-        :alt="`Picture of the ${breed.name} dog`"
-      />
-    </div>
+
+      <div :class="hiddenClass">
+        <div class="result__description">
+          <span class="result__temperament result__item--margin"
+            ><span class="result__description--title">Temperament: </span>
+            {{ breed.temperament }}</span
+          >
+          <span class="result__life result__item--margin"
+            ><span class="result__description--title">Life span: </span>
+            {{ breed.life_span }}</span
+          >
+          <span class="result__height result__item--margin"
+            ><span class="result__description--title">Height: </span>
+            {{ breed.height.metric }}cm</span
+          >
+          <span class="result__weight result__item--margin"
+            ><span class="result__description--title">Weight: </span>
+            {{ breed.weight.metric }}kg</span
+          >
+        </div>
+        <img
+          class="result__breed-image"
+          :src="`https://cdn2.thedogapi.com/images/${breed.reference_image_id}.jpg`"
+          :alt="`Picture of the ${breed.name} dog`"
+        />
+      </div>
+    </router-link>
   </li>
 </template>
 
@@ -148,5 +151,15 @@ export default {
 }
 .hidden {
   display: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover,
+a:active {
+  text-decoration: none;
 }
 </style>
