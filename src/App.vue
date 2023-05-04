@@ -1,5 +1,5 @@
 <template>
-  <main class="container" ref="containerMain">
+  <main class="container">
     <base-header :title="title"></base-header>
     <router-view></router-view>
   </main>

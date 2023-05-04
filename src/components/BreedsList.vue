@@ -4,7 +4,6 @@
       :isDisabled="isInputDisabled"
       @search="getSearchResults"
     ></search-form>
-
     <div class="result__container">
       <p class="result__message" v-if="loadingState">{{ loadingState }}</p>
       <p class="result__message" v-else-if="receivedDataState">
@@ -22,7 +21,8 @@
           :breed="breed"
           :key="breed.id"
           :id="index"
-        ></breed-card>
+        >
+        </breed-card>
       </ul>
     </div>
     <navigation-button
@@ -45,6 +45,8 @@ export default {
     NavigationButton,
   },
 
+  props: ["breedName"],
+
   data() {
     return {
       breedsList: [],
@@ -55,8 +57,6 @@ export default {
       isInputDisabled: false,
       isHidden: true,
       message: "",
-      index: null,
-      breedName: "",
     };
   },
   methods: {
@@ -120,7 +120,6 @@ export default {
 
     showNavigationBtn() {
       const resultListContainer = this.$refs.resultListContainer;
-
       if (resultListContainer.scrollTop > 450) {
         this.isHidden = false;
       } else {
@@ -131,22 +130,19 @@ export default {
       this.$refs.resultListContainer.scrollTo({ top: 0, behavior: "smooth" });
     },
     toggleCard(breed) {
-      this.index = breed;
       breed.isActive = !breed.isActive;
       this.displayedBreeds.forEach((item) => {
         if (item.id !== breed.id) item.isActive = false;
       });
     },
-    showBreedDetailsOnRouteParam() {
-      this.breedName = this.$route.params.breedName;
-      this.displayedBreeds.filter((breed) => {
-        if (breed.name === this.breedName) {
-          breed.isActive = true;
-        } else {
-          // this.$route.params = "";
-          // console.log(this.$route);
-        }
-      });
+    showBreedDetailsOnRouteParam(breedName) {
+      if (breedName) {
+        this.displayedBreeds.filter((breed) => {
+          if (breed.name.toLowerCase() === breedName.toLowerCase()) {
+            breed.isActive = true;
+          }
+        });
+      }
     },
   },
   computed: {
@@ -178,8 +174,7 @@ export default {
   },
 
   updated() {
-    console.log("updated");
-    this.showBreedDetailsOnRouteParam();
+    this.showBreedDetailsOnRouteParam(this.breedName);
   },
 };
 </script>

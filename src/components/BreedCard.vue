@@ -1,9 +1,10 @@
 <template>
-  <li
-    @click="toggleDetails"
-    :class="!breed.isActive ? 'hidden-result__details' : 'result__list'"
-  >
-    <router-link :to="/breeds/ + breed.name">
+  <router-link :to="`/breeds/${breed.name}`">
+    <li
+      ref="activeLi"
+      @click="toggleDetails"
+      :class="!breed.isActive ? 'hidden-result__details' : 'result__list'"
+    >
       <div class="result__heading-container">
         <span class="result__id">{{ id + 1 }}.</span>
         <h3 class="heading-tertiary">{{ breed.name }}</h3>
@@ -34,8 +35,8 @@
           :alt="`Picture of the ${breed.name} dog`"
         />
       </div>
-    </router-link>
-  </li>
+    </li>
+  </router-link>
 </template>
 
 <script>
@@ -54,6 +55,12 @@ export default {
   methods: {
     toggleDetails() {
       this.$emit("toggle", this.breed);
+      if (this.breed.isActive) {
+        this.$refs.activeLi.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
     },
   },
 
