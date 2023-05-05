@@ -26,7 +26,7 @@
       </ul>
     </div>
     <navigation-button
-      @clickToScroll="scrollToTop"
+      @clickToScroll="scrollListToTop"
       :class="{ hidden: isHidden ? 'hidden' : '' }"
     ></navigation-button>
   </section>
@@ -45,7 +45,12 @@ export default {
     NavigationButton,
   },
 
-  props: ["breedName"],
+  props: {
+    breedName: {
+      type: String,
+      required: false,
+    },
+  },
 
   data() {
     return {
@@ -57,6 +62,7 @@ export default {
       isInputDisabled: false,
       isHidden: true,
       message: "",
+      index: null,
     };
   },
   methods: {
@@ -101,7 +107,6 @@ export default {
               breed.isActive = false;
               return breed;
             });
-            console.log(this.searchQuery);
             this.message = "";
           } else {
             this.searchList = [];
@@ -119,27 +124,39 @@ export default {
     },
 
     showNavigationBtn() {
-      const resultListContainer = this.$refs.resultListContainer;
-      if (resultListContainer.scrollTop > 450) {
+      if (this.$refs.resultListContainer.scrollTop > 450) {
         this.isHidden = false;
       } else {
         this.isHidden = true;
       }
     },
-    scrollToTop() {
-      this.$refs.resultListContainer.scrollTo({ top: 0, behavior: "smooth" });
+    scrollListToTop() {
+      this.$refs.resultListContainer.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     },
-    toggleCard(breed) {
+    toggleCard(breed, id) {
+      this.index = id;
       breed.isActive = !breed.isActive;
       this.displayedBreeds.forEach((item) => {
-        if (item.id !== breed.id) item.isActive = false;
+        if (item.id !== this.index + 1) {
+          item.isActive = false;
+        }
       });
     },
     showBreedDetailsOnRouteParam(breedName) {
       if (breedName) {
-        this.displayedBreeds.filter((breed) => {
+        this.displayedBreeds.filter((breed, id) => {
           if (breed.name.toLowerCase() === breedName.toLowerCase()) {
             breed.isActive = true;
+
+            this.$refs.resultListContainer.children[
+              id
+            ].firstChild.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
           }
         });
       }
@@ -174,6 +191,7 @@ export default {
   },
 
   updated() {
+    console.log("updated");
     this.showBreedDetailsOnRouteParam(this.breedName);
   },
 };

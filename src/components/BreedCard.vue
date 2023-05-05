@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="`/breeds/${breed.name}`">
+  <router-link :to="{ name: 'breedName', params: { breedName: breed.name } }">
     <li
       ref="activeLi"
       @click="toggleDetails"
@@ -54,7 +54,7 @@ export default {
 
   methods: {
     toggleDetails() {
-      this.$emit("toggle", this.breed);
+      this.$emit("toggle", this.breed, this.id);
       if (this.breed.isActive) {
         this.$refs.activeLi.scrollIntoView({
           behavior: "smooth",
