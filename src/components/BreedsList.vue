@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section ref="breedListRef" class="breedsList__container">
     <search-form
       :isDisabled="isInputDisabled"
       @search="getSearchResults"
@@ -48,7 +48,7 @@ export default {
   props: {
     breedName: {
       type: String,
-      required: false,
+      default: "",
     },
   },
 
@@ -62,7 +62,7 @@ export default {
       isInputDisabled: false,
       isHidden: true,
       message: "",
-      index: null,
+      isScrollToTopActive: false,
     };
   },
   methods: {
@@ -105,8 +105,14 @@ export default {
           if (results.length > 0) {
             this.searchList = results.map((breed) => {
               breed.isActive = false;
+
               return breed;
             });
+            if (results.length === 1) {
+              this.searchList[0].isActive = true;
+              return this.searchList[0];
+            }
+
             this.message = "";
           } else {
             this.searchList = [];
@@ -126,36 +132,75 @@ export default {
     showNavigationBtn() {
       if (this.$refs.resultListContainer.scrollTop > 450) {
         this.isHidden = false;
+        this.isScrollToTopActive = true;
       } else {
         this.isHidden = true;
       }
     },
     scrollListToTop() {
+      this.isScrollToTopActive = true;
+
       this.$refs.resultListContainer.scrollTo({
         top: 0,
         behavior: "smooth",
       });
+      this.displayedBreeds.forEach((breed) => {
+        breed.isActive = false;
+      });
+      console.log(this.$router, this.$route);
+      if (this.$route.name !== "breeds") {
+        this.$router.push({
+          name: "breeds",
+        });
+      }
     },
-    toggleCard(breed, id) {
-      this.index = id;
+    toggleCard(breed, refLi) {
       breed.isActive = !breed.isActive;
+      refLi.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
       this.displayedBreeds.forEach((item) => {
-        if (item.id !== this.index + 1) {
+        if (item.id !== breed.id) {
           item.isActive = false;
         }
       });
     },
     showBreedDetailsOnRouteParam(breedName) {
       if (breedName) {
-        this.displayedBreeds.filter((breed, id) => {
+        this.displayedBreeds.forEach((breed, id) => {
           if (breed.name.toLowerCase() === breedName.toLowerCase()) {
             breed.isActive = true;
+            this.$nextTick(() => {
+              this.$refs.resultListContainer.children[
+                id
+              ].firstChild.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+            });
 
-            this.$refs.resultListContainer.children[
-              id
-            ].firstChild.scrollIntoView({
-              behavior: "smooth",
-              block: "start",
+            console.log("showBreedDetailsOnRouteParam scrollintoView");
+          } else {
+            breed.isActive = false;
+          }
+        });
+      }
+    },
+    loadSearchResultsWithParam(queryParam) {
+      if (queryParam) {
+        console.log(queryParam);
+        this.displayedBreeds.filter((breed, id) => {
+          if (breed.name.toLowerCase() === queryParam.toLowerCase()) {
+            console.log(breed.name.to, queryParam);
+            breed.isActive = true;
+            this.$nextTick(() => {
+              this.$refs.resultListContainer.children[
+                id
+              ].firstChild.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
             });
           }
         });
@@ -170,7 +215,6 @@ export default {
         return this.breedsList;
       }
     },
-
     loadingState() {
       if (this.isLoading) {
         return this.message;
@@ -185,6 +229,23 @@ export default {
       }
     },
   },
+  watch: {
+    breedName(newName, oldName) {
+      console.log("watch:", newName, oldName);
+      if (newName !== oldName) {
+        this.showBreedDetailsOnRouteParam(newName);
+        console.log("poklicana watch");
+      }
+    },
+    searchQuery(newName, oldName) {
+      console.log(this.$route);
+      console.log(this.displayedBreeds);
+      if (newName !== oldName) {
+        console.log("newName:", newName, "oldName:", oldName);
+        this.loadSearchResultsWithParam(newName);
+      }
+    },
+  },
 
   created() {
     this.fetchData();
@@ -192,7 +253,26 @@ export default {
 
   updated() {
     console.log("updated");
-    this.showBreedDetailsOnRouteParam(this.breedName);
+    if (!this.isScrollToTopActive && this.$route.name === "breedName") {
+      this.showBreedDetailsOnRouteParam(this.breedName);
+      console.log("poklicana updated");
+    } else if (this.$route.name === "search") {
+      console.log(this.$route.query.q);
+      console.log("SEARCH");
+      this.loadSearchResultsWithParam(this.$route.query.q);
+    }
+  },
+
+  beforeRouteLeave(to, from, next) {
+    console.log("beforeRouteLeave");
+    console.log(to, from);
+    next();
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    console.log("beforeRouteUpdate");
+    console.log(to, from);
+    next();
   },
 };
 </script>
@@ -201,9 +281,12 @@ export default {
 .result__list-container {
   list-style-type: none;
   padding: 0;
-  max-height: 120vh;
+  max-height: 70vh;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
+  margin-bottom: 3rem;
+  scrollbar-width: none;
+  position: relative;
 }
 
 p {

@@ -1,5 +1,5 @@
 <template>
-  <main class="container">
+  <main class="container" ref="mainContainerRef">
     <base-header :title="title"></base-header>
     <router-view></router-view>
   </main>
@@ -42,16 +42,23 @@ body {
   color: var(--color-primary);
   background-attachment: fixed;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  height: 100vh;
+  position: relative;
+  padding: 2rem 0;
 }
 
 .container {
+  margin: 0 auto;
   width: 70%;
   background-color: var(--background-color2);
   border-radius: 1rem;
   box-shadow: 0px 0px 30px 0px rgba(37, 89, 124, 0.671);
-  margin: 5rem 0;
-  padding-bottom: 4rem;
+  /* max-height: 100%; */
+  min-height: 30vh;
+}
+
+.container--top {
+  align-self: flex-start;
 }
 </style>

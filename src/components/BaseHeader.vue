@@ -14,10 +14,13 @@ export default {
 </script>
 
 <style scoped>
+/* header {
+  
+} */
 .heading-primary {
   font-size: 5rem;
   font-weight: 200;
   text-align: center;
-  margin-bottom: 3rem;
+  margin: 1rem;
 }
 </style>

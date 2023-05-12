@@ -54,13 +54,9 @@ export default {
 
   methods: {
     toggleDetails() {
-      this.$emit("toggle", this.breed, this.id);
-      if (this.breed.isActive) {
-        this.$refs.activeLi.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      }
+      const refLi = this.$refs.activeLi;
+      this.$emit("toggle", this.breed, refLi);
+      console.log("scrolla na klik");
     },
   },
 
@@ -75,11 +71,13 @@ export default {
 <style scoped>
 .result__list {
   font-size: 1.4rem;
-  padding: 3rem 8rem;
-  display: flex;
-  flex-direction: column;
+  padding: 2rem 8rem;
+  /* display: flex;
+  flex-direction: column; */
   transition: all 0.3s;
+  max-height: 50rem;
 }
+
 .result__list:nth-child(odd) {
   background-color: var(--background-color3);
 }

@@ -38,13 +38,18 @@ export default {
   },
   watch: {
     searchInput(newValue, oldValue) {
-      if (newValue !== oldValue) {
+      console.log("WATCH:", "new:", newValue, "old:", oldValue);
+      if (newValue && newValue !== oldValue) {
         this.$router.push({
           name: "search",
           params: {
             search: newValue,
           },
           query: { q: newValue },
+        });
+      } else {
+        this.$router.push({
+          name: "breeds",
         });
       }
     },
@@ -59,7 +64,7 @@ export default {
 <style scoped>
 .search__form {
   color: var(--color-primary);
-  margin-bottom: 5rem;
+  margin-bottom: 2rem;
   padding: 0 8rem;
 }
 .search__input {
