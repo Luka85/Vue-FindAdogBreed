@@ -32,7 +32,6 @@ const router = new VueRouter({
     { path: "/:notFound(.*)", component: BreedsList, redirect: "/breeds/" },
   ],
   scrollBehavior(to, from, savedPosition) {
-    // console.log("to:", to, "from:", from, "savedPos:", savedPosition);
     if (savedPosition) {
       return savedPosition;
     } else {
@@ -40,15 +39,5 @@ const router = new VueRouter({
     }
   },
 });
-// router.beforeEach(function (to, from, next) {
-//   console.log("beforeEach");
-//   console.log(to, from);
-//   next((vm) => console.log(vm));
-//   // if (from.name === "search" && to.from === "breeds") {
-//   //   next({ name: "breeds" });
-//   // } else {
-//   //   next();
-//   // }
-// });
 
 export default router;

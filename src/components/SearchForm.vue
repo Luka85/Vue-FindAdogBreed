@@ -32,24 +32,19 @@ export default {
       clearTimeout(this.debounce);
       this.debounce = setTimeout(() => {
         this.searchInput = event.target.value;
-        this.$emit("search", this.searchInput.trim());
+        this.$emit("search", this.searchInput.trim(), this.$refs.searchInput);
       }, 250);
     },
   },
   watch: {
     searchInput(newValue, oldValue) {
-      console.log("WATCH:", "new:", newValue, "old:", oldValue);
-      if (newValue && newValue !== oldValue) {
+      if (newValue && newValue !== this.$route.query.q) {
         this.$router.push({
           name: "search",
           params: {
             search: newValue,
           },
           query: { q: newValue },
-        });
-      } else {
-        this.$router.push({
-          name: "breeds",
         });
       }
     },

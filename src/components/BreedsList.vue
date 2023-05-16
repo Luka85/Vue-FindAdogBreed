@@ -1,6 +1,7 @@
 <template>
   <section ref="breedListRef" class="breedsList__container">
     <search-form
+      ref="searchRef"
       :isDisabled="isInputDisabled"
       @search="getSearchResults"
     ></search-form>
@@ -103,17 +104,18 @@ export default {
         .then((results) => {
           this.isLoading = false;
           if (results.length > 0) {
+            this.message = "";
             this.searchList = results.map((breed) => {
               breed.isActive = false;
 
               return breed;
             });
+
             if (results.length === 1) {
               this.searchList[0].isActive = true;
+
               return this.searchList[0];
             }
-
-            this.message = "";
           } else {
             this.searchList = [];
             if (this.searchQuery) {
@@ -126,6 +128,7 @@ export default {
         .catch((error) => {
           this.isLoading = false;
           this.error = error.name + ": " + error.message;
+          this.isInputDisabled = true;
         });
     },
 
@@ -139,7 +142,6 @@ export default {
     },
     scrollListToTop() {
       this.isScrollToTopActive = true;
-
       this.$refs.resultListContainer.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -147,7 +149,6 @@ export default {
       this.displayedBreeds.forEach((breed) => {
         breed.isActive = false;
       });
-      console.log(this.$router, this.$route);
       if (this.$route.name !== "breeds") {
         this.$router.push({
           name: "breeds",
@@ -167,7 +168,7 @@ export default {
       });
     },
     showBreedDetailsOnRouteParam(breedName) {
-      if (breedName) {
+      if (breedName && this.$refs.resultListContainer) {
         this.displayedBreeds.forEach((breed, id) => {
           if (breed.name.toLowerCase() === breedName.toLowerCase()) {
             breed.isActive = true;
@@ -179,29 +180,8 @@ export default {
                 block: "center",
               });
             });
-
-            console.log("showBreedDetailsOnRouteParam scrollintoView");
           } else {
             breed.isActive = false;
-          }
-        });
-      }
-    },
-    loadSearchResultsWithParam(queryParam) {
-      if (queryParam) {
-        console.log(queryParam);
-        this.displayedBreeds.filter((breed, id) => {
-          if (breed.name.toLowerCase() === queryParam.toLowerCase()) {
-            console.log(breed.name.to, queryParam);
-            breed.isActive = true;
-            this.$nextTick(() => {
-              this.$refs.resultListContainer.children[
-                id
-              ].firstChild.scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-              });
-            });
           }
         });
       }
@@ -219,59 +199,63 @@ export default {
       if (this.isLoading) {
         return this.message;
       } else if (!this.isLoading && this.error) {
-        console.log(this.error);
         return this.error;
       }
     },
     receivedDataState() {
-      if (!this.displayedBreeds.length) {
+      if (!this.displayedBreeds.length && !this.isLoading) {
         return this.message;
       }
     },
   },
   watch: {
     breedName(newName, oldName) {
-      console.log("watch:", newName, oldName);
       if (newName !== oldName) {
         this.showBreedDetailsOnRouteParam(newName);
-        console.log("poklicana watch");
       }
     },
-    searchQuery(newName, oldName) {
-      console.log(this.$route);
-      console.log(this.displayedBreeds);
-      if (newName !== oldName) {
-        console.log("newName:", newName, "oldName:", oldName);
-        this.loadSearchResultsWithParam(newName);
-      }
+
+    "$route.query.q": {
+      immediate: true,
+      handler(newName, oldName) {
+        if (newName && newName !== oldName) {
+          this.searchQuery = newName;
+          this.getSearchResults(this.searchQuery);
+        }
+      },
     },
   },
 
   created() {
     this.fetchData();
   },
+  mounted() {
+    if (this.$route.name === "search") {
+      this.getSearchResults(this.searchQuery);
+    }
+  },
 
   updated() {
-    console.log("updated");
     if (!this.isScrollToTopActive && this.$route.name === "breedName") {
       this.showBreedDetailsOnRouteParam(this.breedName);
-      console.log("poklicana updated");
-    } else if (this.$route.name === "search") {
-      console.log(this.$route.query.q);
-      console.log("SEARCH");
-      this.loadSearchResultsWithParam(this.$route.query.q);
+      this.searchQuery = "";
     }
   },
 
   beforeRouteLeave(to, from, next) {
-    console.log("beforeRouteLeave");
-    console.log(to, from);
-    next();
-  },
+    if (from.name === "search") {
+      this.searchQuery = "";
 
-  beforeRouteUpdate(to, from, next) {
-    console.log("beforeRouteUpdate");
-    console.log(to, from);
+      this.$refs.searchRef.$el[0].value = "";
+      next();
+    }
+    if (from.name === "breedName") {
+      this.displayedBreeds.forEach((breed) => {
+        breed.isActive = false;
+      });
+      next();
+    }
+
     next();
   },
 };
