@@ -1,5 +1,6 @@
 import VueRouter from "vue-router";
 import BreedsList from "./components/BreedsList.vue";
+import NotFound from "./components/NotFound.vue";
 
 const router = new VueRouter({
   mode: "history",
@@ -29,7 +30,7 @@ const router = new VueRouter({
       component: BreedsList,
     },
 
-    { path: "/:notFound(.*)", component: BreedsList, redirect: "/breeds/" },
+    { name: "notFound", path: "/:notFound(.*)*", component: NotFound },
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
