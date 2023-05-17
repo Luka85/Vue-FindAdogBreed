@@ -118,6 +118,7 @@ export default {
             }
           } else {
             this.searchList = [];
+
             if (this.searchQuery) {
               this.message = `Your searches for "${this.searchQuery}" did not have any matches. Try different keywords.`;
             } else {
