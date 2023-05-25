@@ -111,8 +111,7 @@ export default {
         .then((results) => {
           // console.log(this.searchQuery);
           this.isLoading = false;
-          if (results.length > 1) {
-            this.message = "";
+          if (results.length > 0) {
             this.searchList = results.map((breed) => {
               breed.isActive = false;
               return breed;
@@ -127,6 +126,7 @@ export default {
             return this.searchList;
           } else {
             this.searchList = [];
+
             if (this.searchQuery) {
               this.message = `Your searches for "${this.searchQuery}" did not have any matches. Try different keywords.`;
             } else {
