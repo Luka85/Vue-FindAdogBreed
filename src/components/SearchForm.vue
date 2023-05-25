@@ -38,7 +38,7 @@ export default {
   },
   watch: {
     searchInput(newValue, oldValue) {
-      if (newValue && newValue !== this.$route.query.q) {
+      if (newValue !== this.$route.query.q) {
         this.$router.push({
           name: "search",
           params: {

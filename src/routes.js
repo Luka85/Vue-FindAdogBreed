@@ -1,6 +1,7 @@
 import VueRouter from "vue-router";
 import BreedsList from "./components/BreedsList.vue";
 import NotFound from "./components/NotFound.vue";
+import BreedDetails from "./components/BreedDetails.vue";
 
 const router = new VueRouter({
   mode: "history",
@@ -22,6 +23,13 @@ const router = new VueRouter({
       path: "/breeds/:breedName",
       component: BreedsList,
       props: true,
+      children: [
+        {
+          name: "details",
+          path: "details",
+          component: BreedDetails,
+        },
+      ],
     },
 
     {
@@ -32,13 +40,6 @@ const router = new VueRouter({
 
     { name: "notFound", path: "/:notFound(.*)*", component: NotFound },
   ],
-  scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition;
-    } else {
-      return { x: 0, y: 0 };
-    }
-  },
 });
 
 export default router;

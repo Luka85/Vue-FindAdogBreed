@@ -1,42 +1,19 @@
 <template>
-  <router-link :to="{ name: 'breedName', params: { breedName: breed.name } }">
-    <li
-      ref="activeLi"
-      @click="toggleDetails"
-      :class="!breed.isActive ? 'hidden-result__details' : 'result__list'"
-    >
-      <div class="result__heading-container">
-        <span class="result__id">{{ id + 1 }}.</span>
-        <h3 class="heading-tertiary">{{ breed.name }}</h3>
+  <li ref="activeLi" class="result__list">
+    <div class="result__heading-container">
+      <span class="result__id">{{ id + 1 }}.</span>
+      <h3 class="heading-tertiary">{{ breed.name }}</h3>
+      <div @click="toggleDetails" class="result__link-container">
+        <router-link
+          :to="{ name: 'details', params: { breedName: breed.name } }"
+          >{{ toggleText }}</router-link
+        >
       </div>
+    </div>
+    <!-- :class="breed.isActive ? 'router-link-active' : ''" -->
 
-      <div :class="hiddenClass">
-        <div class="result__description">
-          <span class="result__temperament result__item--margin"
-            ><span class="result__description--title">Temperament: </span>
-            {{ breed.temperament }}</span
-          >
-          <span class="result__life result__item--margin"
-            ><span class="result__description--title">Life span: </span>
-            {{ breed.life_span }}</span
-          >
-          <span class="result__height result__item--margin"
-            ><span class="result__description--title">Height: </span>
-            {{ breed.height.metric }}cm</span
-          >
-          <span class="result__weight result__item--margin"
-            ><span class="result__description--title">Weight: </span>
-            {{ breed.weight.metric }}kg</span
-          >
-        </div>
-        <img
-          class="result__breed-image"
-          :src="`https://cdn2.thedogapi.com/images/${breed.reference_image_id}.jpg`"
-          :alt="`Picture of the ${breed.name} dog`"
-        />
-      </div>
-    </li>
-  </router-link>
+    <slot> </slot>
+  </li>
 </template>
 
 <script>
@@ -54,15 +31,24 @@ export default {
 
   methods: {
     toggleDetails() {
-      const refLi = this.$refs.activeLi;
-      this.$emit("toggle", this.breed, refLi);
       console.log("scrolla na klik");
+      console.log("toggle BreedCard", this.breed.isActive);
+
+      const refLi = this.$refs.activeLi;
+      this.$emit("toggle", this.breed);
+
+      this.$nextTick(() => {
+        refLi.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      });
     },
   },
 
   computed: {
-    hiddenClass() {
-      return !this.breed.isActive ? "hidden" : "result__details";
+    toggleText() {
+      return this.breed.isActive ? `Hide details` : `Show Details`;
     },
   },
 };
@@ -71,11 +57,10 @@ export default {
 <style scoped>
 .result__list {
   font-size: 1.4rem;
-  padding: 2rem 8rem;
-  /* display: flex;
-  flex-direction: column; */
+  padding: 1.5rem 10rem;
   transition: all 0.3s;
   max-height: 50rem;
+  transition: all 0.3s ease-in-out;
 }
 
 .result__list:nth-child(odd) {
@@ -88,30 +73,14 @@ export default {
   transform: scale(1.01);
   box-shadow: 5px 5px 4px 0px #6264728f;
 }
-.hidden-result__details {
-  transition: all 0.3s;
-  padding: 1rem 1rem;
-}
-.hidden-result__details:nth-child(odd) {
-  background-color: var(--background-color3);
-}
-.hidden-result__details:nth-child(even) {
-  background-color: var(--background-color4);
-}
-.hidden-result__details:hover {
-  transform: scale(1.01);
-  box-shadow: 5px 5px 4px 0px #6264728f;
-}
+
 .result__heading-container {
   display: flex;
   align-items: center;
   background-color: #f2e3db60;
-  border-radius: 1rem 0.2rem 0.2rem 0;
+  border-radius: 1rem 0 1rem 0;
 }
 
-.result__heading-container:hover {
-  cursor: pointer;
-}
 .result__id {
   font-size: 1.5rem;
   font-weight: 500;
@@ -121,50 +90,42 @@ export default {
   border-radius: 1rem 0 1rem 0;
 }
 
-.result__details {
-  margin-top: 1.4rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 0 0.8rem;
-}
-.result__description {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  margin-right: 2rem;
-}
 .heading-tertiary {
   font-size: 1.5rem;
   font-weight: 500;
   padding: 1rem 2rem;
   margin: 0;
-  width: 100%;
-}
-
-.result__description--title {
-  font-weight: 500;
-}
-
-.result__item--margin:not(:last-child) {
-  margin-bottom: 0.6rem;
-}
-.result__breed-image {
-  height: 20rem;
-  border-radius: 0.5rem;
-  border: 0.3rem solid var(--color-primary);
-}
-.hidden {
-  display: none;
+  flex: 2;
 }
 
 a {
   text-decoration: none;
-  color: inherit;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 300;
+  background-color: var(--color-primary);
+  padding: 1.1rem 2rem;
+  height: 100%;
+  color: var(--color-secondary);
+  border: 2px solid transparent;
+  border-radius: 1rem 0 1rem 0;
+}
+
+a.router-link-active {
+  background-color: var(--background-color2);
+  color: var(--color-primary);
+  font-weight: 500;
 }
 
 a:hover,
-a:active {
-  text-decoration: none;
+a:active,
+.router-link-active:hover {
+  transform: scale(2);
+  background-color: var(--background-color2);
+  /* color: var(--color-secondary); */
+  box-shadow: 4px 4px 4px 0px #6264728f;
+}
+result__link-container:hover {
+  transform: scale(2);
 }
 </style>
