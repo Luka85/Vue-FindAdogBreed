@@ -112,6 +112,7 @@ export default {
           // console.log(this.searchQuery);
           this.isLoading = false;
           if (results.length > 0) {
+            this.message = "";
             this.searchList = results.map((breed) => {
               breed.isActive = false;
               return breed;
