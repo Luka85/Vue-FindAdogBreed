@@ -18,7 +18,7 @@ export default {
   props: {
     isDisabled: {
       type: Boolean,
-      required: false,
+      required: true,
     },
   },
   data() {
@@ -37,17 +37,17 @@ export default {
     },
   },
   watch: {
-    // searchInput(newValue, oldValue) {
-    //   console.log("New value:", newValue, "Old value:", oldValue);
-    //   if (newValue !== oldValue) {
-    //     this.$router.push({
-    //       name: "search",
-    //       params: {
-    //         breedName: newValue,
-    //       },
-    //     });
-    //   }
-    // },
+    searchInput(newValue, oldValue) {
+      if (newValue !== this.$route.query.q) {
+        this.$router.push({
+          name: "search",
+          params: {
+            search: newValue,
+          },
+          query: { q: newValue },
+        });
+      }
+    },
   },
 
   mounted() {
@@ -59,7 +59,7 @@ export default {
 <style scoped>
 .search__form {
   color: var(--color-primary);
-  margin-bottom: 5rem;
+  margin-bottom: 2rem;
   padding: 0 8rem;
 }
 .search__input {
