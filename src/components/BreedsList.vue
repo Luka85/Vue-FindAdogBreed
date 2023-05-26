@@ -23,7 +23,6 @@
           :breed="breed"
           :key="breed.id"
           :id="index"
-          @toggle="toggleCard"
           :class="{ expandble: breed.isActive, result__list: !breed.isActive }"
         >
           <template v-slot:default>
