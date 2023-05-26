@@ -1,17 +1,45 @@
 import VueRouter from "vue-router";
 import BreedsList from "./components/BreedsList.vue";
-import BreedCard from "./components/BreedCard.vue";
-import SearchForm from "./components/SearchForm.vue";
+import NotFound from "./components/NotFound.vue";
+import BreedDetails from "./components/BreedDetails.vue";
 
 const router = new VueRouter({
   mode: "history",
   base: "/",
   routes: [
-    { path: "/", component: BreedsList, redirect: "/breeds" },
-    { path: "/breeds", component: BreedsList },
-    // { name: "search", path: "/search/:breedName", component: SearchForm },
-    // { path: "/breed/:breedId", component: BreedCard },
-    { path: "/:notFound(.*)", component: BreedsList, redirect: "/breeds" },
+    {
+      name: "redirect",
+      path: "/",
+      component: BreedsList,
+      redirect: "/breeds/",
+    },
+    {
+      name: "breeds",
+      path: "/breeds/",
+      component: BreedsList,
+    },
+    {
+      name: "breedName",
+      path: "/breeds/:breedName",
+      component: BreedsList,
+      props: true,
+      children: [
+        {
+          name: "details",
+          path: "details",
+          component: BreedDetails,
+        },
+      ],
+    },
+
+    {
+      name: "search",
+      path: "/search/",
+      component: BreedsList,
+    },
+
+    { name: "notFound", path: "/:notFound(.*)*", component: NotFound },
   ],
 });
+
 export default router;
