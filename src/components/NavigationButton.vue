@@ -1,7 +1,7 @@
 <template>
   <button
     class="btn-nav"
-    @click="scrollToTop"
+    @click.prevent="scrollListToTop"
     :class="hidden"
     ref="clickToScroll"
   >
@@ -20,7 +20,7 @@ export default {
     },
   },
   methods: {
-    scrollToTop() {
+    scrollListToTop() {
       this.$emit("clickToScroll", this.$refs.clickToScroll);
     },
   },
@@ -31,7 +31,7 @@ export default {
 .btn-nav {
   position: fixed;
   bottom: 5rem;
-  right: 3rem;
+  right: 5rem;
   width: 5rem;
   height: 5rem;
   background-color: var(--color-primary);
