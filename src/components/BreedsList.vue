@@ -265,9 +265,8 @@ export default {
 .result__list-container {
   list-style-type: none;
   padding: 0;
-  max-height: 70vh;
+  max-height: 65vh;
   overflow-y: scroll;
-  margin-bottom: 3rem;
 }
 
 p {
