@@ -185,19 +185,26 @@ export default {
         });
       }
     },
-    scrollToBreedCard(breedName) {
+    openDetailsOnRouteParam(breedName) {
       const breedNameParam = breedName.params.breedName;
-      console.log("scrollToBreedCard method");
+      console.log("openDetailsOnRouteParam method");
       console.log("breedName:", breedNameParam);
 
       if (breedNameParam) {
-        this.displayedBreeds.filter((breed, id) => {
+        this.displayedBreeds.filter((breed) => {
           if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
-            this.$nextTick(() => {
-              // this.$refs.resultListContainer.children[id].scrollIntoView({
-              //   behavior: "smooth",
-              //   block: "center",
-              // });
+            breed.isActive = true;
+          }
+        });
+      }
+    },
+    bredNameParamNotFound(breedName) {
+      const breedNameParam = breedName.params.breedName;
+      if (breedNameParam) {
+        searchBreed(breedNameParam).then((result) => {
+          if (result.length === 0) {
+            this.$router.push({
+              name: "notFound",
             });
           }
         });
@@ -240,8 +247,6 @@ export default {
           name: "details",
         });
       }
-
-      this.scrollToBreedCard(newRoute);
     },
   },
 
@@ -253,8 +258,8 @@ export default {
   updated() {
     console.log("updated hook");
 
-    this.scrollToBreedCard(this.$route);
-
+    this.openDetailsOnRouteParam(this.$route);
+    this.bredNameParamNotFound(this.$route);
     if (this.$route.name === "breedName") {
       this.$router.push({
         name: "details",
