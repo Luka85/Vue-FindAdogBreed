@@ -4,6 +4,7 @@
       ref="searchRef"
       :isDisabled="isInputDisabled"
       @search="getSearchResults"
+      v-if="this.$route.name === 'breeds'"
     ></search-form>
 
     <div class="result__container">
@@ -12,7 +13,7 @@
         {{ receivedDataState }}
       </p>
       <ul
-        v-else
+        v-else-if="displayedBreeds && this.$route.name === 'breeds'"
         class="result__list-container"
         ref="resultListContainer"
         @scroll="showNavigationBtn"
@@ -25,12 +26,14 @@
           :id="index"
           :class="{ expandble: breed.isActive, result__list: !breed.isActive }"
         >
-          <template v-slot:default>
-            <router-view :breed="breed"></router-view>
-            <!-- <breed-details :breed="breed"></breed-details> -->
-          </template>
         </breed-card>
       </ul>
+      <router-view
+        v-else-if="this.$route.name === 'details'"
+        v-for="(breed, index) in displayedBreeds"
+        :breed="breed"
+        :key="breed.id"
+      ></router-view>
     </div>
     <navigation-button
       @clickToScroll="scrollListToTop"
@@ -191,10 +194,10 @@ export default {
         this.displayedBreeds.filter((breed, id) => {
           if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
             this.$nextTick(() => {
-              this.$refs.resultListContainer.children[id].scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-              });
+              // this.$refs.resultListContainer.children[id].scrollIntoView({
+              //   behavior: "smooth",
+              //   block: "center",
+              // });
             });
           }
         });
