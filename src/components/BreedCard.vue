@@ -54,8 +54,7 @@ export default {
 .result__list {
   font-size: 1.4rem;
   padding: 3rem 8rem;
-  display: flex;
-  flex-direction: column;
+
   transition: all 0.3s;
 }
 .result__list:nth-child(odd) {
@@ -105,6 +104,7 @@ export default {
   margin-top: 2rem;
   margin-bottom: 1rem;
   transition: all 0.3s;
+  display: inline-block;
 }
 
 .heading-tertiary {
