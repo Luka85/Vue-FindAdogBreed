@@ -28,6 +28,9 @@
         :alt="`Picture of the ${breed.name} dog`"
       />
     </div>
+    <div class="result__go-back">
+      <button class="back-btn" @click="$router.back()">Back</button>
+    </div>
   </div>
 </template>
 
@@ -49,9 +52,13 @@ export default {
 
 <style scoped>
 .result__description {
+  width: 100%;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   font-size: 1.4rem;
+  padding: 0 4rem;
+  margin-bottom: 2rem;
 }
 .result__description--title {
   font-weight: 500;
@@ -91,5 +98,33 @@ export default {
 
 ul {
   margin-right: 1rem;
+}
+
+.result__go-back {
+  margin: 0 auto;
+}
+
+.back-btn {
+  font-family: inherit;
+  font-size: 1.2rem;
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  cursor: pointer;
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.8rem 4rem;
+}
+
+.back-btn:hover {
+  transform: scale(1.02) translateY(-0.1rem);
+  box-shadow: 5px 5px 4px 0px #6264728f;
+}
+
+.back-btn:active {
+  transform: scale(1.02) translateY(0.2rem);
+  box-shadow: 3px 3px 2px 0px #6264728f;
+  background-color: var(--background-color2);
+  color: var(--color-primary);
+  font-weight: 700;
 }
 </style>

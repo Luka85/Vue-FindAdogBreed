@@ -75,6 +75,7 @@ export default {
       isHidden: true,
       message: "",
       isScrollToTopActive: false,
+      lastBreedState: [],
     };
   },
   methods: {
@@ -172,18 +173,14 @@ export default {
     },
     toggleCard(breed) {
       console.log(breed.isActive, breed.name, this.$route.name);
+      this.lastBreedState.push(breed);
+      console.log(this.lastBreedState);
       breed.isActive = !breed.isActive;
-      this.displayedBreeds.forEach((item) => {
+      this.displayedBreeds.forEach((item, id) => {
         if (item.name !== breed.name) {
           item.isActive = false;
         }
       });
-      if (!breed.isActive) {
-        console.log("push");
-        this.$router.push({
-          name: "breeds",
-        });
-      }
     },
     openDetailsOnRouteParam(breedName) {
       const breedNameParam = breedName.params.breedName;
@@ -205,6 +202,21 @@ export default {
           if (result.length === 0) {
             this.$router.push({
               name: "notFound",
+            });
+          }
+        });
+      }
+    },
+    scrollToLastOpenCard() {
+      if (this.$route.name === "breeds" && this.lastBreedState.length > 0) {
+        this.displayedBreeds.filter((breed, id) => {
+          if (
+            this.lastBreedState[this.lastBreedState.length - 1].name ===
+            breed.name
+          ) {
+            this.$refs.resultListContainer.children[id].scrollIntoView({
+              behavior: "smooth",
+              block: "center",
             });
           }
         });
@@ -260,6 +272,7 @@ export default {
 
     this.openDetailsOnRouteParam(this.$route);
     this.bredNameParamNotFound(this.$route);
+    this.scrollToLastOpenCard();
     if (this.$route.name === "breedName") {
       this.$router.push({
         name: "details",
