@@ -1,16 +1,11 @@
 <template>
   <main class="container" ref="containerMain">
     <base-header :title="title"></base-header>
-    <!-- <breeds-list></breeds-list> -->
     <router-view></router-view>
   </main>
 </template>
 <script>
-// import BreedsList from "./components/BreedsList.vue";
 export default {
-  // components: {
-  //   BreedsList,
-  // },
   data() {
     return {
       title: "Find A Dog",
@@ -60,5 +55,29 @@ body {
   box-shadow: 0px 0px 30px 0px rgba(37, 89, 124, 0.671);
   margin: 3rem 0 0 0;
   padding-bottom: 2rem;
+}
+
+.btn {
+  font-family: inherit;
+  font-size: 1.2rem;
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  cursor: pointer;
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.8rem 4rem;
+}
+
+.btn:hover {
+  transform: scale(1.02) translateY(-0.1rem);
+  box-shadow: 5px 5px 4px 0px #6264728f;
+}
+
+.btn:active {
+  transform: scale(1.02) translateY(0.2rem);
+  box-shadow: 3px 3px 2px 0px #6264728f;
+  background-color: var(--background-color2);
+  color: var(--color-primary);
+  font-weight: 700;
 }
 </style>

@@ -26,15 +26,14 @@ export default {
     },
     id: {
       type: Number,
-      required: true,
+      required: false,
     },
   },
 
   methods: {
     toggleDetails() {
-      this.$emit("toggle", this.breed);
+      this.$emit("toggle", this.breed, this.id);
       if (this.breed.isActive) {
-        console.log(this.$refs.listItemRef);
         this.$refs.listItemRef.scrollIntoView({
           behavior: "smooth",
           block: "center",

@@ -6,7 +6,13 @@
       @search="getSearchResults"
       v-if="this.$route.name === 'breeds'"
     ></search-form>
-
+    <the-navigation
+      v-if="displayedBreeds.length !== 0"
+      :lastState="lastBreedState"
+      :isBackDisabled="isBackBtnDisabled"
+      :isForwardDisabled="isForwardBtnDisabled"
+      :id="indexClicked"
+    ></the-navigation>
     <div class="result__container">
       <p class="result__message" v-if="loadingState">{{ loadingState }}</p>
       <p class="result__message" v-else-if="receivedDataState">
@@ -49,12 +55,14 @@ import { searchBreed } from "../data";
 import BreedCard from "./BreedCard.vue";
 import NavigationButton from "./NavigationButton.vue";
 import BreedDetails from "./BreedDetails.vue";
+import TheNavigation from "./TheNavigation.vue";
 export default {
   components: {
     SearchForm,
     BreedCard,
     NavigationButton,
     BreedDetails,
+    TheNavigation,
   },
 
   props: {
@@ -76,6 +84,9 @@ export default {
       message: "",
       isScrollToTopActive: false,
       lastBreedState: [],
+      isBackBtnDisabled: true,
+      isForwardBtnDisabled: true,
+      indexClicked: null,
     };
   },
   methods: {
@@ -171,12 +182,15 @@ export default {
         });
       }
     },
-    toggleCard(breed) {
-      console.log(breed.isActive, breed.name, this.$route.name);
-      this.lastBreedState.push(breed);
-      console.log(this.lastBreedState);
+    toggleCard(breed, id) {
+      this.indexClicked = id;
+
       breed.isActive = !breed.isActive;
-      this.displayedBreeds.forEach((item, id) => {
+      if (breed.isActive) {
+        this.lastBreedState.push(this.indexClicked + 1);
+      }
+
+      this.displayedBreeds.forEach((item) => {
         if (item.name !== breed.name) {
           item.isActive = false;
         }
@@ -184,8 +198,8 @@ export default {
     },
     openDetailsOnRouteParam(breedName) {
       const breedNameParam = breedName.params.breedName;
-      console.log("openDetailsOnRouteParam method");
-      console.log("breedName:", breedNameParam);
+      // console.log("openDetailsOnRouteParam method");
+      // console.log("breedName:", breedNameParam);
 
       if (breedNameParam) {
         this.displayedBreeds.filter((breed) => {
@@ -269,15 +283,23 @@ export default {
 
   updated() {
     console.log("updated hook");
-
     this.openDetailsOnRouteParam(this.$route);
     this.bredNameParamNotFound(this.$route);
     this.scrollToLastOpenCard();
+
     if (this.$route.name === "breedName") {
       this.$router.push({
         name: "details",
       });
     }
+
+    // console.log(this.lastBreedState, this.indexClicked);
+    // this.lastBreedState;
+    // console.log(this.indexClicked + 1);
+    // if (this.lastBreedState.length === 0) {
+    //   this.isBackBtnDisabled = true;
+    //   this.isForwardBtnDisabled = true;
+    // }
   },
 };
 </script>
