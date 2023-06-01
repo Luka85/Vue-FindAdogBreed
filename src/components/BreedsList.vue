@@ -6,7 +6,13 @@
       @search="getSearchResults"
       v-if="this.$route.name === 'breeds'"
     ></search-form>
-
+    <!-- <the-navigation
+      v-if="displayedBreeds.length !== 0"
+      :lastState="lastBreedState"
+      :isBackDisabled="isBackBtnDisabled"
+      :isForwardDisabled="isForwardBtnDisabled"
+      :id="indexClicked"
+    ></the-navigation> -->
     <div class="result__container">
       <p class="result__message" v-if="loadingState">{{ loadingState }}</p>
       <p class="result__message" v-else-if="receivedDataState">
@@ -49,12 +55,14 @@ import { searchBreed } from "../data";
 import BreedCard from "./BreedCard.vue";
 import NavigationButton from "./NavigationButton.vue";
 import BreedDetails from "./BreedDetails.vue";
+// import TheNavigation from "./TheNavigation.vue";
 export default {
   components: {
     SearchForm,
     BreedCard,
     NavigationButton,
     BreedDetails,
+    // TheNavigation,
   },
 
   props: {
@@ -76,6 +84,9 @@ export default {
       message: "",
       isScrollToTopActive: false,
       lastBreedState: [],
+      isBackBtnDisabled: true,
+      isForwardBtnDisabled: true,
+      indexClicked: null,
     };
   },
   methods: {
@@ -123,14 +134,12 @@ export default {
               breed.isActive = false;
               return breed;
             });
-            // console.log(this.searchList);
           } else if (results.length === 1) {
             results[0].isActive = true;
             this.searchList = results;
-            // console.log(this.searchList);
-            // console.log(this.$route);
-            return this.searchList;
+
             this.message = "";
+            return this.searchList;
           } else {
             this.searchList = [];
 
@@ -171,12 +180,14 @@ export default {
         });
       }
     },
-    toggleCard(breed) {
-      console.log(breed.isActive, breed.name, this.$route.name);
-      this.lastBreedState.push(breed);
-      console.log(this.lastBreedState);
+
+    toggleCard(breed, id) {
+      this.indexClicked = id;
       breed.isActive = !breed.isActive;
-      this.displayedBreeds.forEach((item, id) => {
+      if (breed.isActive) {
+        this.lastBreedState.push(breed);
+      }
+      this.displayedBreeds.forEach((item) => {
         if (item.name !== breed.name) {
           item.isActive = false;
         }
@@ -184,8 +195,6 @@ export default {
     },
     openDetailsOnRouteParam(breedName) {
       const breedNameParam = breedName.params.breedName;
-      console.log("openDetailsOnRouteParam method");
-      console.log("breedName:", breedNameParam);
 
       if (breedNameParam) {
         this.displayedBreeds.filter((breed) => {
@@ -252,8 +261,6 @@ export default {
   },
   watch: {
     $route(newRoute, oldRoute) {
-      console.log("WATCH ROUTE", "new", newRoute, "old", oldRoute);
-
       if (this.$route.name === "breedName") {
         this.$router.push({
           name: "details",
@@ -263,16 +270,14 @@ export default {
   },
 
   created() {
-    console.log("created");
     this.fetchData();
   },
 
   updated() {
-    console.log("updated hook");
-
     this.openDetailsOnRouteParam(this.$route);
     this.bredNameParamNotFound(this.$route);
     this.scrollToLastOpenCard();
+
     if (this.$route.name === "breedName") {
       this.$router.push({
         name: "details",
