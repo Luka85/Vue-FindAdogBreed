@@ -59,7 +59,7 @@ export default {
 <style scoped>
 .search__form {
   color: var(--color-primary);
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   padding: 0 8rem;
 }
 .search__input {
@@ -71,7 +71,7 @@ export default {
   border-bottom: 3px solid transparent;
   width: 100%;
   padding: 1rem 1.3rem 0.8rem 1rem;
-  /* background-color: var(--background-color1); */
+
   background-color: #f2e3dbad;
   color: inherit;
 }
