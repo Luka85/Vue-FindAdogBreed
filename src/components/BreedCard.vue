@@ -21,7 +21,6 @@
         >Learn more...</router-link
       >
     </div>
-    <!-- <slot></slot> -->
   </li>
 </template>
 
