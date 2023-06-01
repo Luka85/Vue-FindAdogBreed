@@ -171,11 +171,6 @@ export default {
           item.isActive = false;
         }
       });
-      if (!breed.isActive) {
-        this.$router.push({
-          name: "breeds",
-        });
-      }
     },
     scrollToBreedCard(breedName) {
       const breedNameParam = breedName.params.breedName;
