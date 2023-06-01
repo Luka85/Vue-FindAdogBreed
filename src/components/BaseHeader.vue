@@ -18,6 +18,6 @@ export default {
   font-size: 5rem;
   font-weight: 200;
   text-align: center;
-  margin-bottom: 3rem;
+  margin: 1rem 0;
 }
 </style>
