@@ -7,9 +7,10 @@ import router from "./routes.js";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faAnglesUp } from "@fortawesome/free-solid-svg-icons";
-import { faHandPointUp } from "@fortawesome/free-regular-svg-icons";
+import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
+import { faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faAnglesUp, faHandPointUp);
+library.add(faAnglesUp, faAnglesRight, faAnglesLeft);
 
 import BaseHeader from "./components/BaseHeader.vue";
 
