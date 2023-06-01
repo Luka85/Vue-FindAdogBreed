@@ -5,8 +5,16 @@
     :class="!breed.isActive ? 'hidden-result__details' : 'result__list'"
   >
     <div class="result__heading-container">
-      <span class="result__id">{{ id + 1 }}.</span>
+      <span class="result__id" :class="{ 'result__id--active': breed.isActive }"
+        >{{ id + 1 }}.</span
+      >
       <h3 class="heading-tertiary">{{ breed.name }}</h3>
+      <img
+        v-if="breed.isActive"
+        class="result__breed-image"
+        :src="`https://cdn2.thedogapi.com/images/${breed.reference_image_id}.jpg`"
+        :alt="`Picture of the ${breed.name} dog`"
+      />
     </div>
     <div :class="hiddenClass" @click.stop>
       <router-link :to="{ name: 'details', params: { breedName: breed.name } }"
@@ -34,7 +42,6 @@ export default {
     toggleDetails() {
       this.$emit("toggle", this.breed);
       if (this.breed.isActive) {
-        console.log(this.$refs.listItemRef);
         this.$refs.listItemRef.scrollIntoView({
           behavior: "smooth",
           block: "center",
@@ -55,7 +62,6 @@ export default {
 .result__list {
   font-size: 1.4rem;
   padding: 3rem 8rem;
-
   transition: all 0.3s;
 }
 .result__list:nth-child(odd) {
@@ -87,6 +93,7 @@ export default {
   align-items: center;
   background-color: #f2e3db60;
   border-radius: 1rem 0.2rem 0.2rem 0;
+  position: relative;
 }
 
 .result__heading-container:hover {
@@ -99,13 +106,18 @@ export default {
   padding: 1rem 2rem;
   color: var(--color-secondary);
   border-radius: 1rem 0 1rem 0;
+  display: inline-block;
 }
 
+.result__id--active {
+  padding: 5.8rem 2rem;
+}
 .result__details {
   margin-top: 2rem;
   margin-bottom: 1rem;
   transition: all 0.3s;
-  display: inline-block;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .heading-tertiary {
@@ -128,12 +140,12 @@ a:hover {
   display: inline-block;
   text-decoration: none;
   background-color: var(--color-primary);
-
   padding: 0.8rem 4rem;
   font-size: 1.2rem;
   cursor: pointer;
   margin: 0;
   border-radius: 0.3rem;
+  margin-right: 3rem;
 }
 
 a:hover {
@@ -166,5 +178,11 @@ a:active {
 .router-link-active:active {
   transform: scale(1.02) translateY(0.1rem);
   box-shadow: 2px 2px 2px 0px #6264728f;
+}
+
+.result__breed-image {
+  height: 14rem;
+  border-radius: 0.5rem;
+  border: 0.3rem solid var(--color-primary);
 }
 </style>
