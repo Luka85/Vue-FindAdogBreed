@@ -134,14 +134,11 @@ export default {
               breed.isActive = false;
               return breed;
             });
-            // console.log(this.searchList);
           } else if (results.length === 1) {
             results[0].isActive = true;
             this.searchList = results;
-            // console.log(this.searchList);
-            // console.log(this.$route);
-            return this.searchList;
             this.message = "";
+            return this.searchList;
           } else {
             this.searchList = [];
 
@@ -182,9 +179,9 @@ export default {
         });
       }
     },
+
     toggleCard(breed, id) {
       this.indexClicked = id;
-
       breed.isActive = !breed.isActive;
       if (breed.isActive) {
         this.lastBreedState.push(this.indexClicked + 1);
@@ -195,6 +192,7 @@ export default {
           item.isActive = false;
         }
       });
+
     },
     openDetailsOnRouteParam(breedName) {
       const breedNameParam = breedName.params.breedName;
@@ -208,9 +206,11 @@ export default {
           }
         });
       }
+
     },
     bredNameParamNotFound(breedName) {
       const breedNameParam = breedName.params.breedName;
+
       if (breedNameParam) {
         searchBreed(breedNameParam).then((result) => {
           if (result.length === 0) {
@@ -266,8 +266,6 @@ export default {
   },
   watch: {
     $route(newRoute, oldRoute) {
-      console.log("WATCH ROUTE", "new", newRoute, "old", oldRoute);
-
       if (this.$route.name === "breedName") {
         this.$router.push({
           name: "details",
@@ -277,11 +275,11 @@ export default {
   },
 
   created() {
-    console.log("created");
     this.fetchData();
   },
 
   updated() {
+
     console.log("updated hook");
     this.openDetailsOnRouteParam(this.$route);
     this.bredNameParamNotFound(this.$route);
