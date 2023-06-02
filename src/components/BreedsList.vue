@@ -6,7 +6,13 @@
       @search="getSearchResults"
       v-if="this.$route.name === 'breeds'"
     ></search-form>
-
+    <!-- <the-navigation
+      v-if="displayedBreeds.length !== 0"
+      :lastState="lastBreedState"
+      :isBackDisabled="isBackBtnDisabled"
+      :isForwardDisabled="isForwardBtnDisabled"
+      :id="indexClicked"
+    ></the-navigation> -->
     <div class="result__container">
       <p class="result__message" v-if="loadingState">{{ loadingState }}</p>
       <p class="result__message" v-else-if="receivedDataState">
@@ -49,12 +55,14 @@ import { searchBreed } from "../data";
 import BreedCard from "./BreedCard.vue";
 import NavigationButton from "./NavigationButton.vue";
 import BreedDetails from "./BreedDetails.vue";
+// import TheNavigation from "./TheNavigation.vue";
 export default {
   components: {
     SearchForm,
     BreedCard,
     NavigationButton,
     BreedDetails,
+    // TheNavigation,
   },
 
   props: {
@@ -75,6 +83,10 @@ export default {
       isHidden: true,
       message: "",
       isScrollToTopActive: false,
+      lastBreedState: [],
+      isBackBtnDisabled: true,
+      isForwardBtnDisabled: true,
+      indexClicked: null,
     };
   },
   methods: {
@@ -125,6 +137,7 @@ export default {
           } else if (results.length === 1) {
             results[0].isActive = true;
             this.searchList = results;
+
             this.message = "";
             return this.searchList;
           } else {
@@ -167,25 +180,55 @@ export default {
         });
       }
     },
-    toggleCard(breed) {
+    toggleCard(breed, id) {
+      this.indexClicked = id;
+
       breed.isActive = !breed.isActive;
+      if (breed.isActive) {
+        this.lastBreedState.push(breed);
+      }
+
       this.displayedBreeds.forEach((item) => {
         if (item.name !== breed.name) {
           item.isActive = false;
         }
       });
     },
-    scrollToBreedCard(breedName) {
+    openDetailsOnRouteParam(breedName) {
       const breedNameParam = breedName.params.breedName;
 
       if (breedNameParam) {
-        this.displayedBreeds.filter((breed, id) => {
+        this.displayedBreeds.filter((breed) => {
           if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
-            this.$nextTick(() => {
-              // this.$refs.resultListContainer.children[id].scrollIntoView({
-              //   behavior: "smooth",
-              //   block: "center",
-              // });
+
+            breed.isActive = true;
+          }
+        });
+      }
+    },
+    bredNameParamNotFound(breedName) {
+      const breedNameParam = breedName.params.breedName;
+      if (breedNameParam) {
+        searchBreed(breedNameParam).then((result) => {
+          if (result.length === 0) {
+            this.$router.push({
+              name: "notFound",
+            });
+          }
+        });
+      }
+    },
+    scrollToLastOpenCard() {
+      if (this.$route.name === "breeds" && this.lastBreedState.length > 0) {
+        this.displayedBreeds.filter((breed, id) => {
+          if (
+            this.lastBreedState[this.lastBreedState.length - 1].name ===
+            breed.name
+          ) {
+            this.$refs.resultListContainer.children[id].scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+
             });
           }
         });
@@ -226,7 +269,6 @@ export default {
           name: "details",
         });
       }
-      this.scrollToBreedCard(newRoute);
     },
   },
 
@@ -235,7 +277,10 @@ export default {
   },
 
   updated() {
-    this.scrollToBreedCard(this.$route);
+    this.openDetailsOnRouteParam(this.$route);
+    this.bredNameParamNotFound(this.$route);
+    this.scrollToLastOpenCard();
+
     if (this.$route.name === "breedName") {
       this.$router.push({
         name: "details",
