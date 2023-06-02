@@ -27,9 +27,11 @@
         :src="`https://cdn2.thedogapi.com/images/${breed.reference_image_id}.jpg`"
         :alt="`Picture of the ${breed.name} dog`"
       />
+
     </div>
     <div class="result__go-back">
       <button class="back-btn" @click="$router.back()">Back</button>
+
     </div>
   </div>
 </template>
@@ -55,10 +57,12 @@ export default {
   width: 100%;
   display: flex;
   flex-direction: row;
+
   justify-content: space-between;
   font-size: 1.4rem;
   padding: 0 4rem;
   margin-bottom: 2rem;
+
 }
 .result__description--title {
   font-weight: 500;
@@ -98,6 +102,7 @@ export default {
 
 ul {
   margin-right: 1rem;
+
 }
 .result__go-back {
   margin: 0 auto;
@@ -122,5 +127,6 @@ ul {
   background-color: var(--background-color2);
   color: var(--color-primary);
   font-weight: 700;
+
 }
 </style>
