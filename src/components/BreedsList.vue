@@ -200,6 +200,7 @@ export default {
       if (breedNameParam) {
         this.displayedBreeds.filter((breed) => {
           if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
+
             breed.isActive = true;
           }
         });
@@ -227,6 +228,7 @@ export default {
             this.$refs.resultListContainer.children[id].scrollIntoView({
               behavior: "smooth",
               block: "center",
+
             });
           }
         });
