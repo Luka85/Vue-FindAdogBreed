@@ -180,14 +180,13 @@ export default {
         });
       }
     },
+
     toggleCard(breed, id) {
       this.indexClicked = id;
-
       breed.isActive = !breed.isActive;
       if (breed.isActive) {
         this.lastBreedState.push(breed);
       }
-
       this.displayedBreeds.forEach((item) => {
         if (item.name !== breed.name) {
           item.isActive = false;
