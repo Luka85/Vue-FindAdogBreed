@@ -1,28 +1,33 @@
 <template>
   <div :class="hiddenClass">
+    <h3 class="heading-details">
+      {{ breed.name }}
+    </h3>
     <div class="result__description">
-      <span class="result__temperament result__item--margin"
-        ><span class="result__description--title">Temperament: </span>
-        {{ breed.temperament }}</span
-      >
-      <span class="result__life result__item--margin"
-        ><span class="result__description--title">Life span: </span>
-        {{ breed.life_span }}</span
-      >
-      <span class="result__height result__item--margin"
-        ><span class="result__description--title">Height: </span>
-        {{ breed.height.metric }}cm</span
-      >
-      <span class="result__weight result__item--margin"
-        ><span class="result__description--title">Weight: </span>
-        {{ breed.weight.metric }}kg</span
-      >
+      <ul>
+        <li class="result__temperament result__item--margin">
+          <span class="result__description--title">Temperament: </span>
+          {{ breed.temperament }}
+        </li>
+        <li class="result__life result__item--margin">
+          <span class="result__description--title">Life span: </span>
+          {{ breed.life_span }}
+        </li>
+        <li class="result__height result__item--margin">
+          <span class="result__description--title">Height: </span>
+          {{ breed.height.metric }}cm
+        </li>
+        <li class="result__weight result__item--margin">
+          <span class="result__description--title">Weight: </span>
+          {{ breed.weight.metric }}kg
+        </li>
+      </ul>
+      <img
+        class="result__breed-image"
+        :src="`https://cdn2.thedogapi.com/images/${breed.reference_image_id}.jpg`"
+        :alt="`Picture of the ${breed.name} dog`"
+      />
     </div>
-    <img
-      class="result__breed-image"
-      :src="`https://cdn2.thedogapi.com/images/${breed.reference_image_id}.jpg`"
-      :alt="`Picture of the ${breed.name} dog`"
-    />
   </div>
 </template>
 
@@ -36,7 +41,7 @@ export default {
   },
   computed: {
     hiddenClass() {
-      return this.breed.isActive ? "result__details" : "hidden";
+      return this.breed.isActive ? "result__details-page" : "hidden";
     },
   },
 };
@@ -45,9 +50,8 @@ export default {
 <style scoped>
 .result__description {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  margin-right: 2rem;
+  flex-direction: row;
+  font-size: 1.4rem;
 }
 .result__description--title {
   font-weight: 500;
@@ -65,12 +69,27 @@ export default {
   display: none;
 }
 
-.result__details {
-  margin-top: 3rem;
-  margin-bottom: 1rem;
+.result__details-page {
+  padding: 3rem 6rem;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 0 4rem;
+  margin-bottom: 1rem;
+  background-color: var(--background-color3);
+}
+
+.heading-details {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+
+  margin: 0;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+ul {
+  margin-right: 1rem;
 }
 </style>
