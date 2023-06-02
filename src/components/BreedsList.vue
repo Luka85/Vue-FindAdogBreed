@@ -6,13 +6,17 @@
       @search="getSearchResults"
       v-if="this.$route.name === 'breeds'"
     ></search-form>
+
     <the-navigation
+
       v-if="displayedBreeds.length !== 0"
       :lastState="lastBreedState"
       :isBackDisabled="isBackBtnDisabled"
       :isForwardDisabled="isForwardBtnDisabled"
       :id="indexClicked"
+
     ></the-navigation>
+
     <div class="result__container">
       <p class="result__message" v-if="loadingState">{{ loadingState }}</p>
       <p class="result__message" v-else-if="receivedDataState">
@@ -55,14 +59,18 @@ import { searchBreed } from "../data";
 import BreedCard from "./BreedCard.vue";
 import NavigationButton from "./NavigationButton.vue";
 import BreedDetails from "./BreedDetails.vue";
+
 import TheNavigation from "./TheNavigation.vue";
+
 export default {
   components: {
     SearchForm,
     BreedCard,
     NavigationButton,
     BreedDetails,
+
     TheNavigation,
+
   },
 
   props: {
@@ -137,6 +145,7 @@ export default {
           } else if (results.length === 1) {
             results[0].isActive = true;
             this.searchList = results;
+
             this.message = "";
             return this.searchList;
           } else {
@@ -184,7 +193,8 @@ export default {
       this.indexClicked = id;
       breed.isActive = !breed.isActive;
       if (breed.isActive) {
-        this.lastBreedState.push(this.indexClicked + 1);
+
+        this.lastBreedState.push(breed);
       }
 
       this.displayedBreeds.forEach((item) => {
@@ -196,12 +206,12 @@ export default {
     },
     openDetailsOnRouteParam(breedName) {
       const breedNameParam = breedName.params.breedName;
-      // console.log("openDetailsOnRouteParam method");
-      // console.log("breedName:", breedNameParam);
+
 
       if (breedNameParam) {
         this.displayedBreeds.filter((breed) => {
           if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
+
             breed.isActive = true;
           }
         });
@@ -231,6 +241,7 @@ export default {
             this.$refs.resultListContainer.children[id].scrollIntoView({
               behavior: "smooth",
               block: "center",
+
             });
           }
         });
@@ -280,7 +291,6 @@ export default {
 
   updated() {
 
-    console.log("updated hook");
     this.openDetailsOnRouteParam(this.$route);
     this.bredNameParamNotFound(this.$route);
     this.scrollToLastOpenCard();
