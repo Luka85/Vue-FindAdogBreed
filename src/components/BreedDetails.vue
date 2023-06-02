@@ -104,9 +104,11 @@ ul {
   margin-right: 1rem;
 
 }
+
 .result__go-back {
   margin: 0 auto;
 }
+
 .back-btn {
   font-family: inherit;
   font-size: 1.2rem;
@@ -117,10 +119,12 @@ ul {
   border-radius: 0.3rem;
   padding: 0.8rem 4rem;
 }
+
 .back-btn:hover {
   transform: scale(1.02) translateY(-0.1rem);
   box-shadow: 5px 5px 4px 0px #6264728f;
 }
+
 .back-btn:active {
   transform: scale(1.02) translateY(0.2rem);
   box-shadow: 3px 3px 2px 0px #6264728f;
