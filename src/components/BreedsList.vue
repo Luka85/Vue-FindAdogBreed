@@ -60,6 +60,7 @@ import { searchBreed } from "../data";
 import BreedCard from "./BreedCard.vue";
 import NavigationButton from "./NavigationButton.vue";
 import BreedDetails from "./BreedDetails.vue";
+
 import TheNavigation from "./TheNavigation.vue";
 
 export default {
@@ -238,6 +239,7 @@ export default {
     },
     bredNameParamNotFound(breedName) {
       const breedNameParam = breedName.params.breedName;
+
       if (breedNameParam) {
         searchBreed(breedNameParam).then((result) => {
           if (result.length === 0) {

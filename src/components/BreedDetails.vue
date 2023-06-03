@@ -29,7 +29,13 @@
       />
     </div>
     <div class="result__go-back">
+<<<<<<< HEAD
       <button class="btn" @click="$router.back()">Back</button>
+=======
+
+      <button class="btn" @click="$router.back()">Back</button>
+
+>>>>>>> 13b01206e3855371feb67b617252d331679306b4
     </div>
   </div>
 </template>
@@ -104,4 +110,8 @@ ul {
 .result__go-back {
   margin: 0 auto;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 13b01206e3855371feb67b617252d331679306b4
 </style>
