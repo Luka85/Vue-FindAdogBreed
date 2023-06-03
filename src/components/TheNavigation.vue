@@ -35,12 +35,13 @@ export default {
     },
     isBackDisabled: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     isForwardDisabled: {
       type: Boolean,
-      default: false,
+      default: true,
     },
+
     id: {
       type: Number,
       default: 0,
@@ -48,15 +49,69 @@ export default {
   },
   data() {
     return {
-      currentState: 0,
-      index: 0,
+      index: 1,
+      isBackButtonClicked: false,
+      isForwardButtonClicked: false,
+      currentState: null,
     };
   },
   methods: {
     goBack() {
       console.log("back");
+      this.isBackButtonClicked = true;
+      this.$emit(
+        "update",
+        this.lastState,
+        this.index,
+        this.isBackButtonClicked,
+        this.isForwardButtonClicked
+      );
+
+      if (
+        this.lastState.length > 1 &&
+        this.lastState.length - 1 >= this.index
+      ) {
+        this.currentState = this.lastState.length - 1 - this.index;
+
+        this.lastState[this.lastState.length - 1 - this.index].isActive = true;
+        this.lastState.forEach((state) => {
+          if (
+            state.name !==
+            this.lastState[this.lastState.length - 1 - this.index].name
+          ) {
+            state.isActive = false;
+          }
+        });
+        this.index++;
+      }
     },
-    goForward() {},
+    goForward() {
+      console.log("Forward");
+      this.isForwardButtonClicked = true;
+      // this.$emit(
+      //   "update",
+      //   this.lastState,
+      //   this.index,
+      //   this.isBackButtonClicked,
+      //   this.isForwardButtonClicked
+      // );
+
+      if (
+        this.lastState.length > 1 &&
+        this.isBackButtonClicked &&
+        this.lastState.length - 1 !== this.currentState
+      ) {
+        console.log(this.lastState.length - 1, this.currentState);
+        this.lastState[this.currentState + 1].isActive = true;
+
+        this.lastState.forEach((state) => {
+          if (state.name !== this.lastState[this.currentState + 1].name) {
+            state.isActive = false;
+          }
+        });
+      }
+      this.currentState++;
+    },
   },
 };
 </script>
