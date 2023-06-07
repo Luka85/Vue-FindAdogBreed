@@ -5,7 +5,7 @@ import BreedDetails from "./components/BreedDetails.vue";
 
 const router = new VueRouter({
   mode: "history",
-  base: "/",
+  base: "/Vue-FindAdogBreed/",
   routes: [
     {
       name: "redirect",
