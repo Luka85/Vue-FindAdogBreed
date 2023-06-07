@@ -15,12 +15,12 @@ const router = new VueRouter({
     },
     {
       name: "breeds",
-      path: "/Vue-FindAdogBreed/breeds/",
+      path: "/breeds/",
       component: BreedsList,
     },
     {
       name: "breedName",
-      path: "/Vue-FindAdogBreed/breeds/:breedName",
+      path: "/breeds/:breedName",
       component: BreedsList,
       props: true,
       children: [
@@ -34,7 +34,7 @@ const router = new VueRouter({
 
     {
       name: "search",
-      path: "/Vue-FindAdogBreed/search/",
+      path: "/search/",
       component: BreedsList,
     },
 
