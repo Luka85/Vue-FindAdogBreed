@@ -11,16 +11,16 @@ const router = new VueRouter({
       name: "redirect",
       path: "/",
       component: BreedsList,
-      redirect: "/Vue-FindAdogBreed//breeds/",
+      redirect: "/Vue-FindAdogBreed/breeds/",
     },
     {
       name: "breeds",
-      path: "/Vue-FindAdogBreed//breeds/",
+      path: "/Vue-FindAdogBreed/breeds/",
       component: BreedsList,
     },
     {
       name: "breedName",
-      path: "/Vue-FindAdogBreed//breeds/:breedName",
+      path: "/Vue-FindAdogBreed/breeds/:breedName",
       component: BreedsList,
       props: true,
       children: [
