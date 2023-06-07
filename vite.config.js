@@ -1,6 +1,6 @@
 import vue from "@vitejs/plugin-vue2";
 
 export default {
-  base: "/Vue-FindAdogBreed/",
+  // base: "/Vue-FindAdogBreed/",
   plugins: [vue()],
 };
