@@ -1,3 +1,4 @@
 module.exports = {
-  publicPath: "/Vue-FindAdogBreed/",
+  publicPath:
+    process.env.NODE_ENV === "production" ? "/Vue-FindAdogBreed/" : "/",
 };
