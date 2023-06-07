@@ -11,16 +11,16 @@ const router = new VueRouter({
       name: "redirect",
       path: "/",
       component: BreedsList,
-      redirect: "/breeds/",
+      redirect: "/Vue-FindAdogBreed//breeds/",
     },
     {
       name: "breeds",
-      path: "/breeds/",
+      path: "/Vue-FindAdogBreed//breeds/",
       component: BreedsList,
     },
     {
       name: "breedName",
-      path: "/breeds/:breedName",
+      path: "/Vue-FindAdogBreed//breeds/:breedName",
       component: BreedsList,
       props: true,
       children: [
@@ -34,7 +34,7 @@ const router = new VueRouter({
 
     {
       name: "search",
-      path: "/search/",
+      path: "/Vue-FindAdogBreed/search/",
       component: BreedsList,
     },
 
