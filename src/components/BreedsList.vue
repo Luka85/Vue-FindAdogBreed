@@ -8,15 +8,10 @@
     ></search-form>
 
     <the-navigation
-      @update="navigateBetweenCards"
       v-if="displayedBreeds.length !== 0"
       :lastState="lastBreedState"
-      :isBackDisabled="isBackBtnDisabled"
-      :isForwardDisabled="isForwardBtnDisabled"
       :id="indexClicked"
     ></the-navigation>
-    <!-- :isBackButtonClicked="isBackButtonClicked"
-      :isForwardkButtonClicked="isForwardButtonClicked" -->
 
     <div class="result__container">
       <p class="result__message" v-if="loadingState">{{ loadingState }}</p>
@@ -91,11 +86,8 @@ export default {
       message: "",
       isScrollToTopActive: false,
       lastBreedState: [],
-      isBackBtnDisabled: true,
-      isForwardBtnDisabled: true,
+
       indexClicked: null,
-      // isBackButtonClicked: false,
-      // isForwardButtonClicked: false,
     };
   },
   methods: {
@@ -204,28 +196,6 @@ export default {
       });
     },
 
-    navigateBetweenCards(
-      state,
-      index,
-      isBackButtonClicked,
-      isForwardButtonClicked
-    ) {
-      this.lastBreedState = state;
-      console.log(this.lastBreedState, this.indexClicked);
-      if (this.lastBreedState.length > 1) {
-        this.isBackBtnDisabled = false;
-        console.log(isBackButtonClicked);
-        if (isBackButtonClicked) {
-          this.isForwardBtnDisabled = false;
-        }
-
-        if (this.lastBreedState.length - index === 1) {
-          console.log("konec");
-          this.isBackBtnDisabled = true;
-          this.isForwardBtnDisabled = false;
-        }
-      }
-    },
     openDetailsOnRouteParam(breedName) {
       const breedNameParam = breedName.params.breedName;
 
@@ -300,9 +270,6 @@ export default {
           name: "details",
         });
       }
-    },
-    lastBreedState(newState, oldState) {
-      this.navigateBetweenCards(newState);
     },
   },
 

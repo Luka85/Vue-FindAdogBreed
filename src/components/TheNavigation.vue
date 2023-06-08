@@ -2,7 +2,7 @@
   <div class="navigation-container">
     <button
       class="btn-back btn btn-nav"
-      :disabled="isBackDisabled"
+      :disabled="isBackBtnDisabled"
       @click="goBack"
     >
       <font-awesome-icon
@@ -14,7 +14,7 @@
     </button>
     <button
       class="btn-forward btn btn-nav"
-      :disabled="isForwardDisabled"
+      :disabled="isForwardBtnDisabled"
       @click="goForward"
     >
       Forward
@@ -33,14 +33,6 @@ export default {
     lastState: {
       type: Array,
     },
-    isBackDisabled: {
-      type: Boolean,
-      default: true,
-    },
-    isForwardDisabled: {
-      type: Boolean,
-      default: true,
-    },
 
     id: {
       type: Number,
@@ -53,64 +45,61 @@ export default {
       isBackButtonClicked: false,
       isForwardButtonClicked: false,
       currentState: null,
+      isBackBtnDisabled: true,
+      isForwardBtnDisabled: true,
     };
   },
   methods: {
     goBack() {
-      console.log("back");
       this.isBackButtonClicked = true;
-      this.$emit(
-        "update",
-        this.lastState,
-        this.index,
-        this.isBackButtonClicked,
-        this.isForwardButtonClicked
-      );
+      this.isForwardButtonClicked = false;
+      this.index--;
 
-      if (
-        this.lastState.length > 1 &&
-        this.lastState.length - 1 >= this.index
-      ) {
-        this.currentState = this.lastState.length - 1 - this.index;
-
-        this.lastState[this.lastState.length - 1 - this.index].isActive = true;
-        this.lastState.forEach((state) => {
-          if (
-            state.name !==
-            this.lastState[this.lastState.length - 1 - this.index].name
-          ) {
-            state.isActive = false;
-          }
-        });
-        this.index++;
-      }
+      this.lastState.forEach((state) => {
+        state.isActive = false;
+      });
+      this.lastState[this.index].isActive = true;
     },
     goForward() {
-      console.log("Forward");
       this.isForwardButtonClicked = true;
-      // this.$emit(
-      //   "update",
-      //   this.lastState,
-      //   this.index,
-      //   this.isBackButtonClicked,
-      //   this.isForwardButtonClicked
-      // );
+      this.isBackButtonClicked = false;
 
-      if (
-        this.lastState.length > 1 &&
-        this.isBackButtonClicked &&
-        this.lastState.length - 1 !== this.currentState
-      ) {
-        console.log(this.lastState.length - 1, this.currentState);
-        this.lastState[this.currentState + 1].isActive = true;
-
-        this.lastState.forEach((state) => {
-          if (state.name !== this.lastState[this.currentState + 1].name) {
-            state.isActive = false;
-          }
-        });
+      this.index++;
+      this.lastState.forEach((state) => {
+        state.isActive = false;
+      });
+      this.lastState[this.index].isActive = true;
+    },
+  },
+  watch: {
+    lastState() {
+      if (this.lastState.length > 1) {
+        this.isBackBtnDisabled = false;
       }
-      this.currentState++;
+    },
+    isBackButtonClicked() {
+      if (this.isBackButtonClicked) {
+        this.isForwardBtnDisabled = false;
+      }
+    },
+
+    isForwardButtonClicked() {
+      if (this.isForwardButtonClicked) {
+        this.isBackBtnDisabled = false;
+      }
+    },
+
+    index() {
+      if (this.index === 0) {
+        this.isBackBtnDisabled = true;
+      }
+      if (this.index === this.lastState.length - 1) {
+        this.isForwardBtnDisabled = true;
+      }
+    },
+
+    id() {
+      this.index = this.id;
     },
   },
 };
