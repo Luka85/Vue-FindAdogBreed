@@ -199,7 +199,6 @@ export default {
       if (breedNameParam) {
         this.displayedBreeds.filter((breed) => {
           if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
-
             breed.isActive = true;
           }
         });
@@ -227,7 +226,6 @@ export default {
             this.$refs.resultListContainer.children[id].scrollIntoView({
               behavior: "smooth",
               block: "center",
-
             });
           }
         });
@@ -293,7 +291,7 @@ export default {
 .result__list-container {
   list-style-type: none;
   padding: 0;
-  max-height: 65vh;
+  max-height: 67vh;
   overflow-y: scroll;
 }
 
@@ -303,6 +301,7 @@ p {
 .hidden {
   display: none;
 }
+
 ul::-webkit-scrollbar {
   display: none;
 }
@@ -314,6 +313,24 @@ ul::-webkit-scrollbar {
   text-align: center;
   background-color: #f2e3dbad;
   color: var(--color-primary);
+  @media only screen and (max-width: 1300px) {
+    margin: 0 7rem;
+  }
+  @media only screen and (max-width: 1000px) {
+    margin: 0 5rem;
+  }
+  @media only screen and (max-width: 700px) {
+    margin: 0 2rem;
+    font-size: 1.1rem;
+  }
+  @media only screen and (max-width: 500px) {
+    margin: 0 2rem;
+    font-size: 1rem;
+  }
+  @media only screen and (max-width: 450px) {
+    margin: 0 1rem;
+    font-size: 0.8rem;
+  }
 }
 
 .expandble {
