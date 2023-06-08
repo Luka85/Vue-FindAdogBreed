@@ -1,16 +1,11 @@
 <template>
   <main class="container" ref="containerMain">
     <base-header :title="title"></base-header>
-    <!-- <breeds-list></breeds-list> -->
     <router-view></router-view>
   </main>
 </template>
 <script>
-// import BreedsList from "./components/BreedsList.vue";
 export default {
-  // components: {
-  //   BreedsList,
-  // },
   data() {
     return {
       title: "Find A Dog",
@@ -37,7 +32,20 @@ export default {
 
 html {
   font-family: "Poppins", sans-serif;
-  font-size: 62.5%;
+  font-size: 62%;
+
+  @media only screen and (max-width: 1300px) {
+    font-size: 60%;
+  }
+  @media only screen and (max-width: 1000px) {
+    font-size: 58%;
+  }
+  @media only screen and (max-width: 700px) {
+    font-size: 53%;
+  }
+  @media only screen and (max-width: 500px) {
+    font-size: 48%;
+  }
 }
 
 body {
@@ -48,8 +56,9 @@ body {
   background-attachment: fixed;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   height: 100vh;
+  position: relative;
 }
 
 .container {
@@ -58,7 +67,14 @@ body {
   background-color: var(--background-color2);
   border-radius: 1rem;
   box-shadow: 0px 0px 30px 0px rgba(37, 89, 124, 0.671);
-  margin: 3rem 0 0 0;
+  margin: 2rem 0 0 0;
+
   padding-bottom: 2rem;
+  @media only screen and (max-width: 1300px) {
+    width: 75%;
+  }
+  @media only screen and (max-width: 1000px) {
+    width: 85%;
+  }
 }
 </style>
