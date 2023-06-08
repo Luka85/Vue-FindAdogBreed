@@ -199,7 +199,6 @@ export default {
       if (breedNameParam) {
         this.displayedBreeds.filter((breed) => {
           if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
-
             breed.isActive = true;
           }
         });
@@ -227,7 +226,6 @@ export default {
             this.$refs.resultListContainer.children[id].scrollIntoView({
               behavior: "smooth",
               block: "center",
-
             });
           }
         });
@@ -278,7 +276,9 @@ export default {
   updated() {
     this.openDetailsOnRouteParam(this.$route);
     this.bredNameParamNotFound(this.$route);
-    this.scrollToLastOpenCard();
+    if (!this.isScrollToTopActive) {
+      this.scrollToLastOpenCard();
+    }
 
     if (this.$route.name === "breedName") {
       this.$router.push({
