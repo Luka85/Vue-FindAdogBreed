@@ -53,11 +53,11 @@ export default {
     goBack() {
       this.isBackButtonClicked = true;
       this.isForwardButtonClicked = false;
-      this.index--;
 
       this.lastState.forEach((state) => {
         state.isActive = false;
       });
+      this.index--;
       this.lastState[this.index].isActive = true;
     },
     goForward() {
