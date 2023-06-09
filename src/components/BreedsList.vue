@@ -87,7 +87,7 @@ export default {
       isScrollToTopActive: false,
       lastBreedState: [],
 
-      indexClicked: null,
+      indexClicked: 0,
     };
   },
   methods: {
@@ -183,7 +183,7 @@ export default {
     },
 
     toggleCard(breed, id) {
-      this.indexClicked = id;
+      this.indexClicked++;
       breed.isActive = !breed.isActive;
       if (breed.isActive) {
         this.lastBreedState.push(breed);

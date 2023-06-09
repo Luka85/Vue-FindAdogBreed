@@ -41,10 +41,9 @@ export default {
   },
   data() {
     return {
-      index: 1,
+      index: 0,
       isBackButtonClicked: false,
       isForwardButtonClicked: false,
-      currentState: null,
       isBackBtnDisabled: true,
       isForwardBtnDisabled: true,
     };
@@ -64,10 +63,10 @@ export default {
       this.isForwardButtonClicked = true;
       this.isBackButtonClicked = false;
 
-      this.index++;
       this.lastState.forEach((state) => {
         state.isActive = false;
       });
+      this.index++;
       this.lastState[this.index].isActive = true;
     },
   },
@@ -97,9 +96,9 @@ export default {
         this.isForwardBtnDisabled = true;
       }
     },
-
     id() {
       this.index = this.id;
+      this.index--;
     },
   },
 };
