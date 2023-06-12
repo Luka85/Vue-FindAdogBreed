@@ -21,7 +21,6 @@
         >Learn more...</router-link
       >
     </div>
-    <!-- <slot></slot> -->
   </li>
 </template>
 
@@ -34,19 +33,19 @@ export default {
     },
     id: {
       type: Number,
-      required: true,
+      required: false,
     },
   },
 
   methods: {
     toggleDetails() {
-      this.$emit("toggle", this.breed);
-      if (this.breed.isActive) {
-        this.$refs.listItemRef.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      }
+      this.$emit("toggle", this.breed, this.id);
+      // if (this.breed.isActive) {
+      //   this.$refs.listItemRef.scrollIntoView({
+      //     behavior: "smooth",
+      //     block: "center",
+      //   });
+      // }
     },
   },
 

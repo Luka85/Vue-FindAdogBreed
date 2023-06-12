@@ -77,4 +77,28 @@ body {
     width: 85%;
   }
 }
+
+.btn {
+  font-family: inherit;
+  font-size: 1.2rem;
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  cursor: pointer;
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.8rem 4rem;
+}
+
+.btn:hover {
+  transform: scale(1.02) translateY(-0.1rem);
+  box-shadow: 5px 5px 4px 0px #6264728f;
+}
+
+.btn:active {
+  transform: scale(1.02) translateY(0.2rem);
+  box-shadow: 3px 3px 2px 0px #6264728f;
+  background-color: var(--background-color2);
+  color: var(--color-primary);
+  font-weight: 700;
+}
 </style>
