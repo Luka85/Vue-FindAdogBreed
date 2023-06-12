@@ -1,5 +1,9 @@
 import vue from "@vitejs/plugin-vue2";
+import pluginRewriteAll from "vite-plugin-rewrite-all";
 
-export default {
-  plugins: [vue()],
-};
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  base: "/Vue-FindAdogBreed/",
+  plugins: [vue(), pluginRewriteAll()],
+});
