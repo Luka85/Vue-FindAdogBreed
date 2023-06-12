@@ -19,5 +19,11 @@ export default {
   font-weight: 200;
   text-align: center;
   margin: 1rem 0;
+  @media only screen and (max-width: 700px) {
+    font-size: 4rem;
+  }
+  @media only screen and (max-width: 500px) {
+    font-size: 3.5rem;
+  }
 }
 </style>
