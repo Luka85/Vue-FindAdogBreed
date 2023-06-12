@@ -38,6 +38,12 @@ export default {
   border: none;
   border-radius: 1rem 0 1rem 0;
   transition: all 0.3s;
+  @media only screen and (max-width: 700px) {
+    width: 4rem;
+    height: 4rem;
+    bottom: 9rem;
+    right: 2rem;
+  }
 }
 
 .btn-nav:hover,

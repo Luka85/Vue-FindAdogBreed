@@ -61,6 +61,9 @@ export default {
   color: var(--color-primary);
   margin-bottom: 3rem;
   padding: 0 8rem;
+  @media only screen and (max-width: 700px) {
+    padding: 0 2rem;
+  }
 }
 .search__input {
   font-family: inherit;
