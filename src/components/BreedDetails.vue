@@ -29,7 +29,8 @@
       />
     </div>
     <div class="result__go-back">
-      <button class="back-btn" @click="$router.back()">Back</button>
+      <button class="btn" @click="$router.back()">Back</button>
+
     </div>
   </div>
 </template>
@@ -60,6 +61,7 @@ export default {
   font-size: 1.4rem;
   padding: 0 6rem;
   margin-bottom: 2rem;
+
   @media only screen and (max-width: 1100px) {
     padding: 0 2rem;
   }
@@ -69,6 +71,7 @@ export default {
   @media only screen and (max-width: 700px) {
     flex-direction: column;
   }
+
 }
 .result__description--title {
   font-weight: 500;
@@ -135,6 +138,7 @@ ul {
   margin: 0 auto;
 }
 
+
 .back-btn {
   font-family: inherit;
   font-size: 1.2rem;
@@ -158,4 +162,5 @@ ul {
   color: var(--color-primary);
   font-weight: 700;
 }
+
 </style>
