@@ -93,6 +93,9 @@ export default {
   background-color: #f2e3db60;
   border-radius: 1rem 0.2rem 0.2rem 0;
   position: relative;
+  /* @media only screen and (max-width: 500px) {
+    font-size: 50%;
+  } */
 }
 
 .result__heading-container:hover {
@@ -110,6 +113,9 @@ export default {
 
 .result__id--active {
   padding: 5.8rem 2rem;
+  @media only screen and (max-width: 600px) {
+    padding: 4.4rem 2rem;
+  }
 }
 .result__details {
   margin-top: 2rem;
@@ -183,5 +189,11 @@ a:active {
   height: 14rem;
   border-radius: 0.5rem;
   border: 0.3rem solid var(--color-primary);
+  @media only screen and (max-width: 600px) {
+    height: 11rem;
+  }
+  @media only screen and (max-width: 450px) {
+    display: none;
+  }
 }
 </style>
