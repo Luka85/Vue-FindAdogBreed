@@ -40,12 +40,6 @@ export default {
   methods: {
     toggleDetails() {
       this.$emit("toggle", this.breed, this.id);
-      // if (this.breed.isActive) {
-      //   this.$refs.listItemRef.scrollIntoView({
-      //     behavior: "smooth",
-      //     block: "center",
-      //   });
-      // }
     },
   },
 
