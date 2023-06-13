@@ -280,7 +280,9 @@ export default {
   updated() {
     this.openDetailsOnRouteParam(this.$route);
     this.bredNameParamNotFound(this.$route);
-    this.scrollToLastOpenCard();
+    if (!this.isScrollToTopActive) {
+      this.scrollToLastOpenCard();
+    }
 
     if (this.$route.name === "breeds") {
       this.displayedBreeds.filter((breed, id) => {
