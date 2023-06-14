@@ -2,7 +2,7 @@
   <div class="navigation-container">
     <button
       class="btn-back btn btn-nav"
-      :disabled="isBackBtnDisabled"
+      :disabled="disabledBackBtn"
       @click="goBack"
     >
       <font-awesome-icon
@@ -14,7 +14,7 @@
     </button>
     <button
       class="btn-forward btn btn-nav"
-      :disabled="isForwardBtnDisabled"
+      :disabled="disabledForwardBtn"
       @click="goForward"
     >
       Forward
@@ -38,14 +38,16 @@ export default {
       type: Number,
       default: 0,
     },
+    breeds: {
+      type: Array,
+      required: true,
+    },
   },
   data() {
     return {
       index: 0,
       isBackButtonClicked: false,
       isForwardButtonClicked: false,
-      isBackBtnDisabled: true,
-      isForwardBtnDisabled: true,
     };
   },
   methods: {
@@ -53,49 +55,42 @@ export default {
       this.isBackButtonClicked = true;
       this.isForwardButtonClicked = false;
 
-      this.lastState.forEach((state) => {
-        state.isActive = false;
+      this.breeds.forEach((breed) => {
+        breed.isActive = false;
       });
       this.index--;
-      this.lastState[this.index].isActive = true;
+      this.breeds[this.lastState[this.index]].isActive = true;
     },
     goForward() {
       this.isForwardButtonClicked = true;
       this.isBackButtonClicked = false;
 
-      this.lastState.forEach((state) => {
-        state.isActive = false;
+      this.breeds.forEach((breed) => {
+        breed.isActive = false;
       });
       this.index++;
-      this.lastState[this.index].isActive = true;
+      this.breeds[this.lastState[this.index]].isActive = true;
+    },
+  },
+  computed: {
+    disabledBackBtn() {
+      if (this.index === 0) {
+        return true;
+      } else if (this.lastState.length > 1) {
+        return false;
+      }
+    },
+    disabledForwardBtn() {
+      if (this.index === this.lastState.length - 1) {
+        return true;
+      } else if (this.isBackButtonClicked) {
+        return false;
+      } else if (this.index === 0) {
+        return true;
+      }
     },
   },
   watch: {
-    lastState() {
-      if (this.lastState.length > 1) {
-        this.isBackBtnDisabled = false;
-      }
-    },
-    isBackButtonClicked() {
-      if (this.isBackButtonClicked) {
-        this.isForwardBtnDisabled = false;
-      }
-    },
-
-    isForwardButtonClicked() {
-      if (this.isForwardButtonClicked) {
-        this.isBackBtnDisabled = false;
-      }
-    },
-
-    index() {
-      if (this.index === 0) {
-        this.isBackBtnDisabled = true;
-      }
-      if (this.index === this.lastState.length - 1) {
-        this.isForwardBtnDisabled = true;
-      }
-    },
     id() {
       this.index = this.id;
       this.index--;
