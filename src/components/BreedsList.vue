@@ -11,6 +11,7 @@
       v-if="displayedBreeds.length !== 0"
       :lastState="lastBreedState"
       :id="indexClicked"
+      :breeds="breedsList"
     ></the-navigation>
 
     <div class="result__container">
@@ -186,7 +187,7 @@ export default {
       this.indexClicked++;
       breed.isActive = !breed.isActive;
       if (breed.isActive) {
-        this.lastBreedState.push(breed);
+        this.lastBreedState.push(id);
       }
 
       this.displayedBreeds.forEach((item) => {
@@ -215,21 +216,6 @@ export default {
           if (result.length === 0) {
             this.$router.push({
               name: "notFound",
-            });
-          }
-        });
-      }
-    },
-    scrollToLastOpenCard() {
-      if (this.$route.name === "breeds" && this.lastBreedState.length > 0) {
-        this.displayedBreeds.filter((breed, id) => {
-          if (
-            this.lastBreedState[this.lastBreedState.length - 1].name ===
-            breed.name
-          ) {
-            this.$refs.resultListContainer.children[id].scrollIntoView({
-              behavior: "smooth",
-              block: "center",
             });
           }
         });
@@ -280,9 +266,6 @@ export default {
   updated() {
     this.openDetailsOnRouteParam(this.$route);
     this.bredNameParamNotFound(this.$route);
-    if (!this.isScrollToTopActive) {
-      this.scrollToLastOpenCard();
-    }
 
     if (this.$route.name === "breeds") {
       this.displayedBreeds.filter((breed, id) => {
