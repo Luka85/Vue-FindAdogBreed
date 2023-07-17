@@ -34,7 +34,7 @@ const router = new VueRouter({
 
     {
       name: "search",
-      path: "/search/",
+      path: "/breeds/search/",
       component: BreedsList,
     },
 
