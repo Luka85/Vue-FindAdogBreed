@@ -11,7 +11,7 @@
       v-if="displayedBreeds.length !== 0"
       :lastState="lastBreedState"
       :id="indexClicked"
-      :breeds="breedsList"
+      :breeds="displayedBreeds"
     ></the-navigation>
 
     <div class="result__container">
