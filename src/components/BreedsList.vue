@@ -4,14 +4,14 @@
       ref="searchRef"
       :isDisabled="isInputDisabled"
       @search="getSearchResults"
-      v-if="this.$route.name === 'breeds'"
+      v-if="this.$route.name === 'breeds' || this.$route.name === 'search'"
     ></search-form>
 
     <the-navigation
       v-if="displayedBreeds.length !== 0"
       :lastState="lastBreedState"
       :id="indexClicked"
-      :breeds="breedsList"
+      :breeds="displayedBreeds"
     ></the-navigation>
 
     <div class="result__container">
@@ -19,8 +19,12 @@
       <p class="result__message" v-else-if="receivedDataState">
         {{ receivedDataState }}
       </p>
+
       <ul
-        v-else-if="displayedBreeds && this.$route.name === 'breeds'"
+        v-else-if="
+          (displayedBreeds && this.$route.name === 'breeds') ||
+          this.$route.name === 'search'
+        "
         class="result__list-container"
         ref="resultListContainer"
         @scroll="showNavigationBtn"
@@ -119,6 +123,7 @@ export default {
         });
     },
     getSearchResults(input) {
+      console.log(input);
       this.isLoading = true;
       this.message = "Data is loading...";
       this.searchQuery = input;
@@ -197,30 +202,30 @@ export default {
       });
     },
 
-    openDetailsOnRouteParam(breedName) {
-      const breedNameParam = breedName.params.breedName;
+    // openDetailsOnRouteParam(breedName) {
+    //   const breedNameParam = breedName.params.breedName;
 
-      if (breedNameParam) {
-        this.displayedBreeds.filter((breed) => {
-          if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
-            breed.isActive = true;
-          }
-        });
-      }
-    },
-    bredNameParamNotFound(breedName) {
-      const breedNameParam = breedName.params.breedName;
+    //   if (breedNameParam) {
+    //     this.displayedBreeds.filter((breed) => {
+    //       if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
+    //         breed.isActive = true;
+    //       }
+    //     });
+    //   }
+    // },
+    // bredNameParamNotFound(breedName) {
+    //   const breedNameParam = breedName.params.breedName;
 
-      if (breedNameParam) {
-        searchBreed(breedNameParam).then((result) => {
-          if (result.length === 0) {
-            this.$router.push({
-              name: "notFound",
-            });
-          }
-        });
-      }
-    },
+    //   if (breedNameParam) {
+    //     searchBreed(breedNameParam).then((result) => {
+    //       if (result.length === 0) {
+    //         this.$router.push({
+    //           name: "notFound",
+    //         });
+    //       }
+    //     });
+    //   }
+    // },
   },
   computed: {
     displayedBreeds() {
@@ -264,8 +269,8 @@ export default {
   },
 
   updated() {
-    this.openDetailsOnRouteParam(this.$route);
-    this.bredNameParamNotFound(this.$route);
+    // this.openDetailsOnRouteParam(this.$route);
+    // this.bredNameParamNotFound(this.$route);
 
     if (this.$route.name === "breeds") {
       this.displayedBreeds.filter((breed, id) => {
