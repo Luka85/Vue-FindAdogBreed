@@ -78,7 +78,7 @@ export default {
         return true;
       } else if (this.lastState.length > 1) {
         return false;
-      }
+      } else return false;
     },
     disabledForwardBtn() {
       if (this.index === this.lastState.length - 1) {
@@ -87,7 +87,7 @@ export default {
         return false;
       } else if (this.index === 0) {
         return true;
-      }
+      } else return false;
     },
   },
   watch: {
