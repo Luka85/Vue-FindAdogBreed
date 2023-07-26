@@ -191,10 +191,10 @@ export default {
     toggleCard(breed, id) {
       this.indexClicked++;
       breed.isActive = !breed.isActive;
+
       if (breed.isActive) {
         this.lastBreedState.push(id);
       }
-
       this.displayedBreeds.forEach((item) => {
         if (item.name !== breed.name) {
           item.isActive = false;
@@ -261,6 +261,11 @@ export default {
           name: "details",
         });
       }
+      this.lastBreedState = [];
+      this.indexClicked = 0;
+      this.displayedBreeds.forEach((breed) => {
+        breed.isActive = false;
+      });
     },
   },
 
