@@ -123,7 +123,6 @@ export default {
         });
     },
     getSearchResults(input) {
-      console.log(input);
       this.isLoading = true;
       this.message = "Data is loading...";
       this.searchQuery = input;
@@ -189,11 +188,11 @@ export default {
     },
 
     toggleCard(breed, id) {
-      this.indexClicked++;
       breed.isActive = !breed.isActive;
-
       if (breed.isActive) {
+        this.indexClicked++;
         this.lastBreedState.push(id);
+      } else if (!breed.isActive) {
       }
       this.displayedBreeds.forEach((item) => {
         if (item.name !== breed.name) {
@@ -277,7 +276,7 @@ export default {
     // this.openDetailsOnRouteParam(this.$route);
     // this.bredNameParamNotFound(this.$route);
 
-    if (this.$route.name === "breeds") {
+    if (this.$route.name === "breeds" || this.$route.name === "search") {
       this.displayedBreeds.filter((breed, id) => {
         if (breed.isActive) {
           this.$refs.resultListContainer.children[id].scrollIntoView({

@@ -78,6 +78,8 @@ export default {
         return true;
       } else if (this.lastState.length > 1) {
         return false;
+      } else if (this.lastState.length === 0) {
+        return true;
       } else return false;
     },
     disabledForwardBtn() {
