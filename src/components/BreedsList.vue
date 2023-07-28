@@ -202,17 +202,17 @@ export default {
       });
     },
 
-    // openDetailsOnRouteParam(breedName) {
-    //   const breedNameParam = breedName.params.breedName;
+    openDetailsOnRouteParam(breedName) {
+      const breedNameParam = breedName.params.breedName;
 
-    //   if (breedNameParam) {
-    //     this.displayedBreeds.filter((breed) => {
-    //       if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
-    //         breed.isActive = true;
-    //       }
-    //     });
-    //   }
-    // },
+      if (breedNameParam) {
+        this.displayedBreeds.filter((breed) => {
+          if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
+            breed.isActive = true;
+          }
+        });
+      }
+    },
     // bredNameParamNotFound(breedName) {
     //   const breedNameParam = breedName.params.breedName;
 
@@ -262,32 +262,29 @@ export default {
         });
       }
     },
+    displayedBreeds: {
+      handler(breeds) {
+        if (this.$route.name === "breeds") {
+          breeds.filter((breed, id) => {
+            if (breed.isActive) {
+              this.$refs.resultListContainer.children[id].scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+            }
+          });
+        }
+      },
+      deep: true,
+    },
+
+    openDetailsOnRouteParam(newParam, oldParam) {
+      this.openDetailsOnRouteParam(newParam);
+    },
   },
 
   created() {
     this.fetchData();
-  },
-
-  updated() {
-    // this.openDetailsOnRouteParam(this.$route);
-    // this.bredNameParamNotFound(this.$route);
-
-    if (this.$route.name === "breeds") {
-      this.displayedBreeds.filter((breed, id) => {
-        if (breed.isActive) {
-          this.$refs.resultListContainer.children[id].scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-          });
-        }
-      });
-    }
-
-    if (this.$route.name === "breedName") {
-      this.$router.push({
-        name: "details",
-      });
-    }
   },
 };
 </script>
