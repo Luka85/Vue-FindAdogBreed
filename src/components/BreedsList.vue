@@ -1,11 +1,13 @@
 <template>
   <section ref="breedListRef" class="breedsList__container">
-    <search-form
-      ref="searchRef"
-      :isDisabled="isInputDisabled"
-      @search="getSearchResults"
-      v-if="this.$route.name === 'breeds' || this.$route.name === 'search'"
-    ></search-form>
+    <keep-alive>
+      <search-form
+        ref="searchRef"
+        :isDisabled="isInputDisabled"
+        @search="getSearchResults"
+        v-if="this.$route.name === 'breeds' || this.$route.name === 'search'"
+      ></search-form>
+    </keep-alive>
 
     <the-navigation
       v-if="displayedBreeds.length !== 0"
@@ -44,6 +46,7 @@
         v-for="(breed, index) in displayedBreeds"
         :breed="breed"
         :key="breed.id"
+        :searchQuery="searchQuery"
       ></router-view>
     </div>
     <navigation-button
@@ -123,7 +126,6 @@ export default {
         });
     },
     getSearchResults(input) {
-      console.log(input);
       this.isLoading = true;
       this.message = "Data is loading...";
       this.searchQuery = input;
@@ -213,6 +215,7 @@ export default {
         });
       }
     },
+
     // bredNameParamNotFound(breedName) {
     //   const breedNameParam = breedName.params.breedName;
 
@@ -256,11 +259,11 @@ export default {
   },
   watch: {
     $route(newRoute, oldRoute) {
-      if (this.$route.name === "breedName") {
-        this.$router.push({
-          name: "details",
-        });
-      }
+      // if (this.$route.name === "breedName") {
+      //   this.$router.push({
+      //     name: "details",
+      //   });
+      // }
     },
     displayedBreeds: {
       handler(breeds) {
