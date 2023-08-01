@@ -4,6 +4,6 @@ import pluginRewriteAll from "vite-plugin-rewrite-all";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: "/Vue-FindAdogBreed/",
+  base: "/",
   plugins: [vue(), pluginRewriteAll()],
 });
