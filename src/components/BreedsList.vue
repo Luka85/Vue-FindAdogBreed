@@ -39,12 +39,13 @@
         >
         </breed-card>
       </ul>
-      <router-view
-        v-else-if="this.$route.name === 'details'"
+      <div
         v-for="(breed, index) in displayedBreeds"
-        :breed="breed"
         :key="breed.id"
-      ></router-view>
+        v-else-if="this.$route.name === 'details'"
+      >
+        <router-view :breed="breed"></router-view>
+      </div>
     </div>
     <navigation-button
       @clickToScroll="scrollListToTop"
@@ -123,7 +124,6 @@ export default {
         });
     },
     getSearchResults(input) {
-      console.log(input);
       this.isLoading = true;
       this.message = "Data is loading...";
       this.searchQuery = input;
@@ -135,7 +135,7 @@ export default {
       searchBreed(this.searchQuery)
         .then((results) => {
           this.isLoading = false;
-          if (results.length > 0) {
+          if (results.length > 1) {
             this.message = "";
             this.searchList = results.map((breed) => {
               breed.isActive = false;
@@ -214,22 +214,23 @@ export default {
     //   }
     // },
     // bredNameParamNotFound(breedName) {
-    //   const breedNameParam = breedName.params.breedName;
-
-    //   if (breedNameParam) {
-    //     searchBreed(breedNameParam).then((result) => {
-    //       if (result.length === 0) {
-    //         this.$router.push({
-    //           name: "notFound",
-    //         });
-    //       }
-    //     });
-    //   }
+    //   console.log(breedName);
+    //   console.log(this.breedName);
+    // const breedNameParam = breedName.params.breedName;
+    // if (!breedNameParam || this.displayedBreeds.length !== 1) {
+    // searchBreed(breedNameParam).then((result) => {
+    //   if (result.length === 0) {
+    // this.$router.push({
+    //   name: "notFound",
+    // });
+    // }
+    // });
+    // }
     // },
   },
   computed: {
     displayedBreeds() {
-      if (this.searchQuery) {
+      if (this.breedName || this.searchQuery) {
         return this.searchList;
       } else {
         return this.breedsList;
@@ -256,36 +257,45 @@ export default {
   },
   watch: {
     $route(newRoute, oldRoute) {
-      if (this.$route.name === "breedName") {
+      if (newRoute.name === "breedName") {
         this.$router.push({
           name: "details",
         });
+      }
+      if (newRoute.name === "breeds") {
+        this.searchQuery = "";
+        this.fetchData();
+      }
+      if (newRoute.name === "search") {
+        this.getSearchResults(this.$route.query.q);
       }
     },
   },
 
   created() {
-    this.fetchData();
-  },
-
-  updated() {
-    // this.openDetailsOnRouteParam(this.$route);
-    // this.bredNameParamNotFound(this.$route);
-
     if (this.$route.name === "breeds") {
-      this.displayedBreeds.filter((breed, id) => {
-        if (breed.isActive) {
-          this.$refs.resultListContainer.children[id].scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-          });
-        }
-      });
+      this.fetchData();
     }
 
+    if (this.$route.name === "search") {
+      this.getSearchResults(this.$route.query.q);
+    }
     if (this.$route.name === "breedName") {
       this.$router.push({
         name: "details",
+      });
+    }
+    if (this.$route.name === "details") {
+      searchBreed(this.breedName).then((result) => {
+        if (result.length !== 1) {
+          this.$router.push({
+            name: "notFound",
+          });
+        } else if (result.length === 1) {
+          result[0].isActive = true;
+          this.searchList = result;
+          return this.searchList;
+        }
       });
     }
   },
