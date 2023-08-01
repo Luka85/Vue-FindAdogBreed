@@ -4,8 +4,8 @@ import NotFound from "./components/NotFound.vue";
 import BreedDetails from "./components/BreedDetails.vue";
 
 const router = new VueRouter({
-  mode: "hash",
-  base: "/Vue-FindAdogBreed/",
+  mode: "history",
+  base: "/",
   routes: [
     {
       name: "redirect",
