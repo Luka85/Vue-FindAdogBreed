@@ -59,7 +59,9 @@ export default {
         breed.isActive = false;
       });
       this.index--;
+
       this.breeds[this.lastState[this.index]].isActive = true;
+      this.$emit("countdown", this.index);
     },
     goForward() {
       this.isForwardButtonClicked = true;
@@ -70,6 +72,7 @@ export default {
       });
       this.index++;
       this.breeds[this.lastState[this.index]].isActive = true;
+      this.$emit("addingUp", this.index);
     },
   },
   computed: {
@@ -93,8 +96,9 @@ export default {
     },
   },
   watch: {
-    id() {
+    id(newIndex, oldIndex) {
       this.index = this.id;
+
       this.index--;
     },
   },

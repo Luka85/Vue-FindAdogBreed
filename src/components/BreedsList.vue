@@ -12,6 +12,8 @@
       :lastState="lastBreedState"
       :id="indexClicked"
       :breeds="displayedBreeds"
+      @countdown="scrollToView"
+      @addingUp="scrollToView"
     ></the-navigation>
 
     <div class="result__container">
@@ -91,7 +93,6 @@ export default {
       message: "",
       isScrollToTopActive: false,
       lastBreedState: [],
-
       indexClicked: 0,
     };
   },
@@ -188,11 +189,16 @@ export default {
     },
 
     toggleCard(breed, id) {
+      this.currentIndex = id;
+      // console.log(this.currentIndex, id);
       breed.isActive = !breed.isActive;
 
       if (breed.isActive) {
         this.indexClicked++;
         this.lastBreedState.push(id);
+
+        // console.log(this.lastBreedState, id);
+        // console.log(this.indexClicked);
       }
       this.displayedBreeds.forEach((item) => {
         if (item.name !== breed.name) {
@@ -225,6 +231,20 @@ export default {
     //     });
     //   }
     // },
+    scrollToView(index) {
+      console.log(index);
+      this.displayedBreeds.forEach((breed) => {
+        if (breed.isActive) {
+          console.log(breed);
+          this.$refs.resultListContainer.children[
+            this.lastBreedState[index]
+          ].scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      });
+    },
   },
   computed: {
     displayedBreeds() {
@@ -255,14 +275,11 @@ export default {
   },
   watch: {
     $route(newRoute, oldRoute) {
-      console.log("watch route");
       if (this.$route.name === "breedName") {
         this.$router.push({
           name: "details",
         });
       }
-      console.log("new", newRoute, "old", oldRoute);
-      console.log(newRoute);
 
       this.lastBreedState = [];
       this.indexClicked = 0;
@@ -270,19 +287,17 @@ export default {
         breed.isActive = false;
       });
     },
-
-    displayedBreeds: {
-      handler(breeds) {
-        breeds.filter((breed, id) => {
-          if (breed.isActive) {
-            this.$refs.resultListContainer.children[id].scrollIntoView({
-              behavior: "smooth",
-              block: "center",
-            });
-          }
-        });
-      },
-      deep: true,
+    indexClicked(newIndex, oldIndex) {
+      this.displayedBreeds.forEach((breed) => {
+        if (breed.isActive) {
+          this.$refs.resultListContainer.children[
+            this.lastBreedState[oldIndex]
+          ].scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      });
     },
   },
 
