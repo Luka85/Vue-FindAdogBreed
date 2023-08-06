@@ -20,7 +20,7 @@
       <router-link
         :to="{
           name: 'details',
-          params: { breedName: breed.name, prevRoute: $route.path },
+          params: { breedName: breed.name },
         }"
         >Learn more...</router-link
       >
