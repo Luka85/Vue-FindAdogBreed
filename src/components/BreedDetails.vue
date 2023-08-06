@@ -29,7 +29,7 @@
       />
     </div>
     <div class="result__go-back">
-      <button class="btn" @click="goBackToPreviousRoute">Back</button>
+      <button class="btn" @click="$router.go(-1)">Back</button>
     </div>
   </div>
 </template>
@@ -51,21 +51,6 @@ export default {
   computed: {
     hiddenClass() {
       return this.breed.isActive ? "result__details-page" : "hidden";
-    },
-  },
-  methods: {
-    goBackToPreviousRoute() {
-      if (this.$route.params.prevRoute === "/breeds/search") {
-        this.$router.push({
-          name: "search",
-          params: {
-            search: this.searchQuery,
-          },
-          query: { q: this.searchQuery },
-        });
-      } else {
-        this.$router.push({ name: "breeds" });
-      }
     },
   },
 };
