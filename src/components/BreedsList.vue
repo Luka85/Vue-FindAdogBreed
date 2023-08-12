@@ -12,6 +12,8 @@
       :lastState="lastBreedState"
       :id="indexClicked"
       :breeds="displayedBreeds"
+      @countdown="scrollToView"
+      @addingUp="scrollToView"
     ></the-navigation>
 
     <div class="result__container">
@@ -91,7 +93,6 @@ export default {
       message: "",
       isScrollToTopActive: false,
       lastBreedState: [],
-
       indexClicked: 0,
     };
   },
@@ -123,7 +124,6 @@ export default {
         });
     },
     getSearchResults(input) {
-      console.log(input);
       this.isLoading = true;
       this.message = "Data is loading...";
       this.searchQuery = input;
@@ -189,12 +189,17 @@ export default {
     },
 
     toggleCard(breed, id) {
-      this.indexClicked++;
+      this.currentIndex = id;
+      // console.log(this.currentIndex, id);
       breed.isActive = !breed.isActive;
-      if (breed.isActive) {
-        this.lastBreedState.push(id);
-      }
 
+      if (breed.isActive) {
+        this.indexClicked++;
+        this.lastBreedState.push(id);
+
+        // console.log(this.lastBreedState, id);
+        // console.log(this.indexClicked);
+      }
       this.displayedBreeds.forEach((item) => {
         if (item.name !== breed.name) {
           item.isActive = false;
@@ -226,6 +231,20 @@ export default {
     //     });
     //   }
     // },
+    scrollToView(index) {
+      console.log(index);
+      this.displayedBreeds.forEach((breed) => {
+        if (breed.isActive) {
+          console.log(breed);
+          this.$refs.resultListContainer.children[
+            this.lastBreedState[index]
+          ].scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      });
+    },
   },
   computed: {
     displayedBreeds() {
@@ -261,33 +280,29 @@ export default {
           name: "details",
         });
       }
+
+      this.lastBreedState = [];
+      this.indexClicked = 0;
+      this.displayedBreeds.forEach((breed) => {
+        breed.isActive = false;
+      });
     },
-  },
-
-  created() {
-    this.fetchData();
-  },
-
-  updated() {
-    // this.openDetailsOnRouteParam(this.$route);
-    // this.bredNameParamNotFound(this.$route);
-
-    if (this.$route.name === "breeds") {
-      this.displayedBreeds.filter((breed, id) => {
+    indexClicked(newIndex, oldIndex) {
+      this.displayedBreeds.forEach((breed) => {
         if (breed.isActive) {
-          this.$refs.resultListContainer.children[id].scrollIntoView({
+          this.$refs.resultListContainer.children[
+            this.lastBreedState[oldIndex]
+          ].scrollIntoView({
             behavior: "smooth",
             block: "center",
           });
         }
       });
-    }
+    },
+  },
 
-    if (this.$route.name === "breedName") {
-      this.$router.push({
-        name: "details",
-      });
-    }
+  created() {
+    this.fetchData();
   },
 };
 </script>
