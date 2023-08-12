@@ -9,7 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "NODE_ENV=production npm run build && gh-pages -d dist"
+    "deploy": "set NODE_ENV=production npm run build && gh-pages -d dist"
   },
   "author": "luka",
   "license": "ISC",
