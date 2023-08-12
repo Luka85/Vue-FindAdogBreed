@@ -1,11 +1,13 @@
 <template>
   <section ref="breedListRef" class="breedsList__container">
-    <search-form
-      ref="searchRef"
-      :isDisabled="isInputDisabled"
-      @search="getSearchResults"
-      v-if="this.$route.name === 'breeds' || this.$route.name === 'search'"
-    ></search-form>
+    <keep-alive>
+      <search-form
+        ref="searchRef"
+        :isDisabled="isInputDisabled"
+        @search="getSearchResults"
+        v-if="this.$route.name === 'breeds' || this.$route.name === 'search'"
+      ></search-form>
+    </keep-alive>
 
     <the-navigation
       v-if="displayedBreeds.length !== 0"
@@ -46,6 +48,7 @@
         v-for="(breed, index) in displayedBreeds"
         :breed="breed"
         :key="breed.id"
+        :searchQuery="searchQuery"
       ></router-view>
     </div>
     <navigation-button
@@ -207,17 +210,18 @@ export default {
       });
     },
 
-    // openDetailsOnRouteParam(breedName) {
-    //   const breedNameParam = breedName.params.breedName;
+    openDetailsOnRouteParam(breedName) {
+      const breedNameParam = breedName.params.breedName;
 
-    //   if (breedNameParam) {
-    //     this.displayedBreeds.filter((breed) => {
-    //       if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
-    //         breed.isActive = true;
-    //       }
-    //     });
-    //   }
-    // },
+      if (breedNameParam) {
+        this.displayedBreeds.filter((breed) => {
+          if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
+            breed.isActive = true;
+          }
+        });
+      }
+    },
+
     // bredNameParamNotFound(breedName) {
     //   const breedNameParam = breedName.params.breedName;
 
@@ -275,6 +279,35 @@ export default {
   },
   watch: {
     $route(newRoute, oldRoute) {
+
+      // if (this.$route.name === "breedName") {
+      //   this.$router.push({
+      //     name: "details",
+      //   });
+      // }
+    },
+    displayedBreeds: {
+      handler(breeds) {
+        if (this.$route.name === "breeds") {
+          breeds.filter((breed, id) => {
+            if (breed.isActive) {
+              this.$refs.resultListContainer.children[id].scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+            }
+          });
+        }
+      },
+      deep: true,
+    },
+
+    openDetailsOnRouteParam(newParam, oldParam) {
+      this.openDetailsOnRouteParam(newParam);
+    },
+  },
+
+
       if (this.$route.name === "breedName") {
         this.$router.push({
           name: "details",
@@ -300,6 +333,7 @@ export default {
       });
     },
   },
+
 
   created() {
     this.fetchData();

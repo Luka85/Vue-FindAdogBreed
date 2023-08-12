@@ -29,8 +29,7 @@
       />
     </div>
     <div class="result__go-back">
-      <button class="btn" @click="$router.back()">Back</button>
-
+      <button class="btn" @click="$router.go(-1)">Back</button>
     </div>
   </div>
 </template>
@@ -42,7 +41,13 @@ export default {
       type: Object,
       required: true,
     },
+
+    searchQuery: {
+      type: String,
+      required: false,
+    },
   },
+
   computed: {
     hiddenClass() {
       return this.breed.isActive ? "result__details-page" : "hidden";
@@ -71,7 +76,6 @@ export default {
   @media only screen and (max-width: 700px) {
     flex-direction: column;
   }
-
 }
 .result__description--title {
   font-weight: 500;
@@ -138,7 +142,6 @@ ul {
   margin: 0 auto;
 }
 
-
 .back-btn {
   font-family: inherit;
   font-size: 1.2rem;
@@ -162,5 +165,4 @@ ul {
   color: var(--color-primary);
   font-weight: 700;
 }
-
 </style>
