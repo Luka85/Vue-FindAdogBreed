@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === "production") {
 
 const router = new VueRouter({
   mode: "history",
-  base: basePath,
+  base: "/Vue-FindAdogBreed/",
   routes: [
     {
       name: "redirect",
