@@ -17,7 +17,11 @@
       />
     </div>
     <div :class="hiddenClass" @click.stop>
-      <router-link :to="{ name: 'details', params: { breedName: breed.name } }"
+      <router-link
+        :to="{
+          name: 'details',
+          params: { breedName: breed.name },
+        }"
         >Learn more...</router-link
       >
     </div>
