@@ -23,7 +23,7 @@
       <ul
         v-else-if="
           (displayedBreeds && this.$route.name === 'breeds') ||
-          this.$route.name === 'search'
+          (displayedBreeds && this.$route.name === 'search')
         "
         class="result__list-container"
         ref="resultListContainer"
@@ -40,9 +40,9 @@
         </breed-card>
       </ul>
       <div
+        v-else-if="this.$route.name === 'details'"
         v-for="(breed, index) in displayedBreeds"
         :key="breed.id"
-        v-else-if="this.$route.name === 'details'"
       >
         <router-view :breed="breed"></router-view>
       </div>
@@ -134,6 +134,8 @@ export default {
 
       searchBreed(this.searchQuery)
         .then((results) => {
+          // console.log(this.$route.query.q);
+          // console.log(this.$route);
           this.isLoading = false;
           if (results.length > 1) {
             this.message = "";
@@ -230,7 +232,7 @@ export default {
   },
   computed: {
     displayedBreeds() {
-      if (this.breedName || this.searchQuery) {
+      if (this.$route.name === "search") {
         return this.searchList;
       } else {
         return this.breedsList;
@@ -256,48 +258,26 @@ export default {
     },
   },
   watch: {
-    $route(newRoute, oldRoute) {
-      if (newRoute.name === "breedName") {
-        this.$router.push({
-          name: "details",
-        });
-      }
-      if (newRoute.name === "breeds") {
-        this.searchQuery = "";
-        this.fetchData();
-      }
-      if (newRoute.name === "search") {
-        this.getSearchResults(this.$route.query.q);
-      }
+    "$route.query.q": {
+      immediate: true,
+      handler(newRoute) {
+        if (this.$route.name === "search") {
+          this.getSearchResults(newRoute);
+        }
+      },
+    },
+    breedsList(newList, oldList) {
+      console.log(newList, oldList);
+      newList.forEach((breed) => {
+        if (breed.name === this.breedName) {
+          breed.isActive = true;
+        }
+      });
     },
   },
 
   created() {
-    if (this.$route.name === "breeds") {
-      this.fetchData();
-    }
-
-    if (this.$route.name === "search") {
-      this.getSearchResults(this.$route.query.q);
-    }
-    if (this.$route.name === "breedName") {
-      this.$router.push({
-        name: "details",
-      });
-    }
-    if (this.$route.name === "details") {
-      searchBreed(this.breedName).then((result) => {
-        if (result.length !== 1) {
-          this.$router.push({
-            name: "notFound",
-          });
-        } else if (result.length === 1) {
-          result[0].isActive = true;
-          this.searchList = result;
-          return this.searchList;
-        }
-      });
-    }
+    this.fetchData();
   },
 };
 </script>
