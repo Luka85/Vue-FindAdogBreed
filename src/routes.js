@@ -19,6 +19,11 @@ const router = new VueRouter({
       component: BreedsList,
     },
     {
+      name: "search",
+      path: "/breeds/search/",
+      component: BreedsList,
+    },
+    {
       name: "breedName",
       path: "/breeds/:breedName",
       component: BreedsList,
@@ -30,12 +35,6 @@ const router = new VueRouter({
           component: BreedDetails,
         },
       ],
-    },
-
-    {
-      name: "search",
-      path: "/breeds/search/",
-      component: BreedsList,
     },
 
     { name: "notFound", path: "/:notFound(.*)*", component: NotFound },
