@@ -22,8 +22,7 @@
 
       <ul
         v-else-if="
-          (displayedBreeds && this.$route.name === 'breeds') ||
-          (displayedBreeds && this.$route.name === 'search')
+          this.$route.name === 'breeds' || this.$route.name === 'search'
         "
         class="result__list-container"
         ref="resultListContainer"
@@ -269,7 +268,7 @@ export default {
     breedsList(newList, oldList) {
       console.log(newList, oldList);
       newList.forEach((breed) => {
-        if (breed.name === this.breedName) {
+        if (breed.name.toLowerCase() === this.breedName.toLowerCase()) {
           breed.isActive = true;
         }
       });
