@@ -13,7 +13,7 @@ import { faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
 library.add(faAnglesUp, faAnglesRight, faAnglesLeft);
 
 import BaseHeader from "./components/BaseHeader.vue";
-// Vue.config.productionTip = false;
+Vue.config.productionTip = false;
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.component("base-header", BaseHeader);
 Vue.use(VueRouter);
