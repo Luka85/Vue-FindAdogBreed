@@ -26,8 +26,7 @@
 
       <ul
         v-else-if="
-          (displayedBreeds && this.$route.name === 'breeds') ||
-          this.$route.name === 'search'
+          this.$route.name === 'breeds' || this.$route.name === 'search'
         "
         class="result__list-container"
         ref="resultListContainer"
@@ -43,12 +42,13 @@
         >
         </breed-card>
       </ul>
-      <router-view
+      <div
         v-else-if="this.$route.name === 'details'"
         v-for="(breed, index) in displayedBreeds"
-        :breed="breed"
         :key="breed.id"
         :searchQuery="searchQuery"
+      >
+        <router-view :breed="breed"></router-view>
       ></router-view>
     </div>
     <navigation-button
@@ -139,8 +139,10 @@ export default {
 
       searchBreed(this.searchQuery)
         .then((results) => {
+          // console.log(this.$route.query.q);
+          // console.log(this.$route);
           this.isLoading = false;
-          if (results.length > 0) {
+          if (results.length > 1) {
             this.message = "";
             this.searchList = results.map((breed) => {
               breed.isActive = false;
@@ -225,17 +227,18 @@ export default {
     },
 
     // bredNameParamNotFound(breedName) {
-    //   const breedNameParam = breedName.params.breedName;
-
-    //   if (breedNameParam) {
-    //     searchBreed(breedNameParam).then((result) => {
-    //       if (result.length === 0) {
-    //         this.$router.push({
-    //           name: "notFound",
-    //         });
-    //       }
-    //     });
-    //   }
+    //   console.log(breedName);
+    //   console.log(this.breedName);
+    // const breedNameParam = breedName.params.breedName;
+    // if (!breedNameParam || this.displayedBreeds.length !== 1) {
+    // searchBreed(breedNameParam).then((result) => {
+    //   if (result.length === 0) {
+    // this.$router.push({
+    //   name: "notFound",
+    // });
+    // }
+    // });
+    // }
     // },
     scrollToView(index) {
       console.log(index);
@@ -254,7 +257,7 @@ export default {
   },
   computed: {
     displayedBreeds() {
-      if (this.searchQuery) {
+      if (this.$route.name === "search") {
         return this.searchList;
       } else {
         return this.breedsList;
@@ -280,35 +283,33 @@ export default {
     },
   },
   watch: {
-    $route(newRoute, oldRoute) {
-      // if (this.$route.name === "breedName") {
-      //   this.$router.push({
-      //     name: "details",
-      //   });
-      // }
 
+    "$route.query.q": {
+      immediate: true,
+      handler(newRoute) {
+        if (this.$route.name === "search") {
+          this.getSearchResults(newRoute);
+        }
+      },
+    },
+    breedsList(newList, oldList) {
+      console.log(newList, oldList);
+      newList.forEach((breed) => {
+        if (breed.name.toLowerCase() === this.breedName.toLowerCase()) {
+          breed.isActive = true;
+        }
+      });
+    },
+  
+    $route(newRoute, oldRoute) {
+    
       this.lastBreedState = [];
       this.indexClicked = 0;
       this.displayedBreeds.forEach((breed) => {
         breed.isActive = false;
       });
     },
-    // displayedBreeds: {
-    //   handler(breeds) {
-    //     if (this.$route.name === "breeds") {
-    //       breeds.filter((breed, id) => {
-    //         if (breed.isActive) {
-    //           this.$refs.resultListContainer.children[id].scrollIntoView({
-    //             behavior: "smooth",
-    //             block: "center",
-    //           });
-    //         }
-    //       });
-    //     }
-    //   },
-    //   deep: true,
-    // },
-
+   
     openDetailsOnRouteParam(newParam, oldParam) {
       this.openDetailsOnRouteParam(newParam);
     },
@@ -326,7 +327,6 @@ export default {
       });
     },
   },
-
   created() {
     this.fetchData();
   },
