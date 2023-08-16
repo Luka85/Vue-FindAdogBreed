@@ -27,7 +27,7 @@ const router = new VueRouter({
     },
     {
       name: "breedName",
-      path: "/breeds/:breedName",
+      path: "/breeds/:breedName/",
       component: BreedsList,
       props: true,
       children: [

@@ -52,6 +52,7 @@ export default {
       return !this.breed.isActive ? "hidden" : "result__details";
     },
   },
+  
 };
 </script>
 
