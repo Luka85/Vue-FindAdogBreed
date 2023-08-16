@@ -29,7 +29,7 @@
       />
     </div>
     <div class="result__go-back">
-      <button class="btn" @click="$router.back()">Back</button>
+      <button class="btn" @click="$router.go(-1)">Back</button>
     </div>
   </div>
 </template>
@@ -41,7 +41,13 @@ export default {
       type: Object,
       required: true,
     },
+
+    searchQuery: {
+      type: String,
+      required: false,
+    },
   },
+
   computed: {
     hiddenClass() {
       return this.breed.isActive ? "result__details-page" : "hidden";
