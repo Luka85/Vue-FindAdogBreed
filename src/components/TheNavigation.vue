@@ -59,7 +59,9 @@ export default {
         breed.isActive = false;
       });
       this.index--;
+
       this.breeds[this.lastState[this.index]].isActive = true;
+      this.$emit("countdown", this.index);
     },
     goForward() {
       this.isForwardButtonClicked = true;
@@ -70,6 +72,7 @@ export default {
       });
       this.index++;
       this.breeds[this.lastState[this.index]].isActive = true;
+      this.$emit("addingUp", this.index);
     },
   },
   computed: {
@@ -78,7 +81,9 @@ export default {
         return true;
       } else if (this.lastState.length > 1) {
         return false;
-      }
+      } else if (this.lastState.length === 0) {
+        return true;
+      } else return false;
     },
     disabledForwardBtn() {
       if (this.index === this.lastState.length - 1) {
@@ -87,12 +92,13 @@ export default {
         return false;
       } else if (this.index === 0) {
         return true;
-      }
+      } else return false;
     },
   },
   watch: {
-    id() {
+    id(newIndex, oldIndex) {
       this.index = this.id;
+
       this.index--;
     },
   },

@@ -1,17 +1,21 @@
 <template>
   <section ref="breedListRef" class="breedsList__container">
-    <search-form
-      ref="searchRef"
-      :isDisabled="isInputDisabled"
-      @search="getSearchResults"
-      v-if="this.$route.name === 'breeds' || this.$route.name === 'search'"
-    ></search-form>
+    <keep-alive>
+      <search-form
+        ref="searchRef"
+        :isDisabled="isInputDisabled"
+        @search="getSearchResults"
+        v-if="this.$route.name === 'breeds' || this.$route.name === 'search'"
+      ></search-form>
+    </keep-alive>
 
     <the-navigation
       v-if="displayedBreeds.length !== 0"
       :lastState="lastBreedState"
       :id="indexClicked"
       :breeds="displayedBreeds"
+      @countdown="scrollToView"
+      @addingUp="scrollToView"
     ></the-navigation>
 
     <div class="result__container">
@@ -42,9 +46,10 @@
         v-else-if="this.$route.name === 'details'"
         v-for="(breed, index) in displayedBreeds"
         :key="breed.id"
+        :searchQuery="searchQuery"
       >
         <router-view :breed="breed"></router-view>
-      </div>
+      ></router-view>
     </div>
     <navigation-button
       @clickToScroll="scrollListToTop"
@@ -62,6 +67,7 @@ import NavigationButton from "./NavigationButton.vue";
 import BreedDetails from "./BreedDetails.vue";
 
 import TheNavigation from "./TheNavigation.vue";
+import store from "../store";
 
 export default {
   components: {
@@ -70,6 +76,7 @@ export default {
     NavigationButton,
     BreedDetails,
     TheNavigation,
+    store,
   },
 
   props: {
@@ -91,7 +98,6 @@ export default {
       message: "",
       isScrollToTopActive: false,
       lastBreedState: [],
-
       indexClicked: 0,
     };
   },
@@ -190,12 +196,17 @@ export default {
     },
 
     toggleCard(breed, id) {
-      this.indexClicked++;
+      this.currentIndex = id;
+      // console.log(this.currentIndex, id);
       breed.isActive = !breed.isActive;
-      if (breed.isActive) {
-        this.lastBreedState.push(id);
-      }
 
+      if (breed.isActive) {
+        this.indexClicked++;
+        this.lastBreedState.push(id);
+
+        // console.log(this.lastBreedState, id);
+        // console.log(this.indexClicked);
+      }
       this.displayedBreeds.forEach((item) => {
         if (item.name !== breed.name) {
           item.isActive = false;
@@ -203,17 +214,18 @@ export default {
       });
     },
 
-    // openDetailsOnRouteParam(breedName) {
-    //   const breedNameParam = breedName.params.breedName;
+    openDetailsOnRouteParam(breedName) {
+      const breedNameParam = breedName.params.breedName;
 
-    //   if (breedNameParam) {
-    //     this.displayedBreeds.filter((breed) => {
-    //       if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
-    //         breed.isActive = true;
-    //       }
-    //     });
-    //   }
-    // },
+      if (breedNameParam) {
+        this.displayedBreeds.filter((breed) => {
+          if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
+            breed.isActive = true;
+          }
+        });
+      }
+    },
+
     // bredNameParamNotFound(breedName) {
     //   console.log(breedName);
     //   console.log(this.breedName);
@@ -228,6 +240,20 @@ export default {
     // });
     // }
     // },
+    scrollToView(index) {
+      console.log(index);
+      this.displayedBreeds.forEach((breed) => {
+        if (breed.isActive) {
+          console.log(breed);
+          this.$refs.resultListContainer.children[
+            this.lastBreedState[index]
+          ].scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      });
+    },
   },
   computed: {
     displayedBreeds() {
@@ -257,6 +283,7 @@ export default {
     },
   },
   watch: {
+
     "$route.query.q": {
       immediate: true,
       handler(newRoute) {
@@ -273,8 +300,33 @@ export default {
         }
       });
     },
-  },
+  
+    $route(newRoute, oldRoute) {
+    
+      this.lastBreedState = [];
+      this.indexClicked = 0;
+      this.displayedBreeds.forEach((breed) => {
+        breed.isActive = false;
+      });
+    },
+   
+    openDetailsOnRouteParam(newParam, oldParam) {
+      this.openDetailsOnRouteParam(newParam);
+    },
 
+    indexClicked(newIndex, oldIndex) {
+      this.displayedBreeds.forEach((breed) => {
+        if (breed.isActive) {
+          this.$refs.resultListContainer.children[
+            this.lastBreedState[oldIndex]
+          ].scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      });
+    },
+  },
   created() {
     this.fetchData();
   },
