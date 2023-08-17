@@ -1,5 +1,5 @@
 <template>
-  <div class="navigation-container">
+  <div class="navigation-container" v-if="this.$route.name !== 'details'">
     <button
       class="btn-back btn btn-nav"
       :disabled="disabledBackBtn"
