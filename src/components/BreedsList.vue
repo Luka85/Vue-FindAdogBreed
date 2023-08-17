@@ -49,7 +49,8 @@
         :searchQuery="searchQuery"
       >
         <router-view :breed="breed"></router-view>
-      ></router-view>
+        >
+      </div>
     </div>
     <navigation-button
       @clickToScroll="scrollListToTop"
@@ -283,7 +284,6 @@ export default {
     },
   },
   watch: {
-
     "$route.query.q": {
       immediate: true,
       handler(newRoute) {
@@ -300,16 +300,15 @@ export default {
         }
       });
     },
-  
+
     $route(newRoute, oldRoute) {
-    
       this.lastBreedState = [];
       this.indexClicked = 0;
       this.displayedBreeds.forEach((breed) => {
         breed.isActive = false;
       });
     },
-   
+
     openDetailsOnRouteParam(newParam, oldParam) {
       this.openDetailsOnRouteParam(newParam);
     },
