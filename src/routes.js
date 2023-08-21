@@ -3,9 +3,11 @@ import BreedsList from "./components/BreedsList.vue";
 import NotFound from "./components/NotFound.vue";
 import BreedDetails from "./components/BreedDetails.vue";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 const router = new VueRouter({
   mode: "history",
-  base: "/Vue-FindAdogBreed/",
+  base: isProduction ? "/Vue-FindAdogBreed/" : "/",
   routes: [
     {
       name: "redirect",
@@ -25,7 +27,7 @@ const router = new VueRouter({
     },
     {
       name: "breedName",
-      path: "/breeds/:breedName",
+      path: "/breeds/:breedName/",
       component: BreedsList,
       props: true,
       children: [
