@@ -58,7 +58,7 @@
   </section>
 </template>
 <script>
-import { fetchBreeds } from "../data.js";
+// import { fetchBreeds } from "../data.js";
 import SearchForm from "./SearchForm.vue";
 
 import { searchBreed } from "../data";
@@ -105,6 +105,7 @@ export default {
     fetchData() {
       store.actions.fetchData();
 
+      // console.log(store.state.breedsList);
       // store.state.isLoading = true;
       // this.message = "Data is loading...";
       // fetchBreeds()
@@ -121,13 +122,13 @@ export default {
       //     } else {
       //       this.message = "No Data Found. Please try again later.";
       //       store.state.breedsList = [];
-      //       this.isInputDisabled = true;
+      // this.isInputDisabled = true;
       //     }
       //   })
       //   .catch((error) => {
       //     store.state.isLoading = false;
       //     this.error = error.name + ": " + error.message;
-      //     this.isInputDisabled = true;
+      // this.isInputDisabled = true;
       //   });
     },
     getSearchResults(input) {
@@ -167,7 +168,8 @@ export default {
         .catch((error) => {
           store.state.isLoading = false;
           this.error = error.name + ": " + error.message;
-          this.isInputDisabled = true;
+          // this.isInputDisabled = true;
+          store.actions.disabledInput;
         });
     },
 
@@ -198,7 +200,7 @@ export default {
     toggleCard(breed, id) {
       this.currentIndex = id;
       breed.isActive = !breed.isActive;
-      store.actions.fetchData();
+      // store.actions.fetchData();
 
       if (breed.isActive) {
         this.indexClicked++;
@@ -256,22 +258,26 @@ export default {
       // if (this.searchQuery) {
       //   return store.state.searchList;
       // } else {
+      //   console.log(store.state.breedsList);
+
       //   return store.state.breedsList;
       // }
       return store.getters.displayedList();
     },
 
     loadingState() {
-      if (store.state.isLoading) {
-        return this.message;
-      } else if (!store.state.isLoading && this.error) {
-        return this.error;
-      }
+      // return store.getters.loadingState();
+      //   if (store.state.isLoading) {
+      //     return this.message;
+      //   } else if (!store.state.isLoading && this.error) {
+      //     return this.error;
+      //   }
     },
     receivedDataState() {
-      if (!this.displayedBreeds.length && !store.state.isLoading) {
-        return this.message;
-      }
+      // return store.getters.receivedDataState();
+      // if (!this.displayedBreeds.length && !store.state.isLoading) {
+      //   return this.message;
+      // }
     },
     expandbleClass() {
       this.displayedBreeds.forEach((breed) =>
