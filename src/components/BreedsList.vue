@@ -68,8 +68,8 @@ import NavigationButton from "./NavigationButton.vue";
 import BreedDetails from "./BreedDetails.vue";
 
 import TheNavigation from "./TheNavigation.vue";
-import store from "../store";
-
+import { useState } from "../store.js";
+const useGlobalState = useState();
 export default {
   components: {
     SearchForm,
@@ -77,7 +77,6 @@ export default {
     NavigationButton,
     BreedDetails,
     TheNavigation,
-    store,
   },
 
   props: {
@@ -104,7 +103,10 @@ export default {
   },
   methods: {
     fetchData() {
-      store.actions.fetchData();
+      console.log(useGlobalState);
+      useGlobalState.actions.fetchData;
+
+      // state.actions.fetchData();
 
       // console.log(store.state.breedsList);
       // store.state.isLoading = true;
@@ -143,20 +145,20 @@ export default {
 
       searchBreed(this.searchQuery)
         .then((results) => {
-          store.state.isLoading = false;
+          useGlobalState.state.isLoading = false;
           if (results.length > 1) {
             this.message = "";
-            store.state.searchList = results.map((breed) => {
+            useGlobalState.state.searchList = results.map((breed) => {
               breed.isActive = false;
               return breed;
             });
           } else if (results.length === 1) {
             results[0].isActive = true;
-            store.state.searchList = results;
+            useGlobalState.state.searchList = results;
             this.message = "";
-            return store.state.searchList;
+            return useGlobalState.state.searchList;
           } else {
-            store.state.searchList = [];
+            useGlobalState.state.searchList = [];
 
             if (this.searchQuery) {
               this.message = `Your searches for "${this.searchQuery}" did not have any matches. Try different keywords.`;
@@ -166,10 +168,10 @@ export default {
           }
         })
         .catch((error) => {
-          store.state.isLoading = false;
+          useGlobalState.state.isLoading = false;
           this.error = error.name + ": " + error.message;
           // this.isInputDisabled = true;
-          store.actions.disabledInput;
+          useGlobalState.actions.disabledInput();
         });
     },
 
@@ -256,7 +258,6 @@ export default {
   },
   computed: {
     displayedBreeds() {
-
       // if (this.searchQuery) {
       //   return store.state.searchList;
       // } else {
@@ -264,14 +265,13 @@ export default {
 
       //   return store.state.breedsList;
       // }
-      // return store.getters.displayedList();
+      return useGlobalState.getters.displayedList();
 
-      if (this.$route.name === "search") {
-        return this.searchList;
-      } else {
-        return this.breedsList;
-      }
-
+      // if (this.$route.name === "search") {
+      //   return this.searchList;
+      // } else {
+      //   return this.breedsList;
+      // }
     },
 
     loadingState() {
