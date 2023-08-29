@@ -68,7 +68,6 @@ import NavigationButton from "./NavigationButton.vue";
 import BreedDetails from "./BreedDetails.vue";
 
 import TheNavigation from "./TheNavigation.vue";
-import store from "../store";
 
 export default {
   components: {
@@ -77,7 +76,6 @@ export default {
     NavigationButton,
     BreedDetails,
     TheNavigation,
-    store,
   },
 
   props: {
