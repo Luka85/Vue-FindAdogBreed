@@ -68,6 +68,7 @@ import NavigationButton from "./NavigationButton.vue";
 import BreedDetails from "./BreedDetails.vue";
 
 import TheNavigation from "./TheNavigation.vue";
+import { useStore } from "../store.js";
 
 export default {
   components: {
@@ -98,34 +99,36 @@ export default {
       isScrollToTopActive: false,
       lastBreedState: [],
       indexClicked: 0,
+      store: useStore(),
     };
   },
   methods: {
     fetchData() {
-      this.isLoading = true;
-      this.message = "Data is loading...";
+      // const store = useStore();
+      this.store.fetchData();
 
-      fetchBreeds()
-        .then((results) => {
-          this.isLoading = false;
-          if (results.length > 0) {
-            this.breedsList = results.map((breed) => {
-              breed.isActive = false;
-              return breed;
-            });
-
-            this.message = "";
-          } else {
-            this.message = "No Data Found. Please try again later.";
-            this.breedsList = [];
-            this.isInputDisabled = true;
-          }
-        })
-        .catch((error) => {
-          this.isLoading = false;
-          this.error = error.name + ": " + error.message;
-          this.isInputDisabled = true;
-        });
+      // this.isLoading = true;
+      // this.message = "Data is loading...";
+      // fetchBreeds()
+      //   .then((results) => {
+      //     this.isLoading = false;
+      //     if (results.length > 0) {
+      //       this.breedsList = results.map((breed) => {
+      //         breed.isActive = false;
+      //         return breed;
+      //       });
+      //       this.message = "";
+      //     } else {
+      //       this.message = "No Data Found. Please try again later.";
+      //       this.breedsList = [];
+      //       this.isInputDisabled = true;
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     this.isLoading = false;
+      //     this.error = error.name + ": " + error.message;
+      //     this.isInputDisabled = true;
+      //   });
     },
     getSearchResults(input) {
       this.isLoading = true;
@@ -256,11 +259,13 @@ export default {
   },
   computed: {
     displayedBreeds() {
-      if (this.$route.name === "search") {
-        return this.searchList;
-      } else {
-        return this.breedsList;
-      }
+      // const store = useStore();
+      return this.store.displayedBreeds;
+      // if (this.$route.name === "search") {
+      //   return this.searchList;
+      // } else {
+      //   return this.breedsList;
+      // }
     },
 
     loadingState() {
