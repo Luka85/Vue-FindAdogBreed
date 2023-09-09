@@ -48,7 +48,7 @@
         v-else-if="this.$route.name === 'details'"
         v-for="(breed, index) in displayedList"
         :key="breed.id"
-        :searchQuery="searchQuery"
+        :class="{ hidden: !breed.isActive, show_details: breed.isActive }"
       >
         <router-view :breed="breed"></router-view>
         >
@@ -90,12 +90,15 @@ export default {
     return {
       isHidden: true,
       isScrollToTopActive: false,
-      lastBreedState: [],
-      indexClicked: 0,
     };
   },
   methods: {
-    ...mapActions(useStore, ["fetchBreedData", "getSearchResults"]),
+    ...mapActions(useStore, [
+      "fetchBreedData",
+      "getSearchResults",
+      "toggleCard",
+      "resetToDefault",
+    ]),
 
     showNavigationBtn() {
       if (this.$refs.resultListContainer.scrollTop > 450) {
@@ -117,31 +120,6 @@ export default {
       if (this.$route.name !== "breeds") {
         this.$router.push({
           name: "breeds",
-        });
-      }
-    },
-
-    toggleCard(breed, id) {
-      this.currentIndex = id;
-      breed.isActive = !breed.isActive;
-      if (breed.isActive) {
-        this.indexClicked++;
-        this.lastBreedState.push(id);
-      }
-      this.displayedList.forEach((item) => {
-        if (item.name !== breed.name) {
-          item.isActive = false;
-        }
-      });
-    },
-
-    openDetailsOnRouteParam(breedName) {
-      const breedNameParam = breedName.params.breedName;
-      if (breedNameParam) {
-        this.displayedList.filter((breed) => {
-          if (breedNameParam.toLowerCase() === breed.name.toLowerCase()) {
-            breed.isActive = true;
-          }
         });
       }
     },
@@ -182,48 +160,47 @@ export default {
       "receivedDataState",
       "isInputDisabled",
       "searchQuery",
+      "lastBreedState",
+      "indexClicked",
+      "breedsList",
+      "isActiveProp",
     ]),
-
-    expandbleClass() {
-      this.displayedList.forEach((breed) =>
-        breed.isActive ? "expandble" : "result__list"
-      );
-    },
   },
   watch: {
     "$route.query.q": {
       immediate: true,
-      handler(newRoute) {
+      handler(newRoute, oldRoute) {
         if (this.$route.name === "search") {
           console.log(newRoute);
           this.getSearchResults(newRoute);
         }
       },
     },
-    breedsList(newList, oldList) {
-      console.log(newList, oldList);
-      newList.forEach((breed) => {
-        if (breed.name.toLowerCase() === this.breedName.toLowerCase()) {
-          breed.isActive = true;
-        }
-      });
-    },
 
     $route(newRoute, oldRoute) {
-      this.lastBreedState = [];
-      this.indexClicked = 0;
-      this.displayedList.forEach((breed) => {
-        breed.isActive = false;
-      });
+      console.log("newRoute", newRoute, "oldRoute", oldRoute);
+      if (newRoute.name !== "details") {
+        console.log("details");
+        this.resetToDefault();
+        this.displayedList.forEach((breed) => {
+          breed.isActive = false;
+        });
+      }
     },
 
-    openDetailsOnRouteParam(newParam, oldParam) {
-      this.openDetailsOnRouteParam(newParam);
-    },
+    // breedName(newName, oldName) {
+    //   console.log(newName, oldName);
+    //   this.displayedList.forEach((breed) => {
+    //     if (newName.toLowerCase() === breed.name.toLowerCase()) {
+    //       console.log(breed.name);
+    //       breed.isActive = true;
+    //     }
+    //   });
+    // },
 
     indexClicked(newIndex, oldIndex) {
       this.displayedList.forEach((breed) => {
-        if (breed.isActive) {
+        if (breed.isActive && this.$route.name !== "details") {
           this.$refs.resultListContainer.children[
             this.lastBreedState[oldIndex]
           ].scrollIntoView({
@@ -235,7 +212,7 @@ export default {
     },
   },
   created() {
-    this.fetchBreedData();
+    this.fetchBreedData(this.breedName);
   },
 };
 </script>
