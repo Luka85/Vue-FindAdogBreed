@@ -188,15 +188,15 @@ export default {
       }
     },
 
-    // breedName(newName, oldName) {
-    //   console.log(newName, oldName);
-    //   this.displayedList.forEach((breed) => {
-    //     if (newName.toLowerCase() === breed.name.toLowerCase()) {
-    //       console.log(breed.name);
-    //       breed.isActive = true;
-    //     }
-    //   });
-    // },
+    breedName(newName, oldName) {
+      console.log(newName, oldName);
+      this.displayedList.forEach((breed) => {
+        if (newName.toLowerCase() === breed.name.toLowerCase()) {
+          console.log(breed.name);
+          breed.isActive = true;
+        }
+      });
+    },
 
     indexClicked(newIndex, oldIndex) {
       this.displayedList.forEach((breed) => {
