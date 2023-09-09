@@ -11,11 +11,9 @@ export const useStore = defineStore("store", {
       searchQuery: "",
       isLoading: false,
       isInputDisabled: false,
-      // isHidden: true,
       message: "",
-      // isScrollToTopActive: false,
-      // lastBreedState: [],
-      // indexClicked: 0,
+      lastBreedState: [],
+      indexClicked: 0,
     };
   },
   getters: {
@@ -23,13 +21,12 @@ export const useStore = defineStore("store", {
       if (this.searchQuery) {
         return this.searchList;
       } else {
+        console.log(this.breedsList);
         return this.breedsList;
       }
     },
     loadingState() {
       if (this.isLoading) {
-        console.log(this.isLoading);
-        console.log(this.message);
         return this.message;
       } else if (!this.isLoading && this.error) {
         console.log("error");
@@ -43,7 +40,7 @@ export const useStore = defineStore("store", {
     },
   },
   actions: {
-    fetchBreedData() {
+    fetchBreedData(breedName) {
       this.isLoading = true;
       this.message = "Data is loading...";
 
@@ -53,6 +50,9 @@ export const useStore = defineStore("store", {
           if (results.length > 0) {
             this.breedsList = results.map((breed) => {
               breed.isActive = false;
+              if (breedName.toLowerCase() === breed.name.toLowerCase()) {
+                breed.isActive = true;
+              }
               return breed;
             });
             this.message = "";
@@ -108,6 +108,22 @@ export const useStore = defineStore("store", {
           this.error = error.name + ": " + error.message;
           this.isInputDisabled = true;
         });
+    },
+    toggleCard(breed, id) {
+      breed.isActive = !breed.isActive;
+      if (breed.isActive) {
+        this.indexClicked++;
+        this.lastBreedState.push(id);
+      }
+      this.displayedList.forEach((item) => {
+        if (item.name !== breed.name) {
+          item.isActive = false;
+        }
+      });
+    },
+    resetToDefault() {
+      this.lastBreedState = [];
+      this.indexClicked = 0;
     },
   },
 });
