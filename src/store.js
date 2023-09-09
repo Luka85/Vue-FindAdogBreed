@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import { fetchBreeds } from "./data.js";
-import { searchBreed } from "./data.js";
+// import { fetchBreeds } from "./data.js";
+// import { searchBreed } from "./data.js";
 
 export const useStore = defineStore("store", {
   state: () => {
@@ -40,11 +40,45 @@ export const useStore = defineStore("store", {
     },
   },
   actions: {
+    fetchBreeds() {
+      return new Promise((resolve, reject) => {
+        fetch("https://api.thedogapi.com/v1/breeds/")
+          .then((response) => {
+            if (response.ok) {
+              resolve(response.json());
+            } else {
+              reject(
+                new Error(
+                  response.status + " error" + " Failed to fetch breeds: "
+                )
+              );
+            }
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+    searchBreed(searchInput) {
+      return new Promise((resolve, reject) => {
+        fetch(`https://api.thedogapi.com/v1/breeds/search?q=${searchInput}`)
+          .then((response) => {
+            if (response.ok) {
+              resolve(response.json());
+            } else {
+              reject(new Error(response.status + " - Failed to fetch breeds "));
+            }
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
     fetchBreedData(breedName) {
       this.isLoading = true;
       this.message = "Data is loading...";
 
-      fetchBreeds()
+      this.fetchBreeds()
         .then((results) => {
           this.isLoading = false;
           if (results.length > 0) {
@@ -78,7 +112,7 @@ export const useStore = defineStore("store", {
         this.isLoading = false;
       }
 
-      searchBreed(this.searchQuery)
+      this.searchBreed(this.searchQuery)
         .then((results) => {
           this.isLoading = false;
           if (results.length > 1) {
