@@ -1,13 +1,12 @@
 <template>
   <section ref="breedListRef" class="breedsList__container">
-    <keep-alive>
-      <search-form
-        ref="searchRef"
-        :isDisabled="isInputDisabled"
-        @search="getSearchResults"
-        v-if="this.$route.name === 'breeds' || this.$route.name === 'search'"
-      ></search-form>
-    </keep-alive>
+    <search-form
+      @sendSearchRef="getSearchRefValue"
+      ref="searchRef"
+      :isDisabled="isInputDisabled"
+      @search="getSearchResults"
+      v-if="this.$route.name === 'breeds' || this.$route.name === 'search'"
+    ></search-form>
 
     <the-navigation
       v-if="displayedList.length !== 0"
@@ -123,6 +122,9 @@ export default {
         });
       }
     },
+    getSearchRefValue(searchValue) {
+      searchValue.value = this.searchQuery;
+    },
 
     // bredNameParamNotFound(breedName) {
     //   console.log(breedName);
@@ -139,10 +141,8 @@ export default {
     // }
     // },
     scrollToView(index) {
-      console.log(index);
       this.displayedList.forEach((breed) => {
         if (breed.isActive) {
-          console.log(breed);
           this.$refs.resultListContainer.children[
             this.lastBreedState[index]
           ].scrollIntoView({
@@ -171,16 +171,13 @@ export default {
       immediate: true,
       handler(newRoute, oldRoute) {
         if (this.$route.name === "search") {
-          console.log(newRoute);
           this.getSearchResults(newRoute);
         }
       },
     },
 
     $route(newRoute, oldRoute) {
-      console.log("newRoute", newRoute, "oldRoute", oldRoute);
       if (newRoute.name !== "details") {
-        console.log("details");
         this.resetToDefault();
         this.displayedList.forEach((breed) => {
           breed.isActive = false;
@@ -189,10 +186,8 @@ export default {
     },
 
     breedName(newName, oldName) {
-      console.log(newName, oldName);
       this.displayedList.forEach((breed) => {
         if (newName.toLowerCase() === breed.name.toLowerCase()) {
-          console.log(breed.name);
           breed.isActive = true;
         }
       });

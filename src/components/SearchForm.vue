@@ -5,7 +5,7 @@
       name="breed"
       id="breed"
       placeholder="Type a dog breed..."
-      ref="searchInput"
+      ref="searchInputRef"
       @input="debounceSearch"
       :disabled="isDisabled"
       class="search__input"
@@ -40,7 +40,6 @@ export default {
   watch: {
     searchInput(newValue, oldValue) {
       if (newValue !== this.$route.query.q) {
-        const newInput = newValue;
         this.$router.push({
           name: "search",
           params: {
@@ -53,7 +52,8 @@ export default {
   },
 
   mounted() {
-    this.$refs.searchInput.focus();
+    this.$refs.searchInputRef.focus();
+    this.$emit("sendSearchRef", this.$refs.searchInputRef);
   },
 };
 </script>
