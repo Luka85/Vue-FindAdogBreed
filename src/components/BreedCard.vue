@@ -52,14 +52,7 @@ export default {
       return !this.breed.isActive ? "hidden" : "result__details";
     },
   },
-  watch: {
-    breed(newBreed, oldBreed) {
-      console.log(newBreed, oldBreed);
-      if (newBreed.isActive) {
-        console.log(newBreed);
-      }
-    },
-  },
+ 
 };
 </script>
 
