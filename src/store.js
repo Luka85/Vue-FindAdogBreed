@@ -1,6 +1,4 @@
 import { defineStore } from "pinia";
-// import { fetchBreeds } from "./data.js";
-// import { searchBreed } from "./data.js";
 
 export const useStore = defineStore("store", {
   state: () => {
@@ -29,7 +27,6 @@ export const useStore = defineStore("store", {
       if (this.isLoading) {
         return this.message;
       } else if (!this.isLoading && this.error) {
-        console.log("error");
         return this.error;
       }
     },
