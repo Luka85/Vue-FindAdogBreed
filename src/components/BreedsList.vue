@@ -13,8 +13,7 @@
       :lastState="lastBreedState"
       :id="indexClicked"
       :breeds="displayedList"
-      @countdown="scrollToView"
-      @addingUp="scrollToView"
+      @checkingIndex="scrollToView"
     ></the-navigation>
 
     <div class="result__container">
