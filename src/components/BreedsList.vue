@@ -121,25 +121,12 @@ export default {
           name: "breeds",
         });
       }
+      this.resetToDefault();
     },
     getSearchRefValue(searchValue) {
       searchValue.value = this.searchQuery;
     },
 
-    // bredNameParamNotFound(breedName) {
-    //   console.log(breedName);
-    //   console.log(this.breedName);
-    // const breedNameParam = breedName.params.breedName;
-    // if (!breedNameParam || this.displayedBreeds.length !== 1) {
-    // searchBreed(breedNameParam).then((result) => {
-    //   if (result.length === 0) {
-    // this.$router.push({
-    //   name: "notFound",
-    // });
-    // }
-    // });
-    // }
-    // },
     scrollToView(index) {
       this.displayedList.forEach((breed) => {
         if (breed.isActive) {
