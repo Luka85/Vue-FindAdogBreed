@@ -156,5 +156,8 @@ export const useStore = defineStore("store", {
       this.lastBreedState = [];
       this.indexClicked = 0;
     },
+    resetSearchQuery() {
+      this.searchQuery = "";
+    },
   },
 });
