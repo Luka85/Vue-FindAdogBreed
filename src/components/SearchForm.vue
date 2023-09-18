@@ -34,6 +34,7 @@ export default {
       this.debounce = setTimeout(() => {
         this.searchInput = event.target.value;
         this.$emit("search", this.searchInput.trim());
+        this.$emit("sendSearchRef", this.$refs.searchInputRef);
       }, 250);
     },
   },
@@ -53,7 +54,6 @@ export default {
 
   mounted() {
     this.$refs.searchInputRef.focus();
-    this.$emit("sendSearchRef", this.$refs.searchInputRef);
   },
 };
 </script>

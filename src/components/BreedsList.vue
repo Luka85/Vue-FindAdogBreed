@@ -96,6 +96,7 @@ export default {
       "getSearchResults",
       "toggleCard",
       "resetToDefault",
+      "resetSearchQuery",
     ]),
 
     showNavigationBtn() {
@@ -163,7 +164,9 @@ export default {
     },
 
     $route(newRoute, oldRoute) {
-      if (newRoute.name !== "details") {
+      if (newRoute.name === "breeds") {
+        this.resetSearchQuery();
+      } else if (newRoute.name !== "details") {
         this.resetToDefault();
         this.displayedList.forEach((breed) => {
           breed.isActive = false;
