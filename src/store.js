@@ -19,7 +19,6 @@ export const useStore = defineStore("store", {
       if (this.searchQuery) {
         return this.searchList;
       } else {
-        console.log(this.breedsList);
         return this.breedsList;
       }
     },
