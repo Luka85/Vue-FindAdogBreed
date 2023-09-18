@@ -61,7 +61,7 @@ export default {
       this.index--;
 
       this.breeds[this.lastState[this.index]].isActive = true;
-      this.$emit("countdown", this.index);
+      this.$emit("checkingIndex", this.index);
     },
     goForward() {
       this.isForwardButtonClicked = true;
@@ -72,7 +72,7 @@ export default {
       });
       this.index++;
       this.breeds[this.lastState[this.index]].isActive = true;
-      this.$emit("addingUp", this.index);
+      this.$emit("checkingIndex", this.index);
     },
   },
   computed: {
