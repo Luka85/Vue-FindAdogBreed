@@ -139,24 +139,54 @@ export const useStore = defineStore("store", {
           this.isInputDisabled = true;
         });
     },
-    toggleCard(breed, id) {
-      breed.isActive = !breed.isActive;
-      if (breed.isActive) {
-        this.indexClicked++;
-        this.lastBreedState.push(id);
-      }
-      this.displayedList.forEach((item) => {
-        if (item.name !== breed.name) {
-          item.isActive = false;
-        }
-      });
-    },
+    // toggleCard(breed, id) {
+    // breed.isActive = !breed.isActive;
+    // if (breed.isActive) {
+    //   this.indexClicked++;
+    //   this.lastBreedState.push(id);
+    // }
+    // this.displayedList.forEach((item) => {
+    //   if (item.name !== breed.name) {
+    //     item.isActive = false;
+    //   }
+    // });
+    // },
+
     resetToDefault() {
       this.lastBreedState = [];
       this.indexClicked = 0;
     },
     resetSearchQuery() {
       this.searchQuery = "";
+    },
+    toggleCard(breed, id) {
+      this.breedActive(this.toggleIsActive(this.setBreedIsActive(breed)), id);
+
+      // this.breedActive(breed, id);
+      // this.setBreedIsActive(breed);
+    },
+
+    toggleIsActive(breed) {
+      breed.isActive = !breed.isActive;
+      return breed;
+    },
+    breedActive(breed, id) {
+      if (breed.isActive) {
+        this.indexClicked++;
+        this.lastBreedState.push(id);
+        return breed;
+      }
+    },
+    setBreedIsActive(breed) {
+      this.displayedList.forEach((item) => {
+        if (item.name !== breed.name) {
+          item.isActive = false;
+          console.log(item);
+          return item;
+        }
+        // console.log(item);
+        return item;
+      });
     },
   },
 });
