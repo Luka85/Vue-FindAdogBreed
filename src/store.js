@@ -160,31 +160,28 @@ export const useStore = defineStore("store", {
       this.searchQuery = "";
     },
     toggleCard(breed, id) {
-      this.breedActive(this.toggleIsActive(this.setBreedIsActive(breed)), id);
-
-      // this.breedActive(breed, id);
-      // this.setBreedIsActive(breed);
+      this.setBreedIsActive(this.ifBreedActive(this.toggleIsActive(breed), id));
     },
 
     toggleIsActive(breed) {
       breed.isActive = !breed.isActive;
       return breed;
     },
-    breedActive(breed, id) {
+    ifBreedActive(breed, id) {
       if (breed.isActive) {
         this.indexClicked++;
         this.lastBreedState.push(id);
+        console.log(this.lastBreedState);
         return breed;
       }
+      return breed;
     },
     setBreedIsActive(breed) {
       this.displayedList.forEach((item) => {
         if (item.name !== breed.name) {
           item.isActive = false;
-          console.log(item);
           return item;
         }
-        // console.log(item);
         return item;
       });
     },
