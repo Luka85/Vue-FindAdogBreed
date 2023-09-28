@@ -97,6 +97,7 @@ export default {
       "toggleCard",
       "resetToDefault",
       "resetSearchQuery",
+      "iterateDisplayedList",
     ]),
 
     showNavigationBtn() {
@@ -113,9 +114,7 @@ export default {
         top: 0,
         behavior: "smooth",
       });
-      this.displayedList.forEach((breed) => {
-        breed.isActive = false;
-      });
+      this.iterateDisplayedList(false);
       if (this.$route.name !== "breeds") {
         this.$router.push({
           name: "breeds",
@@ -168,9 +167,7 @@ export default {
         this.resetSearchQuery();
       } else if (newRoute.name !== "details") {
         this.resetToDefault();
-        this.displayedList.forEach((breed) => {
-          breed.isActive = false;
-        });
+        this.iterateDisplayedList(false);
       }
     },
 

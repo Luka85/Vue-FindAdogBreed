@@ -177,5 +177,8 @@ export const useStore = defineStore("store", {
         this.lastBreedState.push(id);
       }
     },
+    iterateDisplayedList(isActive) {
+      this.displayedList.forEach((breed) => (breed.isActive = isActive));
+    },
   },
 });
