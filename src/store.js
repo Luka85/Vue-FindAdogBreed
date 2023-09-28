@@ -139,24 +139,46 @@ export const useStore = defineStore("store", {
           this.isInputDisabled = true;
         });
     },
-    toggleCard(breed, id) {
-      breed.isActive = !breed.isActive;
-      if (breed.isActive) {
-        this.indexClicked++;
-        this.lastBreedState.push(id);
-      }
-      this.displayedList.forEach((item) => {
-        if (item.name !== breed.name) {
-          item.isActive = false;
-        }
-      });
-    },
+
     resetToDefault() {
       this.lastBreedState = [];
       this.indexClicked = 0;
     },
     resetSearchQuery() {
       this.searchQuery = "";
+    },
+    toggleCard(breed, id) {
+      this.setBreedIsActive(this.ifBreedActive(this.toggleIsActive(breed)));
+      this.addBreedState(id);
+    },
+
+    toggleIsActive(breed) {
+      breed.isActive = !breed.isActive;
+      return breed;
+    },
+    ifBreedActive(breed) {
+      if (breed.isActive) {
+        this.indexClicked++;
+        return breed;
+      }
+      return breed;
+    },
+    setBreedIsActive(breed) {
+      this.displayedList.forEach((item) => {
+        if (item.name !== breed.name) {
+          item.isActive = false;
+          return item;
+        }
+        return item;
+      });
+    },
+    addBreedState(id) {
+      if (this.displayedList[id].isActive) {
+        this.lastBreedState.push(id);
+      }
+    },
+    iterateDisplayedList(isActive) {
+      this.displayedList.forEach((breed) => (breed.isActive = isActive));
     },
   },
 });
