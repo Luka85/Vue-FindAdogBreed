@@ -1,6 +1,7 @@
 <template>
   <main class="container" ref="containerMain">
     <base-header :title="title"></base-header>
+    <user-login></user-login>
     <router-view></router-view>
   </main>
 </template>
