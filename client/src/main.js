@@ -14,10 +14,12 @@ import { faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
 library.add(faAnglesUp, faAnglesRight, faAnglesLeft);
 
 import BaseHeader from "./components/BaseHeader.vue";
+import UserLogin from "./components/UserLogin.vue";
 
 Vue.config.productionTip = false;
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.component("base-header", BaseHeader);
+Vue.component("user-login", UserLogin);
 Vue.use(VueRouter);
 Vue.use(PiniaVuePlugin);
 const pinia = createPinia();
