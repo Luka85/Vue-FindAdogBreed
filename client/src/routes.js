@@ -2,6 +2,7 @@ import VueRouter from "vue-router";
 import BreedsList from "./components/BreedsList.vue";
 import NotFound from "./components/NotFound.vue";
 import BreedDetails from "./components/BreedDetails.vue";
+import UserAuth from "./components/UserAuth.vue";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -15,6 +16,7 @@ const router = new VueRouter({
       component: BreedsList,
       redirect: "/breeds/",
     },
+
     {
       name: "breeds",
       path: "/breeds/",
@@ -38,7 +40,11 @@ const router = new VueRouter({
         },
       ],
     },
-
+    {
+      name: "auth",
+      path: "/auth",
+      component: UserAuth,
+    },
     { name: "notFound", path: "/:notFound(.*)*", component: NotFound },
   ],
 });
