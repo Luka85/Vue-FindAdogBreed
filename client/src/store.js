@@ -12,6 +12,9 @@ export const useStore = defineStore("store", {
       message: "",
       lastBreedState: [],
       indexClicked: 0,
+      loginEmail: "",
+      loginPassword: "",
+      isLoggedIn: false,
     };
   },
   getters: {
@@ -179,6 +182,24 @@ export const useStore = defineStore("store", {
     },
     iterateDisplayedList(isActive) {
       this.displayedList.forEach((breed) => (breed.isActive = isActive));
+    },
+
+    setAuth(email, password) {
+      this.loginEmail = email;
+      this.loginPassword = password;
+      this.isLoggedIn = true;
+      console.log(this.loginEmail, this.loginPassword);
+
+      return fetch("http://localhost:8080/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: this.loginEmail,
+          password: this.loginPassword,
+        }),
+      });
     },
   },
 });
