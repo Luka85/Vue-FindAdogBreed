@@ -1,10 +1,10 @@
 import VueRouter from "vue-router";
-import BreedsList from "./components/BreedsList.vue";
-import NotFound from "./components/NotFound.vue";
-import BreedDetails from "./components/BreedDetails.vue";
-import UserAuth from "./components/UserAuth.vue";
+import BreedsList from "@components/BreedsList.vue";
+import NotFound from "@components/NotFound.vue";
+import BreedDetails from "@components/BreedDetails.vue";
+import UserAuth from "@components/UserAuth.vue";
 
-import { useStore } from "./store";
+import { useStore } from "@/store";
 
 const isProduction = process.env.NODE_ENV === "production";
 

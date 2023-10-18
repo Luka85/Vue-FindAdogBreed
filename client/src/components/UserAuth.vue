@@ -37,7 +37,7 @@
 
 <script>
 import { mapState, mapActions } from "pinia";
-import { useStore } from "../store.js";
+import { useStore } from "@/store.js";
 export default {
   data() {
     return {
