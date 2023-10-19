@@ -1,7 +1,7 @@
 <template>
   <h2>
     Page not found! Maybe view our
-    <router-link :to="{ name: 'breeds' }">Breeds</router-link> page?
+    <router-link :to="{ name: 'auth' }">Login/SignUp</router-link> page?
   </h2>
 </template>
 

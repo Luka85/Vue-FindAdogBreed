@@ -59,14 +59,14 @@
   </section>
 </template>
 <script>
-import SearchForm from "./SearchForm.vue";
-import BreedCard from "./BreedCard.vue";
-import NavigationButton from "./NavigationButton.vue";
-import BreedDetails from "./BreedDetails.vue";
+import SearchForm from "@components/SearchForm.vue";
+import BreedCard from "@components/BreedCard.vue";
+import NavigationButton from "@components/NavigationButton.vue";
+import BreedDetails from "@components/BreedDetails.vue";
 
-import TheNavigation from "./TheNavigation.vue";
+import TheNavigation from "@components/TheNavigation.vue";
 import { mapState, mapActions } from "pinia";
-import { useStore } from "../store.js";
+import { useStore } from "@/store.js";
 
 export default {
   components: {
