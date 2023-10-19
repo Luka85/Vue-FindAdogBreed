@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "pinia";
+import { useStore } from "@/store.js";
 export default {
   data() {
     return {
@@ -46,15 +48,19 @@ export default {
     };
   },
   methods: {
+    ...mapActions(useStore, ["setAuth"]),
     submitForm() {
-      console.log("submit");
       this.formIsValid = true;
       if (this.email === "" || this.password.length < 6) {
         this.formIsValid = false;
         return;
       } else {
-        console.log(this.email, this.password);
-        //send http
+        this.setAuth(this.email, this.password);
+        this.$router.push({
+          name: "breeds",
+        });
+
+        console.log("successfully logged in");
       }
     },
     switchBtnMode() {
@@ -66,6 +72,7 @@ export default {
     },
   },
   computed: {
+    ...mapState(useStore, ["loginEmail", "loginPassword"]),
     changeSubmitBtnValue() {
       if (this.btnMode === "login") {
         return "Login";
