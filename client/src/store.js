@@ -190,7 +190,7 @@ export const useStore = defineStore("store", {
       this.isLoggedIn = true;
       console.log(this.loginEmail, this.loginPassword);
 
-      return fetch("http://localhost:8080/login/", {
+      return fetch("http://localhost:8080/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
