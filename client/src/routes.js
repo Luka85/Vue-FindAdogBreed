@@ -65,14 +65,10 @@ router.beforeEach((to, from, next) => {
   } else if (to.path === "/auth" && !to.meta.requiredAuth) {
     console.log(to.meta);
     console.log("succesufly authorized");
-    // next({ name: "breeds" });
     next();
   } else {
     next();
   }
-  // if (to.meta.requiresAuth) {
-  //   //glej udemy vue course za guards
-  // }
 });
 
 export default router;
