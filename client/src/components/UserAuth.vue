@@ -55,12 +55,7 @@ export default {
         this.formIsValid = false;
         return;
       } else {
-        this.setAuth(this.email, this.password);
-        this.$router.push({
-          name: "breeds",
-        });
-
-        console.log("successfully logged in");
+        this.setAuth(this.email, this.password, this.$router);
       }
     },
     switchBtnMode() {

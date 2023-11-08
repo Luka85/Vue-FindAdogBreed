@@ -15,6 +15,8 @@ export const useStore = defineStore("store", {
       loginEmail: "",
       loginPassword: "",
       isLoggedIn: false,
+      isSignedIn: false,
+      accessToken: "",
     };
   },
   getters: {
@@ -184,10 +186,10 @@ export const useStore = defineStore("store", {
       this.displayedList.forEach((breed) => (breed.isActive = isActive));
     },
 
-    setAuth(email, password) {
+    setAuth(email, password, router) {
       this.loginEmail = email;
       this.loginPassword = password;
-      this.isLoggedIn = true;
+
       console.log(this.loginEmail, this.loginPassword);
 
       return new Promise((resolve, reject) => {
@@ -203,7 +205,16 @@ export const useStore = defineStore("store", {
         })
           .then((response) => response.json())
           .then((accessToken) => {
-            console.log(accessToken);
+            this.accessToken = accessToken;
+            if (this.accessToken) {
+              this.isSignedIn = true;
+              router.push({
+                name: "breeds",
+              });
+              return this.isSignedIn;
+            }
+
+            return this.isSignedIn;
           });
       });
     },

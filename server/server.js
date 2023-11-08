@@ -20,16 +20,13 @@ authRouter.use((req, res, next) => {
 const users = [];
 
 authRouter.post("/signup", async (req, res) => {
-  // console.log("signup request");
   const { email, password } = req.body;
   const user = { email, password };
 
-  // console.log(users);
   const userMatch = users.find((user) => {
     return user.email === email;
   });
 
-  // console.log(userMatch);
   if (userMatch) {
     return res.status(400).json({
       errors: [
@@ -47,10 +44,10 @@ authRouter.post("/signup", async (req, res) => {
     });
 
     const accessToken = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: "15m",
+      expiresIn: "15s",
     });
 
-    res.json({ accessToken: accessToken });
+    return res.json({ accessToken: accessToken });
   }
 });
 
