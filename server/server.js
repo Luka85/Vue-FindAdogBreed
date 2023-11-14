@@ -1,9 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const { check } = require("express-validator");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 const authRouter = express.Router();
 
 const app = express();
@@ -14,6 +14,7 @@ app.use("/auth", authRouter);
 
 authRouter.use((req, res, next) => {
   console.log("Authentication middleware for /auth");
+
   next();
 });
 
@@ -43,16 +44,49 @@ authRouter.post("/signup", async (req, res) => {
       password: hashedPassword,
     });
 
-    const accessToken = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: "15s",
-    });
-
+    const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
+    console.log("Successfully signed in");
     return res.json({ accessToken: accessToken });
   }
 });
 
+authRouter.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  const userMatch = users.find((user) => {
+    return user.email === email;
+  });
+  if (!userMatch) {
+    return res.status(400).json({
+      errors: [
+        {
+          msg: "Invalid Credentials",
+        },
+      ],
+    });
+  } else {
+    const isMatchedPassword = await bcrypt.compare(
+      password,
+      userMatch.password
+    );
+    if (!isMatchedPassword) {
+      return res.status(400).json({
+        errors: [
+          {
+            msg: "Invalid Credentials",
+          },
+        ],
+      });
+    } else {
+      console.log("Successfully logged in");
+      const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
+      return res.json({ accessToken: accessToken });
+    }
+  }
+});
+
 app.get("/breeds", authenticateToken, (req, res) => {
-  res.json(req.email);
+  res.json({ email: req.email });
   console.log(req.email);
 });
 

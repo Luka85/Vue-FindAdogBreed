@@ -63,13 +63,13 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const store = useStore();
   console.log(store);
-  const isAuthenticate = store.isSignedIn;
-  console.log(isAuthenticate);
-  if (to.meta.requiredAuth && !isAuthenticate) {
-    console.log(to, isAuthenticate);
+  const isAuthenticated = store.isSignedIn;
+  console.log(isAuthenticated);
+  if (to.meta.requiredAuth && !isAuthenticated) {
+    console.log(to, isAuthenticated);
     next({ name: "auth" });
-  } else if (isAuthenticate) {
-    console.log(isAuthenticate);
+  } else if (isAuthenticated) {
+    console.log(isAuthenticated);
     next();
   } else {
     next();

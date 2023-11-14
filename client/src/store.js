@@ -186,14 +186,14 @@ export const useStore = defineStore("store", {
       this.displayedList.forEach((breed) => (breed.isActive = isActive));
     },
 
-    setAuth(email, password, router) {
+    setAuth(email, password, router, btnMode) {
       this.loginEmail = email;
       this.loginPassword = password;
 
       console.log(this.loginEmail, this.loginPassword);
 
       return new Promise((resolve, reject) => {
-        fetch("http://localhost:8080/auth/signup", {
+        fetch(`http://localhost:8080/auth/${btnMode}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -211,10 +211,10 @@ export const useStore = defineStore("store", {
               router.push({
                 name: "breeds",
               });
-              return this.isSignedIn;
+              return this.accessToken;
             }
 
-            return this.isSignedIn;
+            return this.accessToken;
           });
       });
     },

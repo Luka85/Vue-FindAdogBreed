@@ -48,14 +48,14 @@ export default {
     };
   },
   methods: {
-    ...mapActions(useStore, ["setAuth"]),
+    ...mapActions(useStore, ["setAuth", "accessToken"]),
     submitForm() {
       this.formIsValid = true;
       if (this.email === "" || this.password.length < 6) {
         this.formIsValid = false;
         return;
       } else {
-        this.setAuth(this.email, this.password, this.$router);
+        this.setAuth(this.email, this.password, this.$router, this.btnMode);
       }
     },
     switchBtnMode() {
