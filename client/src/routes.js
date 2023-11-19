@@ -42,6 +42,7 @@ const router = new VueRouter({
         {
           name: "details",
           path: "details",
+          component: BreedDetails,
           meta: { requiredAuth: true },
         },
       ],

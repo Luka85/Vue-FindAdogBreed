@@ -17,6 +17,7 @@ export const useStore = defineStore("store", {
       isAuthenticated: false,
       accessToken: "",
       errorNotification: "",
+      btnMode: "",
     };
   },
   getters: {
@@ -189,11 +190,11 @@ export const useStore = defineStore("store", {
     setAuth(email, password, router, btnMode) {
       this.loginEmail = email;
       this.loginPassword = password;
+      this.btnMode = btnMode;
 
-      console.log(this.loginEmail, this.loginPassword);
-
+      console.log(this.btnMode);
       return new Promise((resolve, reject) => {
-        fetch(`http://localhost:8080/auth/${btnMode}`, {
+        fetch(`http://localhost:8080/auth/${this.btnMode}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
