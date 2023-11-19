@@ -16,63 +16,63 @@ const router = new VueRouter({
       name: "redirect",
       path: "/",
       component: UserAuth,
-      redirect: "/login",
+      redirect: "/auth",
     },
 
     {
       name: "breeds",
       path: "/breeds/",
       component: BreedsList,
-      meta: { requiresAuth: true },
+      meta: { requiredAuth: true },
     },
     {
       name: "search",
       path: "/breeds/search/",
       component: BreedsList,
-      meta: { requiresAuth: true },
+      meta: { requiredAuth: true },
     },
     {
       name: "breedName",
       path: "/breeds/:breedName/",
       component: BreedsList,
       props: true,
-      meta: { requiresAuth: true },
+      meta: { requiredAuth: true },
 
       children: [
         {
           name: "details",
           path: "details",
-          meta: { requiresAuth: true },
+          meta: { requiredAuth: true },
         },
       ],
     },
     {
       name: "auth",
-      path: "/login",
+      path: "/auth",
       component: UserAuth,
-      meta: { requiresUnauth: true },
     },
-    { name: "notFound", path: "/:notFound(.*)*", component: NotFound },
+    {
+      name: "notFound",
+      path: "/:notFound(.*)*",
+      component: NotFound,
+      meta: { requiredAuth: true },
+    },
   ],
 });
 router.beforeEach((to, from, next) => {
-  if (to.path !== "/login/" && to.meta.requiredAuth) {
-    console.log(myStore);
-    console.log(to);
-    console.log("not authorized");
-    next("/login");
-    return;
-  } else if (to.path === "/login" && !to.meta.requiredAuth) {
-    console.log(to.meta);
-    console.log("succesufly authorized");
-    // next({ name: "breeds" });
+  const store = useStore();
+  console.log(store);
+  const isAuthenticated = store.isAuthenticated;
+  console.log(isAuthenticated);
+  if (to.meta.requiredAuth && !isAuthenticated) {
+    console.log(to, isAuthenticated);
+    next({ name: "auth" });
+  } else if (isAuthenticated) {
+    console.log(isAuthenticated);
     next();
   } else {
     next();
   }
-  // if (to.meta.requiresAuth) {
-  //   //glej udemy vue course za guards
-  // }
 });
 
 export default router;

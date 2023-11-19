@@ -22,6 +22,7 @@
       Please enter a valid email or password (must be at least 6 characters
       long).
     </p>
+    <!-- <p v-else-if="showErrorNotification">errorNotification</p> -->
 
     <button class="submit__btn-active">{{ changeSubmitBtnValue }}</button>
     <button
@@ -55,12 +56,8 @@ export default {
         this.formIsValid = false;
         return;
       } else {
-        this.setAuth(this.email, this.password);
-        this.$router.push({
-          name: "breeds",
-        });
-
-        console.log("successfully logged in");
+        this.setAuth(this.email, this.password, this.$router, this.btnMode);
+        console.log(this.errorNotification);
       }
     },
     switchBtnMode() {
@@ -72,7 +69,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(useStore, ["loginEmail", "loginPassword"]),
+    ...mapState(useStore, ["loginEmail", "loginPassword", "errorNotification"]),
     changeSubmitBtnValue() {
       if (this.btnMode === "login") {
         return "Login";
@@ -82,10 +79,16 @@ export default {
     },
     changeBtnMode() {
       if (this.btnMode === "login") {
+        console.log(this.errorNotification);
         return "SignUp instead";
       } else {
+        console.log(this.errorNotification);
+
         return "Login instead";
       }
+    },
+    showErrorNotification() {
+      // Nadaljuj
     },
   },
 };

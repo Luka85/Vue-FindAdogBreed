@@ -14,7 +14,9 @@ export const useStore = defineStore("store", {
       indexClicked: 0,
       loginEmail: "",
       loginPassword: "",
-      isLoggedIn: false,
+      isAuthenticated: false,
+      accessToken: "",
+      errorNotification: "",
     };
   },
   getters: {
@@ -184,21 +186,40 @@ export const useStore = defineStore("store", {
       this.displayedList.forEach((breed) => (breed.isActive = isActive));
     },
 
-    setAuth(email, password) {
+    setAuth(email, password, router, btnMode) {
       this.loginEmail = email;
       this.loginPassword = password;
-      this.isLoggedIn = true;
+
       console.log(this.loginEmail, this.loginPassword);
 
-      return fetch("http://localhost:8080/login/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: this.loginEmail,
-          password: this.loginPassword,
-        }),
+      return new Promise((resolve, reject) => {
+        fetch(`http://localhost:8080/auth/${btnMode}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: this.loginEmail,
+            password: this.loginPassword,
+          }),
+        })
+          .then((response) => response.json())
+          .then((accessToken) => {
+            this.accessToken = accessToken;
+
+            if (this.accessToken.accessToken) {
+              this.isAuthenticated = true;
+              router.push({
+                name: "breeds",
+              });
+              console.log(this.accessToken.accessToken);
+              return this.accessToken.accessToken;
+            }
+            this.isAuthenticated = false;
+            console.log(this.accessToken.errors.msg);
+            this.errorNotification = this.accessToken.errors.msg;
+            return this.errorNotification;
+          });
       });
     },
   },
