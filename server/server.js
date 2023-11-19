@@ -30,11 +30,9 @@ authRouter.post("/signup", async (req, res) => {
 
   if (userMatch) {
     return res.status(400).json({
-      errors: [
-        {
-          msg: "This user already exists",
-        },
-      ],
+      errors: {
+        msg: "This user already exists. Please go to Login",
+      },
     });
   } else {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -58,11 +56,9 @@ authRouter.post("/login", async (req, res) => {
   });
   if (!userMatch) {
     return res.status(400).json({
-      errors: [
-        {
-          msg: "Invalid Credentials",
-        },
-      ],
+      errors: {
+        msg: "Invalid Credentials",
+      },
     });
   } else {
     const isMatchedPassword = await bcrypt.compare(
@@ -71,11 +67,9 @@ authRouter.post("/login", async (req, res) => {
     );
     if (!isMatchedPassword) {
       return res.status(400).json({
-        errors: [
-          {
-            msg: "Invalid Credentials",
-          },
-        ],
+        errors: {
+          msg: "Invalid Credentials",
+        },
       });
     } else {
       console.log("Successfully logged in");

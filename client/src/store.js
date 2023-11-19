@@ -14,9 +14,9 @@ export const useStore = defineStore("store", {
       indexClicked: 0,
       loginEmail: "",
       loginPassword: "",
-      isLoggedIn: false,
-      isSignedIn: false,
+      isAuthenticated: false,
       accessToken: "",
+      errorNotification: "",
     };
   },
   getters: {
@@ -206,15 +206,19 @@ export const useStore = defineStore("store", {
           .then((response) => response.json())
           .then((accessToken) => {
             this.accessToken = accessToken;
-            if (this.accessToken) {
-              this.isSignedIn = true;
+
+            if (this.accessToken.accessToken) {
+              this.isAuthenticated = true;
               router.push({
                 name: "breeds",
               });
-              return this.accessToken;
+              console.log(this.accessToken.accessToken);
+              return this.accessToken.accessToken;
             }
-
-            return this.accessToken;
+            this.isAuthenticated = false;
+            console.log(this.accessToken.errors.msg);
+            this.errorNotification = this.accessToken.errors.msg;
+            return this.errorNotification;
           });
       });
     },

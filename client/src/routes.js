@@ -5,7 +5,6 @@ import BreedDetails from "@components/BreedDetails.vue";
 import UserAuth from "@components/UserAuth.vue";
 
 import { useStore } from "@/store";
-import { mapState, mapActions } from "pinia";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -63,7 +62,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const store = useStore();
   console.log(store);
-  const isAuthenticated = store.isSignedIn;
+  const isAuthenticated = store.isAuthenticated;
   console.log(isAuthenticated);
   if (to.meta.requiredAuth && !isAuthenticated) {
     console.log(to, isAuthenticated);
