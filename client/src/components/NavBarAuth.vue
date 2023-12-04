@@ -1,6 +1,6 @@
 <template>
   <div class="auth-container">
-    <button class="btn">{{ switchBtnValue }}</button>
+    <button class="btn" @click="userLogOut">{{ switchBtnValue }}</button>
   </div>
 </template>
 
@@ -12,11 +12,21 @@ export default {
     ...mapState(useStore, ["isAuthenticated", "btnMode"]),
     switchBtnValue() {
       console.log(this.btnMode);
-      if (this.isAuthenticated && this.btnMode === "login") {
+      if (this.btnMode === "login") {
         return "Log Out";
-      } else if (this.isAuthenticated && this.btnMode === "signUp") {
+      } else if (this.btnMode === "signUp") {
         return "Sign out ";
       }
+    },
+  },
+  methods: {
+    ...mapActions(useStore, ["userUnAuth"]),
+    userLogOut() {
+      console.log(this.$router);
+
+      this.userUnAuth(this.$router);
+
+      console.log("successfully logged out");
     },
   },
 };

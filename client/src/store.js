@@ -213,13 +213,40 @@ export const useStore = defineStore("store", {
               router.push({
                 name: "breeds",
               });
-              console.log(this.accessToken.accessToken);
+
               return this.accessToken.accessToken;
             }
             this.isAuthenticated = false;
             console.log(this.accessToken.errors.msg);
             this.errorNotification = this.accessToken.errors.msg;
             return this.errorNotification;
+          });
+      });
+    },
+    userUnAuth(router) {
+      return new Promise((resolve, reject) => {
+        fetch(`http://localhost:8080/auth/logout`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            accessToken: this.accessToken,
+          }),
+        })
+          .then((response) => {
+            console.log(response);
+            if (response.ok) {
+              router.push({
+                name: "auth",
+              });
+              this.isAuthenticated = false;
+            } else {
+              reject(new Error(response.status + " error"));
+            }
+          })
+          .then((data) => {
+            console.log(data);
           });
       });
     },

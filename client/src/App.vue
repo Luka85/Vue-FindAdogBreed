@@ -10,7 +10,14 @@
 <script>
 import { mapState, mapActions } from "pinia";
 import { useStore } from "@/store.js";
+
+import BaseHeader from "@components/BaseHeader.vue";
+import NavbarAuth from "@components/NavBarAuth.vue";
 export default {
+  components: {
+    BaseHeader,
+    NavbarAuth,
+  },
   data() {
     return {
       title: "Find A Dog",
