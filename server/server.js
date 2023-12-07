@@ -19,7 +19,7 @@ authRouter.use((req, res, next) => {
 });
 
 const users = [];
-
+let accessTokens = [];
 authRouter.post("/signup", async (req, res) => {
   const { email, password } = req.body;
   const user = { email, password };
@@ -36,7 +36,6 @@ authRouter.post("/signup", async (req, res) => {
     });
   } else {
     const hashedPassword = await bcrypt.hash(password, 10);
-
     users.push({
       email: email,
       password: hashedPassword,
@@ -44,6 +43,8 @@ authRouter.post("/signup", async (req, res) => {
 
     const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
     console.log("Successfully signed in");
+    accessTokens.push(accessToken);
+
     return res.json({ accessToken: accessToken });
   }
 });
@@ -54,6 +55,7 @@ authRouter.post("/login", async (req, res) => {
   const userMatch = users.find((user) => {
     return user.email === email;
   });
+  console.log(userMatch);
   if (!userMatch) {
     return res.status(400).json({
       errors: {
@@ -74,21 +76,36 @@ authRouter.post("/login", async (req, res) => {
     } else {
       console.log("Successfully logged in");
       const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
+      accessTokens.push(accessToken);
       return res.json({ accessToken: accessToken });
     }
   }
 });
 
+authRouter.post("/logout", (req, res) => {
+  console.log("logout");
+  const { accessToken } = req.body.accessToken;
+  accessTokens = accessTokens.filter((token) => {
+    if (token !== accessToken) {
+      console.log("accessTokens", accessTokens);
+    }
+  });
+  return res.json({
+    accessTokens: accessTokens,
+    message: "Logout sucessfully",
+  });
+});
+
 app.get("/breeds", authenticateToken, (req, res) => {
-  res.json({ email: req.email });
-  console.log(req.email);
+  // res.json({ email: req.email });
+  res.json(users);
 });
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers.authorization;
 
   const token = authHeader && authHeader.split(" ")[1];
-  console.log(token);
+  // console.log(token);
   if (token === undefined) {
     return res.sendStatus(401);
   }

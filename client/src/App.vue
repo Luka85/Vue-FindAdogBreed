@@ -1,15 +1,30 @@
 <template>
   <main class="container" ref="containerMain">
-    <base-header :title="title"></base-header>
+    <navbar-auth
+      v-if="isAuthenticated && this.$route.name !== 'auth'"
+    ></navbar-auth>
+    <base-header :title="title"> </base-header>
     <router-view></router-view>
   </main>
 </template>
 <script>
+import { mapState, mapActions } from "pinia";
+import { useStore } from "@/store.js";
+
+import BaseHeader from "@components/BaseHeader.vue";
+import NavbarAuth from "@components/NavBarAuth.vue";
 export default {
+  components: {
+    BaseHeader,
+    NavbarAuth,
+  },
   data() {
     return {
       title: "Find A Dog",
     };
+  },
+  computed: {
+    ...mapState(useStore, ["isAuthenticated"]),
   },
 };
 </script>

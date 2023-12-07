@@ -22,7 +22,9 @@
       Please enter a valid email or password (must be at least 6 characters
       long).
     </p>
-    <!-- <p v-else-if="showErrorNotification">errorNotification</p> -->
+    <p class="userLogin__notification" v-else-if="!isAuthenticated">
+      {{ errorNotification }}
+    </p>
 
     <button class="submit__btn-active">{{ changeSubmitBtnValue }}</button>
     <button
@@ -69,7 +71,12 @@ export default {
     },
   },
   computed: {
-    ...mapState(useStore, ["loginEmail", "loginPassword", "errorNotification"]),
+    ...mapState(useStore, [
+      "loginEmail",
+      "loginPassword",
+      "errorNotification",
+      "isAuthenticated",
+    ]),
     changeSubmitBtnValue() {
       if (this.btnMode === "login") {
         return "Login";
@@ -88,7 +95,8 @@ export default {
       }
     },
     showErrorNotification() {
-      // Nadaljuj
+      console.log(this.errorNotification);
+      return this.errorNotification;
     },
   },
 };

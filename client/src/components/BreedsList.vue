@@ -49,7 +49,6 @@
         :class="{ hidden: !breed.isActive, show_details: breed.isActive }"
       >
         <router-view :breed="breed"></router-view>
-        >
       </div>
     </div>
     <navigation-button
