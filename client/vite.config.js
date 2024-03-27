@@ -5,7 +5,7 @@ import path from "path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: "/vite-deploy-demo/",
+  base: "/",
   plugins: [vue(), pluginRewriteAll()],
 
   resolve: {
