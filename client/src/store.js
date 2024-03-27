@@ -207,7 +207,7 @@ export const useStore = defineStore("store", {
           .then((response) => response.json())
           .then((accessToken) => {
             this.accessToken = accessToken;
-
+            console.log(accessToken);
             if (this.accessToken.accessToken) {
               this.isAuthenticated = true;
               router.push({
@@ -233,22 +233,52 @@ export const useStore = defineStore("store", {
           body: JSON.stringify({
             accessToken: this.accessToken,
           }),
+        }).then((response) => {
+          console.log(response);
+          if (response.ok) {
+            router.push({
+              name: "auth",
+            });
+            this.isAuthenticated = false;
+          } else {
+            reject(new Error(response.status + " error"));
+          }
+        });
+        // .then((data) => {
+        //   console.log(data);
+        // });
+      });
+    },
+
+    checkIfValidToken() {
+      console.log(this.accessToken);
+      // setInterval(() => {
+      return new Promise((resolve, reject) => {
+        console.log(resolve);
+        fetch("http://localhost:8080/breeds", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${this.accessToken}`,
+          },
         })
           .then((response) => {
             console.log(response);
             if (response.ok) {
-              router.push({
-                name: "auth",
-              });
-              this.isAuthenticated = false;
+              resolve(response.json());
             } else {
               reject(new Error(response.status + " error"));
             }
           })
-          .then((data) => {
-            console.log(data);
+          .then((results) => {
+            console.log(results);
+          })
+          .catch((error) => {
+            reject(error);
           });
       });
+      // }
+      // , 6000);
     },
   },
 });

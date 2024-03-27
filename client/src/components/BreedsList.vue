@@ -97,6 +97,7 @@ export default {
       "resetToDefault",
       "resetSearchQuery",
       "iterateDisplayedList",
+      "checkIfValidToken",
     ]),
 
     showNavigationBtn() {
@@ -193,6 +194,9 @@ export default {
   },
   created() {
     this.fetchBreedData(this.breedName);
+  },
+  mounted() {
+    this.checkIfValidToken();
   },
 };
 </script>

@@ -20,6 +20,7 @@ authRouter.use((req, res, next) => {
 
 const users = [];
 let accessTokens = [];
+let refreshTokens = [];
 authRouter.post("/signup", async (req, res) => {
   const { email, password } = req.body;
   const user = { email, password };
@@ -43,7 +44,7 @@ authRouter.post("/signup", async (req, res) => {
 
     const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
     console.log("Successfully signed in");
-    accessTokens.push(accessToken);
+    // accessTokens.push(accessToken);
 
     return res.json({ accessToken: accessToken });
   }
@@ -67,6 +68,7 @@ authRouter.post("/login", async (req, res) => {
       password,
       userMatch.password
     );
+    console.log(isMatchedPassword);
     if (!isMatchedPassword) {
       return res.status(400).json({
         errors: {
@@ -75,9 +77,16 @@ authRouter.post("/login", async (req, res) => {
       });
     } else {
       console.log("Successfully logged in");
-      const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
+      const accessToken = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: "45s",
+      });
+      const refreshToken = jwt.sign(
+        { email },
+        process.env.REFRESH_TOKEN_SECRET
+      );
       accessTokens.push(accessToken);
-      return res.json({ accessToken: accessToken });
+      console.log(accessToken);
+      return res.json({ accessToken: accessToken, refreshToken: refreshToken });
     }
   }
 });
@@ -85,6 +94,8 @@ authRouter.post("/login", async (req, res) => {
 authRouter.post("/logout", (req, res) => {
   console.log("logout");
   const { accessToken } = req.body.accessToken;
+  console.log({ accessToken });
+  console.log(accessTokens);
   accessTokens = accessTokens.filter((token) => {
     if (token !== accessToken) {
       console.log("accessTokens", accessTokens);
@@ -96,16 +107,21 @@ authRouter.post("/logout", (req, res) => {
   });
 });
 
+// app.get("/refresh", authenticateToken, (req, res) => {
+//   return res.json(accessTokens);
+// });
+
 app.get("/breeds", authenticateToken, (req, res) => {
-  // res.json({ email: req.email });
-  res.json(users);
+  console.log();
+  return res.json({ email: req.email });
 });
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers.authorization;
+  console.log(authHeader);
 
   const token = authHeader && authHeader.split(" ")[1];
-  // console.log(token);
+
   if (token === undefined) {
     return res.sendStatus(401);
   }
