@@ -9,7 +9,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "set NODE_ENV=production npm run build && gh-pages -d dist"
+    "deploy": "set NODE_ENV=production npm run build && gh-pages -d dist",
+    "start": "node server.js"
   },
   "author": "luka",
   "license": "ISC",
