@@ -194,7 +194,7 @@ export const useStore = defineStore("store", {
 
       console.log(this.btnMode);
       return new Promise((resolve, reject) => {
-        fetch(`http://3.75.158.163:8080/auth/${this.btnMode}`, {
+        fetch(`https://3.75.158.163:8080/auth/${this.btnMode}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -225,7 +225,7 @@ export const useStore = defineStore("store", {
     },
     userUnAuth(router) {
       return new Promise((resolve, reject) => {
-        fetch(`http://3.75.158.163:8080/auth/logout`, {
+        fetch(`https://3.75.158.163:8080/auth/logout`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -255,7 +255,7 @@ export const useStore = defineStore("store", {
       // setInterval(() => {
       return new Promise((resolve, reject) => {
         console.log(resolve);
-        fetch("http://3.75.158.163:8080/breeds", {
+        fetch("https://3.75.158.163:8080/breeds", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
