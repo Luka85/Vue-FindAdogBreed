@@ -138,6 +138,6 @@ authRouter.get("/", (req, res) => {
   res.send("auth route working");
 });
 
-app.listen(port, "0.0.0.0", () => {
+app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
