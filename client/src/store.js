@@ -195,7 +195,7 @@ export const useStore = defineStore("store", {
       console.log(this.btnMode);
       return new Promise((resolve, reject) => {
         fetch(
-          `https://vue-findadogbreed-b01u.onrender.com:8080/auth/${this.btnMode}`,
+          `https://vue-findadogbreed-b01u.onrender.com/auth/${this.btnMode}`,
           {
             method: "POST",
             headers: {
@@ -228,7 +228,7 @@ export const useStore = defineStore("store", {
     },
     userUnAuth(router) {
       return new Promise((resolve, reject) => {
-        fetch(`https://vue-findadogbreed-b01u.onrender.com:8080/auth/logout`, {
+        fetch(`https://vue-findadogbreed-b01u.onrender.com/auth/logout`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -258,7 +258,7 @@ export const useStore = defineStore("store", {
       // setInterval(() => {
       return new Promise((resolve, reject) => {
         console.log(resolve);
-        fetch("https://vue-findadogbreed-b01u.onrender.com:8080/breeds", {
+        fetch("https://vue-findadogbreed-b01u.onrender.com/breeds", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
