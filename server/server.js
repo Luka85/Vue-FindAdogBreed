@@ -6,10 +6,13 @@ const { check } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const authRouter = express.Router();
 
+const history = require("connect-history-api-fallback");
 const app = express();
 const port = 8080;
+
 app.use(express.json());
 app.use(cors());
+app.use(history());
 app.use("/auth", authRouter);
 
 authRouter.use((req, res, next) => {
