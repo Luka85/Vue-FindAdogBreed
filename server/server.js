@@ -14,8 +14,6 @@ app.use(express.json());
 app.use(cors());
 app.use("/auth", authRouter);
 
-app.use(express.static("client"));
-
 authRouter.use((req, res, next) => {
   console.log("Authentication middleware for /auth");
 
@@ -146,7 +144,7 @@ app.use(
     verbose: true,
   })
 );
-
+app.use(express.static("client"));
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
