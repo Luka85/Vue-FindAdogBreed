@@ -5,7 +5,7 @@ import path from "path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: "Vue-FindAdogBreed",
+  base: "/Vue-FindAdogBreed",
   plugins: [vue(), pluginRewriteAll()],
 
   resolve: {
