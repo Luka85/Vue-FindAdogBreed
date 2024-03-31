@@ -13,7 +13,7 @@ const port = 8080;
 app.use(express.json());
 app.use(cors());
 app.use("/auth", authRouter);
-app.use(history());
+
 app.use(express.static("client"));
 
 authRouter.use((req, res, next) => {
@@ -141,6 +141,11 @@ function authenticateToken(req, res, next) {
 authRouter.get("/", (req, res) => {
   res.send("auth route working");
 });
+app.use(
+  history({
+    verbose: true,
+  })
+);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
