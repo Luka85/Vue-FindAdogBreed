@@ -21,7 +21,11 @@ authRouter.use((req, res, next) => {
 });
 if (process.env.NODE_ENV === "production") {
   // Handle SPA
-  app.get(/.*/, (req, res) => res.sendFile(__dirname + "/dist/index.html"));
+  app.get(/.*/, (req, res) =>
+    res.sendFile(__dirname + "..client/dist/index.html")
+  );
+
+  console.log(res.sendFile);
 }
 
 const users = [];
