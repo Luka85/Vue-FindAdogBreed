@@ -24,8 +24,6 @@ if (process.env.NODE_ENV === "production") {
   app.get(/.*/, (req, res) =>
     res.sendFile(__dirname + "..client/dist/index.html")
   );
-
-  console.log(res.sendFile);
 }
 
 const users = [];
