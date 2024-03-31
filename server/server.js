@@ -6,15 +6,15 @@ const { check } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const authRouter = express.Router();
 
-// const history = require("connect-history-api-fallback");
+const history = require("connect-history-api-fallback");
 const app = express();
 const port = 8080;
 
 app.use(express.json());
 app.use(cors());
-// app.use(history());
-// app.use(express.static("client"));
 app.use("/auth", authRouter);
+app.use(history());
+app.use(express.static("client"));
 
 authRouter.use((req, res, next) => {
   console.log("Authentication middleware for /auth");
