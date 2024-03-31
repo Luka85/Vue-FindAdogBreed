@@ -6,7 +6,7 @@ const { check } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const authRouter = express.Router();
 
-const history = require("connect-history-api-fallback");
+// const history = require("connect-history-api-fallback");
 const app = express();
 const port = 8080;
 
@@ -19,6 +19,10 @@ authRouter.use((req, res, next) => {
 
   next();
 });
+if (process.env.NODE_ENV === "production") {
+  // Handle SPA
+  app.get(/.*/, (req, res) => res.sendFile(__dirname + "/client/index.html"));
+}
 
 const users = [];
 let accessTokens = [];
@@ -139,12 +143,12 @@ function authenticateToken(req, res, next) {
 authRouter.get("/", (req, res) => {
   res.send("auth route working");
 });
-app.use(
-  history({
-    verbose: true,
-  })
-);
-app.use(express.static("client"));
+// app.use(
+//   history({
+//     verbose: true,
+//   })
+// );
+// app.use(express.static("client"));
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
