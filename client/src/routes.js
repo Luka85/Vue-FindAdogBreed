@@ -9,7 +9,7 @@ import { useStore } from "@/store";
 const isProduction = process.env.NODE_ENV === "production";
 
 const router = new VueRouter({
-  mode: "history",
+  mode: "hash",
   base: isProduction ? "/Vue-FindAdogBreed/" : "/",
   routes: [
     {
