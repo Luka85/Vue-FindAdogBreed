@@ -5,11 +5,17 @@ const bcrypt = require("bcrypt");
 const { check } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const authRouter = express.Router();
-
+const history = require("connect-history-api-fallback");
 const app = express();
 const port = 8080;
 
 app.use(express.json());
+app.use(
+  history({
+    verbose: true,
+  })
+);
+app.use("/", express.static(path.join(__dirname, "../client/dist")));
 app.use(cors());
 app.use("/auth", authRouter);
 
