@@ -12,15 +12,18 @@ const port = 8080;
 
 app.use(express.json());
 app.use(cors());
-
+app.use(history());
+app.use(express.static("../client"));
+app.get("/", (req, res) => {
+  res.sendFile("../client/dist/index.html");
+});
 // Serve static assets from the 'dist' directory within the 'client' folder
-app.use(express.static(path.join(__dirname, "../client/dist")));
-app.use(
-  history({
-    verbose: true,
-  })
-);
-// Catch-all route that serves 'index.html' for all routes
+// app.use(express.static(path.join(__dirname, "../client/dist")));
+// app.use(
+//   history({
+//     verbose: true,
+//   })
+// );
 
 app.use("/auth", authRouter);
 
@@ -150,9 +153,10 @@ authRouter.get("/", (req, res) => {
   res.send("auth route working");
 });
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
-});
+// Catch-all route that serves 'index.html' for all routes
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+// });
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
