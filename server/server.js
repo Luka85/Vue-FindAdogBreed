@@ -12,14 +12,14 @@ const port = 8080;
 
 app.use(express.json());
 app.use(cors());
+
+// Serve static assets from the 'dist' directory within the 'client' folder
+app.use(express.static(path.join(__dirname, "../client/dist")));
 app.use(
   history({
     verbose: true,
   })
 );
-// Serve static assets from the 'dist' directory within the 'client' folder
-app.use(express.static(path.join(__dirname, "../client/dist")));
-
 // Catch-all route that serves 'index.html' for all routes
 
 app.use("/auth", authRouter);
