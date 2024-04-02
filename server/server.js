@@ -16,11 +16,12 @@ app.use(
     verbose: true,
   })
 );
-app.use(express.static(path.join(__dirname, "public")));
+// Serve static assets from the 'dist' directory within the 'client' folder
+app.use(express.static(path.join(__dirname, "client", "dist")));
 
-// Catch-all route that serves index.html for all routes
+// Catch-all route that serves 'index.html' for all routes
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 app.use(cors());
 app.use("/auth", authRouter);
