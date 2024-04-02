@@ -21,9 +21,7 @@ app.use(
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
 // Catch-all route that serves 'index.html' for all routes
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
-});
+
 app.use("/auth", authRouter);
 
 authRouter.use((req, res, next) => {
@@ -152,6 +150,9 @@ authRouter.get("/", (req, res) => {
   res.send("auth route working");
 });
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+});
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
