@@ -16,16 +16,12 @@ app.use(
     verbose: true,
   })
 );
+app.use(express.static(path.join(__dirname, "public")));
 
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static(path.join(__dirname, "../client/dist")));
-//   app.use((req, res, next) => {
-//     res
-//       .status(200)
-//       .sendFile(path.join(__dirname + "../client/dist/index.html"));
-//   });
-// }
-app.use("/", express.static(path.join(__dirname, "client/dist")));
+// Catch-all route that serves index.html for all routes
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 app.use(cors());
 app.use("/auth", authRouter);
 
