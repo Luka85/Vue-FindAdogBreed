@@ -11,6 +11,7 @@ const app = express();
 const port = 8080;
 
 app.use(express.json());
+app.use(cors());
 app.use(
   history({
     verbose: true,
@@ -23,7 +24,6 @@ app.use(express.static(path.join(__dirname, "../client/dist")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
 });
-// app.use(cors());
 app.use("/auth", authRouter);
 
 authRouter.use((req, res, next) => {
