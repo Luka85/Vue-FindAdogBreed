@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -18,13 +17,13 @@
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
-    "@fortawesome/vue-fontawesome": "^2.0.10",
-    "@vitejs/plugin-vue2": "^2.2.0",
+    "@fortawesome/vue-fontawesome": "^3.0.6",
+    "@vitejs/plugin-vue": "^5.0.4",
     "express": "^4.18.2",
-    "pinia": "^2.1.6",
-    "vite-plugin-rewrite-all": "^1.0.1",
-    "vue": "^2.7.14",
-    "vue-router": "^3.6.5"
+    "pinia": "^2.1.7",
+    "vite": "^5.2.8",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "gh-pages": "^5.0.0"
