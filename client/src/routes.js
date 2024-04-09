@@ -1,4 +1,8 @@
-import VueRouter from "vue-router";
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+} from "vue-router";
 import BreedsList from "@components/BreedsList.vue";
 import NotFound from "@components/NotFound.vue";
 import BreedDetails from "@components/BreedDetails.vue";
@@ -8,9 +12,11 @@ import { useStore } from "@/store";
 
 const isProduction = process.env.NODE_ENV === "production";
 
-const router = new VueRouter({
-  mode: isProduction ? "hash" : "history",
-  base: isProduction ? "/Vue-FindAdogBreed/" : "/",
+const router = createRouter({
+  history: isProduction
+    ? createWebHashHistory("/Vue-FindAdogBreed/")
+    : createWebHistory("/"),
+
   routes: [
     {
       name: "redirect",

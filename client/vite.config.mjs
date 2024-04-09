@@ -1,12 +1,11 @@
-import vue from "@vitejs/plugin-vue2";
-import pluginRewriteAll from "vite-plugin-rewrite-all";
 import path from "path";
-
 import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+const isProduction = process.env.NODE_ENV === "production";
 
 export default defineConfig({
-  base: "/Vue-FindAdogBreed",
-  plugins: [vue(), pluginRewriteAll()],
+  base: isProduction ? "/Vue-FindAdogBreed/" : "/",
+  plugins: [vue()],
 
   resolve: {
     alias: [
