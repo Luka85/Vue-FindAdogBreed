@@ -36,7 +36,7 @@ export default {
 .auth-container {
   display: flex;
   justify-content: flex-end;
-  margin: 2rem 0;
+  margin-top: 1rem;
   padding: 0 3rem;
 }
 </style>
