@@ -65,26 +65,27 @@ html {
 
 body {
   line-height: 1.6;
-  margin: 0;
   background: url(./assets/images/dog_pattern.svg), var(--background-color1);
   color: var(--color-primary);
   background-attachment: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
   position: relative;
 }
 
+#app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .container {
-  margin: 0 auto;
   width: 70%;
   background-color: var(--background-color2);
   border-radius: 1rem;
   box-shadow: 0px 0px 30px 0px rgba(37, 89, 124, 0.671);
-  margin: 2rem 0 0 0;
-
   padding-bottom: 2rem;
+  margin: 3rem 0;
+
   @media only screen and (max-width: 1300px) {
     width: 75%;
   }
