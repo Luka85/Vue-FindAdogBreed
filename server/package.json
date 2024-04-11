@@ -9,24 +9,19 @@
   "author": "luka",
   "license": "ISC",
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.4.0",
-    "@fortawesome/free-brands-svg-icons": "^6.4.0",
-    "@fortawesome/free-regular-svg-icons": "^6.4.0",
-    "@fortawesome/free-solid-svg-icons": "^6.4.0",
-    "@fortawesome/vue-fontawesome": "^2.0.10",
-    "@vitejs/plugin-vue2": "^2.2.0",
+    "@vitejs/plugin-vue": "^5.0.4",
     "bcrypt": "^5.1.1",
     "connect-history-api-fallback": "^2.0.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
+    "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.2",
-    "nodemon": "^3.0.1",
-    "pinia": "^2.1.6",
-    "vite-plugin-rewrite-all": "^1.0.1",
-    "vue": "^2.7.14",
-    "vue-router": "^3.6.5"
+    "nodemon": "^3.1.0",
+    "pinia": "^2.1.7",
+    "vite": "^5.2.8",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "gh-pages": "^5.0.0"
